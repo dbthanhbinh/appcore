@@ -34,10 +34,16 @@ namespace FileService
         // Create Directory if is not exists
         public void CreateDirectoryIfNotExists()
         {
+            Directory.CreateDirectory(this.GetCurrentDirectoryForUpload());
+        }
+
+        public string GetCurrentDirectoryForUpload()
+        {
             string FullDirectoryPath = this.GetFullDirectoryPathUpload();
-            bool Exists = Directory.Exists(FullDirectoryPath);
-            if (!Exists)
-                Directory.CreateDirectory(FullDirectoryPath);
+            string Year = DateTime.Now.Year.ToString();
+            string Month = DateTime.Now.Month.ToString();
+            string Day = DateTime.Now.Day.ToString();
+            return FullDirectoryPath + "\\" + Year + "\\" + Month + "\\" + Day;
         }
 
         public string GetCurrentDirectory()
@@ -52,7 +58,7 @@ namespace FileService
 
         public string GetFullPathUploadFile(string FileName)
         {
-            return this.GetCurrentDirectory() + "\\" + this.DirectoryUpload() + "\\" + FileName;
+            return this.GetCurrentDirectoryForUpload() + "\\" + FileName;
         }
 
         // Create new fileName if is Exists
@@ -62,7 +68,7 @@ namespace FileService
             {
                 string OldFileName = Path.GetFileNameWithoutExtension(FileName);
                 string Extension = Path.GetExtension(FileName);
-                string NewFileName = OldFileName + "_" + ;
+                string NewFileName = OldFileName + "_" + DateTime.Now.ToString("yyyyMMddHmmssff");
                 FileName = NewFileName + Extension;
             }
             return FileName;
