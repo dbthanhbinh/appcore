@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AppCore.Business;
 using AppCore.Models.DBModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FileService;
 
 namespace AppCore.Controllers
 {
@@ -19,9 +21,11 @@ namespace AppCore.Controllers
             _mediaLogic = mediaLogic;
         }
 
-        [HttpPost("create", Name = "CreateMedia")]
-        public async Task<ActionResult> CreateMedia(IFormFile file)
+        [HttpPost("uploadFile", Name = "UploadFile")]
+        public async Task<ActionResult> UploadFile(IFormFile file)
         {
+            FileLogic fileLogic = new FileLogic();
+            await fileLogic.UploadFile(file);
             return Ok();
         }
     }
