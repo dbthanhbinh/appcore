@@ -1,0 +1,12 @@
+D:\NET\My apps\appcore\FileService\bin\Debug\netcoreapp2.1\FileService.deps.json
+D:\NET\My apps\appcore\FileService\bin\Debug\netcoreapp2.1\FileService.dll
+D:\NET\My apps\appcore\FileService\bin\Debug\netcoreapp2.1\FileService.pdb
+D:\NET\My apps\appcore\FileService\bin\Debug\netcoreapp2.1\Microsoft.AspNetCore.Http.Features.dll
+D:\NET\My apps\appcore\FileService\bin\Debug\netcoreapp2.1\Microsoft.AspNetCore.Http.Features.xml
+D:\NET\My apps\appcore\FileService\obj\Debug\netcoreapp2.1\FileService.csprojAssemblyReference.cache
+D:\NET\My apps\appcore\FileService\obj\Debug\netcoreapp2.1\FileService.csproj.CoreCompileInputs.cache
+D:\NET\My apps\appcore\FileService\obj\Debug\netcoreapp2.1\FileService.AssemblyInfoInputs.cache
+D:\NET\My apps\appcore\FileService\obj\Debug\netcoreapp2.1\FileService.AssemblyInfo.cs
+D:\NET\My apps\appcore\FileService\obj\Debug\netcoreapp2.1\FileService.csproj.CopyComplete
+D:\NET\My apps\appcore\FileService\obj\Debug\netcoreapp2.1\FileService.dll
+D:\NET\My apps\appcore\FileService\obj\Debug\netcoreapp2.1\FileService.pdb
