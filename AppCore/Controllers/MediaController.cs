@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AppCore.Business;
-using AppCore.Models.DBModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FileService;
+using AppCore.Controllers.commons;
+using System.Collections;
 
 namespace AppCore.Controllers
 {
@@ -27,6 +24,14 @@ namespace AppCore.Controllers
             FileLogic fileLogic = new FileLogic();
             await fileLogic.UploadFile(file);
             return Ok();
+        }
+
+        [HttpGet("getConfigs", Name = "GetConfigs")]
+        public ActionResult GetConfigs()
+        {
+            FileLogic fileLogic = new FileLogic();
+            var a = fileLogic.GetImageMime();
+            return Ok(new BaseResponse(a));
         }
     }
 }

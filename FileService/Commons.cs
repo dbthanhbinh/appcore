@@ -1,24 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace FileService
 {
     public class Commons
     {
-        private static readonly IDictionary<string, string> ImageMimeDictionary = new Dictionary<string, string>
-        {
-            { ".bmp", "image/bmp" },
-            { ".dib", "image/bmp" },
-            { ".gif", "image/gif" },
-            { ".svg", "image/svg+xml" },
-            { ".jpe", "image/jpeg" },
-            { ".jpeg", "image/jpeg" },
-            { ".jpg", "image/jpeg" },
-            { ".png", "image/png" },
-            { ".pnz", "image/png" }
-        };
-
         public bool AllowMimeTypesFile()
         {
             bool IsAllow = true;
@@ -26,9 +14,14 @@ namespace FileService
             return IsAllow;
         }
 
+        public IDictionary<string, string> GetImageMime()
+        {
+            return Configs.ImageMimeDictionary;
+        }
+
         public string DirectoryUpload()
         {
-            return "Uploads";
+            return Configs.UPLOADED;
         }
 
         // Create Directory if is not exists
@@ -61,6 +54,11 @@ namespace FileService
             return this.GetCurrentDirectoryForUpload() + "\\" + FileName;
         }
 
+        public string GetExtensionFileName()
+        {
+            return DateTime.Now.ToString("yyyyMMddHmmssff");
+        }
+
         // Create new fileName if is Exists
         public string CreateFileName(string FileName)
         {
@@ -68,10 +66,20 @@ namespace FileService
             {
                 string OldFileName = Path.GetFileNameWithoutExtension(FileName);
                 string Extension = Path.GetExtension(FileName);
-                string NewFileName = OldFileName + "_" + DateTime.Now.ToString("yyyyMMddHmmssff");
+                string NewFileName = OldFileName + "_" + this.GetExtensionFileName();
                 FileName = NewFileName + Extension;
             }
             return FileName;
+        }
+
+        public bool CheckFileSize(long FileSize)
+        {
+            bool flag = false;
+            if(FileSize > Configs.MIN_FILE_SIZE && FileSize < Configs.MAX_FILE_SIZE)
+            {
+                flag = true;
+            }
+            return flag;
         }
     }
 }
