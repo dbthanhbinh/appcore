@@ -12,5 +12,6 @@ namespace AppCore.Models
         public AppsContext(DbContextOptions<AppsContext> options) : base(options) {}
         DbSet<Post> Post { get; set; }
         DbSet<Category> Category { get; set; }
+        DbSet<Media> Media { get; set; }
     }
 }

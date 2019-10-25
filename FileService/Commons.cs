@@ -7,36 +7,35 @@ namespace FileService
 {
     public class Commons
     {
+        // Check allow file types
         public bool AllowMimeTypesFile()
         {
             bool IsAllow = true;
-
             return IsAllow;
         }
 
+        // Allow file type config
         public IDictionary<string, string> GetImageMime()
         {
             return Configs.ImageMimeDictionary;
         }
 
-        public string DirectoryUpload()
+        // Get Uploaded folder
+        public string DirectoryUploaded()
         {
             return Configs.UPLOADED;
         }
 
         // Create Directory if is not exists
-        public void CreateDirectoryIfNotExists()
+        public void CreateDirectoryIfNotExists(string SubPathDirectory)
         {
-            Directory.CreateDirectory(this.GetCurrentDirectoryForUpload());
+            Directory.CreateDirectory(this.GetCurrentDirectoryForUpload(SubPathDirectory));
         }
 
-        public string GetCurrentDirectoryForUpload()
+        public string GetCurrentDirectoryForUpload(string SubPathDirectory)
         {
             string FullDirectoryPath = this.GetFullDirectoryPathUpload();
-            string Year = DateTime.Now.Year.ToString();
-            string Month = DateTime.Now.Month.ToString();
-            string Day = DateTime.Now.Day.ToString();
-            return FullDirectoryPath + "\\" + Year + "\\" + Month + "\\" + Day;
+            return FullDirectoryPath + SubPathDirectory;
         }
 
         public string GetCurrentDirectory()
@@ -46,12 +45,12 @@ namespace FileService
 
         public string GetFullDirectoryPathUpload()
         {
-            return this.GetCurrentDirectory() + "\\" + this.DirectoryUpload();
+            return this.GetCurrentDirectory() + "\\" + this.DirectoryUploaded();
         }
 
-        public string GetFullPathUploadFile(string FileName)
+        public string GetFullPathUploadFile(string SubPathDirectory, string FileName)
         {
-            return this.GetCurrentDirectoryForUpload() + "\\" + FileName;
+            return this.GetCurrentDirectoryForUpload(SubPathDirectory) + "\\" + FileName;
         }
 
         public string GetExtensionFileName()
@@ -60,9 +59,9 @@ namespace FileService
         }
 
         // Create new fileName if is Exists
-        public string CreateFileName(string FileName)
+        public string CreateFileName(string SubPathDirectory, string FileName)
         {
-            if (!string.IsNullOrEmpty(FileName) && File.Exists(this.GetFullPathUploadFile(FileName)))
+            if (!string.IsNullOrEmpty(FileName) && File.Exists(this.GetFullPathUploadFile(SubPathDirectory, FileName)))
             {
                 string OldFileName = Path.GetFileNameWithoutExtension(FileName);
                 string Extension = Path.GetExtension(FileName);

@@ -6,7 +6,7 @@ namespace FileService
 {
     public class Configs
     {
-        public const long MAX_FILE_SIZE = 1000;
+        public const long MAX_FILE_SIZE = 10485760;
         public const long MIN_FILE_SIZE = 0;
         public const string UPLOADED = "Uploads";
         public const string NOT_FOUND_FILE = "Please select file to upload.";

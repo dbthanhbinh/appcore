@@ -19,11 +19,10 @@ namespace AppCore.Controllers
         }
 
         [HttpPost("uploadFile", Name = "UploadFile")]
-        public async Task<ActionResult> UploadFile(IFormFile file)
+        public ActionResult UploadFile(IFormFile file)
         {
-            FileLogic fileLogic = new FileLogic();
-            await fileLogic.UploadFile(file);
-            return Ok();
+            var result = _mediaLogic.UploadFile(file);
+            return Ok(new BaseResponse(result));
         }
 
         [HttpGet("getConfigs", Name = "GetConfigs")]

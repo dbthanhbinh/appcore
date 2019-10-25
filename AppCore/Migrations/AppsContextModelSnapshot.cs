@@ -2,17 +2,15 @@
 using AppCore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AppCore.Migrations
 {
     [DbContext(typeof(AppsContext))]
-    [Migration("20190929101647_initial")]
-    partial class initial
+    partial class AppsContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,11 +25,37 @@ namespace AppCore.Migrations
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
                     b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("AppCore.Models.DBModel.Media", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Height");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("Path");
+
+                    b.Property<float>("Size");
+
+                    b.Property<string>("Type");
+
+                    b.Property<int>("Width");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Media");
                 });
 
             modelBuilder.Entity("AppCore.Models.DBModel.Post", b =>
@@ -41,9 +65,12 @@ namespace AppCore.Migrations
 
                     b.Property<long>("CategoryId");
 
+                    b.Property<string>("Content");
+
                     b.Property<bool>("IsActive");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
