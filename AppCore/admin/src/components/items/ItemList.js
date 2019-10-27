@@ -15,8 +15,10 @@ const ItemList = (props) => {
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Image</th>
                         <th>First Name</th>
                         <th>Last Name</th>
+                        <th>CategoryId</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -27,7 +29,9 @@ const ItemList = (props) => {
                                 <tr key={ item.id }>
                                     <td>{ item.id }</td>
                                     <td>{ item.name }</td>
+                                    <td>{ item.name }</td>
                                     <td>Otto</td>
+                                    <th>{ item.categoryId }</th>
                                     <td><span onClick={()=>props.onHandleClick(item.id)}>Close</span></td>
                                 </tr>
                             )

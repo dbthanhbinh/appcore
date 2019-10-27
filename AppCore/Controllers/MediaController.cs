@@ -32,5 +32,12 @@ namespace AppCore.Controllers
             var a = fileLogic.GetImageMime();
             return Ok(new BaseResponse(a));
         }
+
+        [HttpPost("createMedia", Name = "CreateMedia")]
+        public ActionResult CreateMedia()
+        {
+            var result = _mediaLogic.CreateMedia();
+            return Ok(new BaseResponse(result));
+        }
     }
 }

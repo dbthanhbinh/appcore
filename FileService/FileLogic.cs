@@ -10,7 +10,7 @@ namespace FileService
     public class FileLogic
     {
         // This upload one file
-        public async Task<string> UploadFile(IFormFile file)
+        public Uploaded UploadFile(IFormFile file)
         {
             try
             {
@@ -41,9 +41,11 @@ namespace FileService
                     //5 copy the file to the path
                     using (var fileStream = new FileStream(Path.Combine(filePath, FileName), FileMode.Create))
                     {
-                        await file.CopyToAsync(fileStream);
+                        file.CopyTo(fileStream);
                     }
-                    return SubPathFileUrl += FileName;
+                    SubPathFileUrl = SubPathFileUrl + FileName;
+                    Uploaded uploaded = new Uploaded(file.ContentType, FileName, file.Length, SubPathFileUrl);
+                    return uploaded;
                 }
                 else
                 {

@@ -1,9 +1,5 @@
 ﻿using AppCore.Models.DBModel;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AppCore.Models
 {
@@ -13,5 +9,6 @@ namespace AppCore.Models
         DbSet<Post> Post { get; set; }
         DbSet<Category> Category { get; set; }
         DbSet<Media> Media { get; set; }
+        DbSet<ObjectMedia> ObjectMedia { get; set; }
     }
 }

@@ -15,6 +15,10 @@ var ItemAppModel = {
         validators: [
             { compare: 'required', message: 'Require message' }
         ]
+      },
+      file: {
+        value: null,
+        validators: []
       }
 
     }

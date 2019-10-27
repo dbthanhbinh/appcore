@@ -45,6 +45,7 @@ namespace AppCore
             services.AddScoped<IPostLogic, PostLogic>();
             services.AddScoped<ICategoryLogic, CategoryLogic>();
             services.AddScoped<IMediaLogic, MediaLogic>();
+            services.AddScoped<IObjectMediaLogic, ObjectMediaLogic>();
 
             services.AddLogging(config =>
             {

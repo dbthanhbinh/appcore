@@ -1,14 +1,14 @@
-﻿using FileService;
+﻿using AppCore.Models.DBModel;
+using FileService;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppCore.Business
 {
     public interface IMediaLogic
     {
-        Task<Uploaded> UploadFile(IFormFile file);
+        Uploaded UploadFile(IFormFile file);
+        Task<Media> CreateMediaAsync(IFormFile file);
+        Task<Media> CreateMedia();
     }
 }

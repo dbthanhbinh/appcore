@@ -4,8 +4,6 @@ using FileService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppCore.Business
@@ -15,34 +13,55 @@ namespace AppCore.Business
         private readonly IUnitOfWork _uow;
         public ILogger<MediaLogic> _logger { get; }
 
-        public MediaLogic(IUnitOfWork unit, ILogger<MediaLogic> logger)
+        public MediaLogic(IUnitOfWork uow, ILogger<MediaLogic> logger)
         {
-            _uow = unit;
+            _uow = uow;
             _logger = logger;
         }
 
-        public async Task<Uploaded> UploadFile(IFormFile file)
+        public Uploaded UploadFile(IFormFile file)
         {
-            Uploaded Uploaded = new Uploaded();
+            _logger.LogWarning("Begin upload file");
+            Uploaded uploaded = null;
             FileLogic fileLogic = new FileLogic();
-            var a = await fileLogic.UploadFile(file);
-
-            Media media = new Media
-            {
-                Name = a
-            };
-            var rs = await this.CreateMediaAsync(media);
-            return Uploaded;
+            uploaded = fileLogic.UploadFile(file);
+            return uploaded;
         }
 
-        public async Task<Media> CreateMediaAsync(Media mediaData)
+        public async Task<Media> CreateMediaAsync(IFormFile file)
         {
             try
             {
+                Uploaded uploaded = this.UploadFile(file);
+                _logger.LogWarning("Begin create media");
+                Media media = new Media();
+                if (uploaded != null)
+                {
+                    media.Name = uploaded.FileName;
+                    media.Path = uploaded.UrlPath;
+                    media.Size = uploaded.Length;
+                    media.Type = uploaded.ContentType;
+                }
+                await _uow.GetRepository<Media>().AddAsync(media);
+                return media;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
+        public Task<Media> CreateMedia()
+        {
+            try
+            {
+                Media mediaData = new Media();
+                mediaData.Name = "Name 11";
                 _logger.LogWarning("Create Media");
-                await _uow.GetRepository<Media>().AddAsync(mediaData);
+                _uow.GetRepository<Media>().AddAsync(mediaData);
                 _uow.SaveChanges();
-                return await Task.FromResult(mediaData);
+                return Task.FromResult(mediaData);
             }
             catch (Exception ex)
             {

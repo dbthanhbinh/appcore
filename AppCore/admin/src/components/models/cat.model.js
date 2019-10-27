@@ -1,7 +1,7 @@
 var ItemAppModel = {
   model: function () {
     let modelFields = {
-      cat: {
+      name: {
         value: null,
         validators: [
             { compare: 'required', message: 'Require message' }
@@ -9,6 +9,9 @@ var ItemAppModel = {
       }
     }
     return modelFields
+  },
+  validations: function(){
+    
   }
 }
 

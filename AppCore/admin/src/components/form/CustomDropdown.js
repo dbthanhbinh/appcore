@@ -4,19 +4,22 @@ import { Form, Button, Modal } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../store/Category'
-import { addProducts, getProducts } from '../../store/ItemActions'
-
+import { addProducts, getProducts, addCategory } from '../../store/ItemActions'
+import { getInputData, setFieldValue } from '../form/FormUtils'
+import Model from '../models/cat.model'
 import Utils from '../commons/utils'
 
 class customDropdown extends Component {
     constructor(props){
         super(props)
         this.state = {
-            isShowModal: false
+            isShowModal: false,
+            model: Model.model()
         }
         this.handleOpenModal = this.handleOpenModal.bind(this)
         this.handleCloseModal = this.handleCloseModal.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
+        this.handleOnDropdownChange = this.handleOnDropdownChange.bind(this)
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
     }
 
@@ -40,22 +43,31 @@ class customDropdown extends Component {
         this.setState({isShowModal: false})
     }
 
-    handleOnInputChange(e, data){
+    handleOnDropdownChange = (e, data) => {
         this.props.onInputChange(e, data)
     }
 
+    handleOnInputChange = (e, data) => {
+        let { name, value } = getInputData(e, data)
+        this.setState((prevState)=>{
+            return { model: setFieldValue(name, value, prevState) }
+        })
+    }
+
     handleSubmitForm(e, data){
-        let {isFormValid, formData} = this.props
+        let { model } = this.state
+        let {isFormValid} = this.props
+        isFormValid = true
         let payload = {}
         if(isFormValid){
             payload = {
                 url: 'Category/createCategory',
-                body: { Name: formData['name'].value }
+                body: { Name: model.name.value }
             }
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.setState(()=>({ isLoading: false }), ()=>{
-                    addProducts(payload, (result)=> {
+                    addCategory(payload, (result)=> {
                         this.props.addCategory(Utils.getResApi(result))
                         this.handleCloseModal()  // Close modal
                     })
@@ -70,7 +82,7 @@ class customDropdown extends Component {
         let { categoryLists } = this.props
         return(
             <Fragment>
-                <Form.Control name='categoryid' as='select' onChange={this.handleOnInputChange} defaultValue='1' >
+                <Form.Control name='categoryid' as='select' onChange={this.handleOnDropdownChange} defaultValue='1' >
                     { categoryLists && categoryLists.map((item) => {
                         return <option key={ item.id } value={ item.id }>{ item.name }</option>
                     }) }
