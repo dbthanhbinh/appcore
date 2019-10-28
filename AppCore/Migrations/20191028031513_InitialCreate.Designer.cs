@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(AppsContext))]
-    [Migration("20191027061615_InitialCreate")]
+    [Migration("20191028031513_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,12 +18,12 @@ namespace AppCore.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("AppCore.Models.DBModel.Category", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Created");
@@ -44,7 +44,7 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("AppCore.Models.DBModel.Media", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Created");
@@ -71,18 +71,18 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("AppCore.Models.DBModel.ObjectMedia", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Created");
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<long>("MediaId");
+                    b.Property<Guid>("MediaId");
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<long>("ObjectId");
+                    b.Property<Guid>("ObjectId");
 
                     b.Property<string>("ObjectType");
 
@@ -93,10 +93,10 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("AppCore.Models.DBModel.Post", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<long>("CategoryId");
+                    b.Property<Guid>("CategoryId");
 
                     b.Property<string>("Content");
 

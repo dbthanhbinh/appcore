@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AppCore.Migrations
 {
@@ -12,8 +11,7 @@ namespace AppCore.Migrations
                 name: "Category",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
@@ -29,8 +27,7 @@ namespace AppCore.Migrations
                 name: "Media",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
@@ -49,13 +46,12 @@ namespace AppCore.Migrations
                 name: "ObjectMedia",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
-                    ObjectId = table.Column<long>(nullable: false),
-                    MediaId = table.Column<long>(nullable: false),
+                    ObjectId = table.Column<Guid>(nullable: false),
+                    MediaId = table.Column<Guid>(nullable: false),
                     ObjectType = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -67,14 +63,13 @@ namespace AppCore.Migrations
                 name: "Post",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Id = table.Column<Guid>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Content = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<long>(nullable: false),
+                    CategoryId = table.Column<Guid>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

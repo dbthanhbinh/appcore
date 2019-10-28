@@ -1,9 +1,11 @@
-﻿namespace AppCore.Models.DBModel
+﻿using System;
+
+namespace AppCore.Models.DBModel
 {
     public class ObjectMedia : DbEntity
     {
-        public long ObjectId { get; set; }
-        public long MediaId { get; set; }
+        public Guid ObjectId { get; set; }
+        public Guid MediaId { get; set; }
         public string ObjectType { get; set; }
     }
 }

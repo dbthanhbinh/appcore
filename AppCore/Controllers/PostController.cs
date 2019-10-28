@@ -10,7 +10,6 @@ namespace AppCore.Controllers
     [ApiController]
     public class PostController : BaseController
     {
-        private readonly string _postType = "Post";
         private readonly IPostLogic _postLogic;
         private readonly IMediaLogic _mediaLogic;
 

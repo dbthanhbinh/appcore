@@ -83,6 +83,7 @@ class customDropdown extends Component {
         return(
             <Fragment>
                 <Form.Control name='categoryid' as='select' onChange={this.handleOnDropdownChange} defaultValue='1' >
+                    <option key='-1' value='-1'>Select category</option>
                     { categoryLists && categoryLists.map((item) => {
                         return <option key={ item.id } value={ item.id }>{ item.name }</option>
                     }) }

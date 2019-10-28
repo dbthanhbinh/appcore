@@ -14,18 +14,18 @@ namespace AppCore.Controllers.commons
 
     public class ReqDeletePost
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
     }
 
     public class ReqDeleteCategory
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
     }
 
     public class ReqCreatePost {
         public string Name { get; set; }
         public string Content { get; set; }
-        public long CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         public IFormFile File { get; set; }
 
         public virtual string PostType { get; set; } = "Post";

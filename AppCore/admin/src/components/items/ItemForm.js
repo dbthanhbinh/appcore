@@ -53,7 +53,8 @@ class itemForm extends Component {
     }
 
     render(){
-        let { isShowAlert, isLoading } = this.state
+        let { isShowAlert } = this.state
+        let { isFormValid } = this.props
         return(
             <Form>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
@@ -70,7 +71,7 @@ class itemForm extends Component {
                     <CustomFile onInputChange = {this.handleOnInputChange} />
                 </Form.Group>
                 <Form.Group>
-                    <Button variant="primary" type="button" disabled={!!isLoading} onClick={this.handleSubmitForm}>Submit</Button>
+                    <Button variant="primary" disabled={isFormValid} type="button" onClick={this.handleSubmitForm}>Submit</Button>
                 </Form.Group>
                 
             </Form>

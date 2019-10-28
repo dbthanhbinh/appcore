@@ -42,7 +42,7 @@ namespace AppCore.Business
                     Content = reqData.Content
                 };                
                 Task<bool> postCreated = _uow.GetRepository<Post>().AddAsync(postData);
-                _uow.SaveChanges();
+                //_uow.SaveChanges();
                 await Task.WhenAll(mediaCreated, postCreated);
 
                 // Created Object Post media

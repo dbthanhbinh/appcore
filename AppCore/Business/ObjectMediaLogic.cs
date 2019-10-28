@@ -18,7 +18,7 @@ namespace AppCore.Business
         }
 
 
-        public async Task<ObjectMedia> CreateObjectMediaAsync(long mediaCreatedId, long objectId, string objectType)
+        public async Task<ObjectMedia> CreateObjectMediaAsync(Guid mediaCreatedId, Guid objectId, string objectType)
         {
             try
             {

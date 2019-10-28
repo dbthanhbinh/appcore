@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppCore.Models.DBModel
 {
@@ -11,7 +12,7 @@ namespace AppCore.Models.DBModel
         public string Content { get; set; }
 
         [Required]
-        public long CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         public string CreatedBy { get; set; }
     }
 }

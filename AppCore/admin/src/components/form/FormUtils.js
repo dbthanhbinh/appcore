@@ -1,4 +1,5 @@
 import _ from 'lodash'
+
 export function getInputData(e, data){
     let target = e ? e.target : {}
     let name = target && target.name ? target.name : (data && data.name ? data.name : '')
@@ -13,6 +14,48 @@ export function getInputData(e, data){
 export function setFieldValue(name, value, obj){
     obj.model[name].value = value
     return obj.model
+}
+
+export function initValidatorModel(rawModel){
+    let isFormValid = true
+    let models = rawModel ? rawModel.model.bind(this)() : {}
+    if(models){
+        Object.keys(models).map((key) => {
+            models[key].validators.filter((item) => {
+                switch(item.compare){
+                    case 'required':
+                        if(_.isEmpty(models[key].value)) {
+                            models[key].isValid = false
+                            models[key].message = item.message
+                        }
+                        return models
+                }
+            })
+        })
+    }
+    let _valid = _.every(models, { 'isValid': false }) || false ;
+    return { models, isFormValid: !!_valid }
+}
+
+export function validatorModel(rawModel){
+    let isFormValid = true
+    let models = rawModel ? rawModel : {}
+    if(models){
+        Object.keys(models).map((key) => {
+            models[key].validators.filter((item) => {
+                switch(item.compare){
+                    case 'required':
+                        if(_.isEmpty(models[key].value)) {
+                            models[key].isValid = false
+                            models[key].message = item.message
+                        }
+                        return models
+                }
+            })
+        })
+    }
+    let _valid = _.every(models, { 'isValid': false }) || false ;
+    return { models, isFormValid: !_valid }
 }
 
 export function appendFormData(body) {

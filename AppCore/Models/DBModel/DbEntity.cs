@@ -7,7 +7,7 @@ namespace AppCore.Models.DBModel
 {
     public class DbEntity
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; } = new Guid();
         public bool IsActive { get; set; } = true;
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime Modified { get; set; } = DateTime.Now;
