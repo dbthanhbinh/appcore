@@ -8,15 +8,17 @@ var ItemAppModel = {
         ]
       },
       content: {
-        value: null
+        value: null,
+        validators: []
       },
       categoryid: {
         value: null,
-        validators: [
-            { compare: 'required', message: 'Require message' }
-        ]
+        validators: []
+      },
+      file: {
+        value: null,
+        validators: []
       }
-
     }
     return modelFields
   }

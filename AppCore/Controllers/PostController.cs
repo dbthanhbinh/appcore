@@ -1,10 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AppCore.Business;
 using AppCore.Controllers.commons;
-using AppCore.Models.DBModel;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace AppCore.Controllers
 {
@@ -14,17 +11,19 @@ namespace AppCore.Controllers
     public class PostController : BaseController
     {
         private readonly IPostLogic _postLogic;
+        private readonly IMediaLogic _mediaLogic;
 
-        public PostController(IPostLogic postLogic)
+        public PostController(IPostLogic postLogic, IMediaLogic mediaLogic)
         {
             _postLogic = postLogic;
+            _mediaLogic = mediaLogic;
         }
 
         /**
          * Create new Post 
          */
         [HttpPost("createPost", Name = "CreatePost")]
-        public async Task<ActionResult> CreatePostAsync([FromBody] Post reqData)
+        public async Task<ActionResult> CreatePostAsync([FromForm] ReqCreatePost reqData)
         {
             var result = await _postLogic.CreatePostAsync(reqData);
             return Ok(new BaseResponse(result));

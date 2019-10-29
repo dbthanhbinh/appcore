@@ -6,6 +6,7 @@ import AlertCP from '../commons/AlertCP'
 import Model from '../models/ItemApp.model'
 import { withFormBehaviors } from '../form/form'
 import CustomDropdown from '../form/CustomDropdown'
+import CustomFile from '../form/CustomFile'
 import { addProducts } from '../../store/ItemActions'
 import Utils from '../commons/utils'
 import { PostDefined } from "../commons/Defined";
@@ -35,14 +36,15 @@ class itemForm extends Component {
                 body: {
                     Name: formData[PostDefined.NAME].value,
                     Content: formData[PostDefined.CONTENT].value,
-                    CategoryId: formData[PostDefined.CATEGORYID].value
+                    CategoryId: formData[PostDefined.CATEGORYID].value,
+                    File: formData[PostDefined.FILE].value
                 }
             }
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.setState(()=>({ isLoading: false }), ()=>{
                     addProducts(payload, (result)=> {
-                        this.props.addItem(Utils.getResApi(result))
+                        this.props.addItem(Utils.getResListApi(result))
                     })
                     // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
                 })
@@ -51,7 +53,8 @@ class itemForm extends Component {
     }
 
     render(){
-        let { isShowAlert, isLoading } = this.state
+        let { isShowAlert } = this.state
+        let { isFormValid } = this.props
         return(
             <Form>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
@@ -65,10 +68,10 @@ class itemForm extends Component {
                     <CustomDropdown onInputChange = {this.handleOnInputChange} />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Control type='file' name='file' id='file'></Form.Control>
+                    <CustomFile onInputChange = {this.handleOnInputChange} />
                 </Form.Group>
                 <Form.Group>
-                    <Button variant="primary" type="button" disabled={!!isLoading} onClick={this.handleSubmitForm}>Submit</Button>
+                    <Button variant="primary" disabled={isFormValid} type="button" onClick={this.handleSubmitForm}>Submit</Button>
                 </Form.Group>
                 
             </Form>
