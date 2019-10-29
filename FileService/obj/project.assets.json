@@ -688,23 +688,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\dbthanhbinh\\.nuget\\packages\\": {},
+    "C:\\Users\\binh.trinh\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\NET\\My apps\\appcore\\FileService\\FileService.csproj",
+      "projectUniqueName": "D:\\dbthanhbinh\\NET\\appcore\\FileService\\FileService.csproj",
       "projectName": "FileService",
-      "projectPath": "D:\\NET\\My apps\\appcore\\FileService\\FileService.csproj",
-      "packagesPath": "C:\\Users\\dbthanhbinh\\.nuget\\packages\\",
-      "outputPath": "D:\\NET\\My apps\\appcore\\FileService\\obj\\",
+      "projectPath": "D:\\dbthanhbinh\\NET\\appcore\\FileService\\FileService.csproj",
+      "packagesPath": "C:\\Users\\binh.trinh\\.nuget\\packages\\",
+      "outputPath": "D:\\dbthanhbinh\\NET\\appcore\\FileService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\dbthanhbinh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\binh.trinh\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
