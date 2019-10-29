@@ -1,3 +1,3 @@
-FileService/obj/*
-FileService/bin/*
-.vs/*
+*/obj/
+*/bin/
+.vs/
