@@ -51,7 +51,7 @@ class ItemApp extends Component{
         let { items } = this.props
         return(
             <Fragment>
-                <Col sm={9}>
+                <Col sm={11}>
                     <ItemForm
                         { ...this.props }
                     />
@@ -60,7 +60,7 @@ class ItemApp extends Component{
                         onHandleClick={this.onHandleClick}
                     />
                 </Col>
-                <Col sm={3}>
+                <Col sm={1}>
                     
                 </Col>
             </Fragment>

@@ -10,5 +10,6 @@ namespace AppCore.Models
         DbSet<Category> Category { get; set; }
         DbSet<Media> Media { get; set; }
         DbSet<ObjectMedia> ObjectMedia { get; set; }
+        DbSet<Seo> Seo { get; set; }
     }
 }

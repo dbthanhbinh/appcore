@@ -79,10 +79,10 @@ class customDropdown extends Component {
 
     render(){
         let { isShowModal } = this.state
-        let { categoryLists } = this.props
+        let { categoryLists, placeholder, name } = this.props
         return(
             <Fragment>
-                <Form.Control name='categoryid' as='select' onChange={this.handleOnDropdownChange} defaultValue='1' >
+                <Form.Control name={ name } as='select' onChange={this.handleOnDropdownChange} defaultValue='1' >
                     <option key='-1' value='-1'>Select category</option>
                     { categoryLists && categoryLists.map((item) => {
                         return <option key={ item.id } value={ item.id }>{ item.name }</option>
@@ -97,7 +97,7 @@ class customDropdown extends Component {
                     <Modal.Body>
                         <Form>
                             <Form.Group>
-                                <Form.Control type='text' name='name' placeholder='Enter name...' onChange={this.handleOnInputChange}/>
+                                <Form.Control type='text' name='name' placeholder={ placeholder } onChange={this.handleOnInputChange}/>
                             </Form.Group>
                         </Form>
                     </Modal.Body>

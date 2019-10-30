@@ -33,8 +33,8 @@ export function initValidatorModel(rawModel){
             })
         })
     }
-    let _valid = _.every(models, { 'isValid': false }) || false ;
-    return { models, isFormValid: !!_valid }
+    let _valid = _.some(models, { 'isValid': false }) || false ;
+    return { models, isFormValid: !_valid }
 }
 
 export function validatorModel(rawModel){
@@ -48,13 +48,15 @@ export function validatorModel(rawModel){
                         if(_.isEmpty(models[key].value)) {
                             models[key].isValid = false
                             models[key].message = item.message
+                        } else {
+                            models[key].isValid = true
+                            models[key].message = null
                         }
-                        return models
                 }
             })
         })
     }
-    let _valid = _.every(models, { 'isValid': false }) || false ;
+    let _valid = _.some(models, { 'isValid': false });
     return { models, isFormValid: !_valid }
 }
 
