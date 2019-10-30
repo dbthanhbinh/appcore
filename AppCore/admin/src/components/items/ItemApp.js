@@ -55,10 +55,10 @@ class ItemApp extends Component{
                     <ItemForm
                         { ...this.props }
                     />
-                    <ItemList
+                    {/* <ItemList
                         items={ items }
                         onHandleClick={this.onHandleClick}
-                    />
+                    /> */}
                 </Col>
                 <Col sm={1}>
                     

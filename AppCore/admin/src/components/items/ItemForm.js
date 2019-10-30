@@ -9,7 +9,8 @@ import CustomDropdown from '../form/CustomDropdown'
 import CustomFile from '../form/CustomFile'
 import { addProducts } from '../../store/ItemActions'
 import Utils from '../commons/utils'
-import { PostDefined } from "../commons/Defined"
+import { PostDefined } from "../commons/Defined";
+import TagsOptions from '../tags'
 import EditorJs from 'react-editor-js'
 import SeoForm from '../../components/SeoForm'
 import ReactSelect from '../form/ReactSelect'
@@ -65,7 +66,7 @@ class itemForm extends Component {
         let post_categoryid = _.get(formData, `${PostDefined.CATEGORYID}.label`)
         return(
             <Form>
-                { isShowAlert && <AlertCP content={`Success`} variant='success' />}
+                {/* { isShowAlert && <AlertCP content={`Success`} variant='success' />}
                 <Form.Group>
                     <Form.Control type='text' name={PostDefined.NAME} onChange={this.handleOnInputChange} defaultValue='' placeholder={ post_name } />
                 </Form.Group>
@@ -86,8 +87,14 @@ class itemForm extends Component {
                 </Form.Group>
                 <Form.Group>
                     <Button variant="primary" disabled={!isFormValid} type="button" onClick={this.handleSubmitForm}>Submit</Button>
+                    <TagsOptions />
                 </Form.Group>
-                
+                <Form.Group>
+                    <Button variant="primary" disabled={isFormValid} type="button" onClick={this.handleSubmitForm}>Submit</Button>
+                </Form.Group> */}
+                <Form.Group>
+                    <TagsOptions />
+                </Form.Group>
             </Form>
         )
     }
