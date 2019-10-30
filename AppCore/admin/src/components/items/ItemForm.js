@@ -10,6 +10,7 @@ import CustomFile from '../form/CustomFile'
 import { addProducts } from '../../store/ItemActions'
 import Utils from '../commons/utils'
 import { PostDefined } from "../commons/Defined";
+import TagsOptions from '../tags'
 import EditorJs from 'react-editor-js'
 
 class itemForm extends Component {
@@ -57,7 +58,7 @@ class itemForm extends Component {
         let { isFormValid } = this.props
         return(
             <Form>
-                { isShowAlert && <AlertCP content={`Success`} variant='success' />}
+                {/* { isShowAlert && <AlertCP content={`Success`} variant='success' />}
                 <Form.Group>
                     <Form.Control type='text' name='name' onChange={this.handleOnInputChange} placeholder='Enter name...'/>
                 </Form.Group>
@@ -71,9 +72,14 @@ class itemForm extends Component {
                     <CustomFile onInputChange = {this.handleOnInputChange} />
                 </Form.Group>
                 <Form.Group>
-                    <Button variant="primary" disabled={isFormValid} type="button" onClick={this.handleSubmitForm}>Submit</Button>
+                    <TagsOptions />
                 </Form.Group>
-                
+                <Form.Group>
+                    <Button variant="primary" disabled={isFormValid} type="button" onClick={this.handleSubmitForm}>Submit</Button>
+                </Form.Group> */}
+                <Form.Group>
+                    <TagsOptions />
+                </Form.Group>
             </Form>
         )
     }
