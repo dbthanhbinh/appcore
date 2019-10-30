@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AppCore.Business;
-using AppCore.Models.DBModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FileService;
+using AppCore.Controllers.commons;
+using System.Collections;
 
 namespace AppCore.Controllers
 {
@@ -19,10 +18,26 @@ namespace AppCore.Controllers
             _mediaLogic = mediaLogic;
         }
 
-        [HttpPost("create", Name = "CreateMedia")]
-        public async Task<ActionResult> CreateMedia(IFormFile file)
+        [HttpPost("uploadFile", Name = "UploadFile")]
+        public ActionResult UploadFile(IFormFile file)
         {
-            return Ok();
+            var result = _mediaLogic.UploadFile(file);
+            return Ok(new BaseResponse(result));
+        }
+
+        [HttpGet("getConfigs", Name = "GetConfigs")]
+        public ActionResult GetConfigs()
+        {
+            FileLogic fileLogic = new FileLogic();
+            var a = fileLogic.GetImageMime();
+            return Ok(new BaseResponse(a));
+        }
+
+        [HttpPost("createMedia", Name = "CreateMedia")]
+        public ActionResult CreateMedia()
+        {
+            var result = _mediaLogic.CreateMedia();
+            return Ok(new BaseResponse(result));
         }
     }
 }

@@ -1,0 +1,6 @@
+*/obj/
+*/bin/
+.vs/
+FileService/bin/*
+FileService/obj/*
+AppCore/appsettings.json

@@ -2,13 +2,11 @@
 
 namespace AppCore.Models.DBModel
 {
-    public class Category
+    public class Category : DbEntity
     {
-        public long Id { get; set; }
-
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }
-        public bool IsActive { get; set; } = true;
+        public string CreatedBy { get; set; }
     }
 }

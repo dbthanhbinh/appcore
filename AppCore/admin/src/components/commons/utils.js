@@ -4,6 +4,13 @@ const SortTypes = {
 }
 
 var Utils = {
+    getResListApi: (result) => {
+        let resultData = null
+        if(result && result.statusCode === 200 && result.success === 'Success'){
+            resultData = result.data.postData
+        }
+        return resultData
+    },
     getResApi: (result) => {
         let resultData = null
         if(result && result.statusCode === 200 && result.success === 'Success'){
