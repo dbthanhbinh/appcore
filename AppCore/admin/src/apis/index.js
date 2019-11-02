@@ -1,5 +1,5 @@
 import { appendFormData } from '../components/form/FormUtils'
-const publicUrl = 'https://localhost:5001/api/'
+const publicUrl = 'http://localhost:49981/api/'
 
 var Api = {
     postForm: (payload, cb) => {

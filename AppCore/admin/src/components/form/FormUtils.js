@@ -17,18 +17,13 @@ export function setFieldValue(name, value, obj){
 }
 
 export function initValidatorModel(rawModel){
-    let isFormValid = true
     let models = rawModel ? rawModel.model.bind(this)() : {}
     if(models){
-        Object.keys(models).map((key) => {
-            models[key].validators.filter((item) => {
-                switch(item.compare){
-                    case 'required':
-                        if(_.isEmpty(models[key].value)) {
-                            models[key].isValid = false
-                            models[key].message = item.message
-                        }
-                        return models
+        Object.keys(models).forEach((key) => {
+            models[key].validators.forEach((item) => {
+                if(item.compare === 'required' && _.isEmpty(models[key].value)){
+                    models[key].isValid = false
+                    models[key].message = item.message
                 }
             })
         })
@@ -38,20 +33,18 @@ export function initValidatorModel(rawModel){
 }
 
 export function validatorModel(rawModel){
-    let isFormValid = true
     let models = rawModel ? rawModel : {}
     if(models){
-        Object.keys(models).map((key) => {
-            models[key].validators.filter((item) => {
-                switch(item.compare){
-                    case 'required':
-                        if(_.isEmpty(models[key].value)) {
-                            models[key].isValid = false
-                            models[key].message = item.message
-                        } else {
-                            models[key].isValid = true
-                            models[key].message = null
-                        }
+        Object.keys(models).forEach((key) => {
+            models[key].validators.forEach((item) => {
+                if(item.compare === 'required'){
+                    if(_.isEmpty(models[key].value)) {
+                        models[key].isValid = false
+                        models[key].message = item.message
+                    } else {
+                        models[key].isValid = true
+                        models[key].message = null
+                    }                        
                 }
             })
         })

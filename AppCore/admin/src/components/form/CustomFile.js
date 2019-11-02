@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import _ from 'lodash'
 import { Form } from 'react-bootstrap'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../store/Category'
+// import { bindActionCreators } from 'redux'
+// import { actionCreators } from '../../store/Category'
 
 class customFile extends Component {
     constructor(props){

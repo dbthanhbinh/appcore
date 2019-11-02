@@ -6,7 +6,7 @@ import { actionCreators } from '../../store/Item'
 import { Col } from 'react-bootstrap'
 import ItemList from './ItemList'
 import ItemForm from './ItemForm'
-import { deleteProducts, getProducts } from '../../store/ItemActions'
+import { deleteItem, getItemList } from '../../store/ItemActions'
 import Utils from '../commons/utils'
 
 class ItemApp extends Component{
@@ -21,7 +21,7 @@ class ItemApp extends Component{
             body: {}
         }
         //this.props.fetchItem()
-        getProducts(payload, (result)=> {
+        getItemList(payload, (result)=> {
             let resultData = Utils.getResApi(result)
             this.props.fetchItem(resultData)
         })
@@ -37,7 +37,7 @@ class ItemApp extends Component{
         // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
         if(!_.isNil(payload) && !_.isEmpty(payload)){
             this.setState(()=>({ isLoading: false }), ()=>{
-                deleteProducts(payload, (result)=> {
+                deleteItem(payload, (result)=> {
                     this.props.deleteItem(id)
                 })
                 // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
@@ -55,10 +55,10 @@ class ItemApp extends Component{
                     <ItemForm
                         { ...this.props }
                     />
-                    {/* <ItemList
+                    <ItemList
                         items={ items }
                         onHandleClick={this.onHandleClick}
-                    /> */}
+                    />
                 </Col>
                 <Col sm={1}>
                     

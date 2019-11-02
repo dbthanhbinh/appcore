@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import * as Item from './Item'
 import * as Category from './Category'
+import * as Tag from './Tag'
 
 export default function configureStore(history, initialState) {
   const reducers = {
     items: Item.reducer,
-    categoryLists: Category.reducer
+    categoryList: Category.reducer,
+    tagList: Tag.reducer
   };
 
   const middleware = [
