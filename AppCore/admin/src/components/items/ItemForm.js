@@ -7,11 +7,12 @@ import Model from '../models/ItemApp.model'
 import { withFormBehaviors } from '../form/form'
 import CustomDropdown from '../form/CustomDropdown'
 import CustomFile from '../form/CustomFile'
-import { addProducts } from '../../store/ItemActions'
+import { addItem } from '../../store/ItemActions'
 import Utils from '../commons/utils'
 import { PostDefined } from "../commons/Defined";
 import TagsOptions from '../tags'
-import EditorJs from 'react-editor-js'
+import SeoForm from '../../components/SeoForm'
+import ReactSelect from '../form/ReactSelect'
 
 class itemForm extends Component {
     constructor(props){
@@ -38,13 +39,16 @@ class itemForm extends Component {
                     Name: formData[PostDefined.NAME].value,
                     Content: formData[PostDefined.CONTENT].value,
                     CategoryId: formData[PostDefined.CATEGORYID].value,
-                    File: formData[PostDefined.FILE].value
+                    File: formData[PostDefined.FILE].value,
+                    SeoTitle: formData[PostDefined.SEOTITLE].value,
+                    SeoKeys: formData[PostDefined.SEOKEYS].value,
+                    SeoDescription: formData[PostDefined.SEODESCRIPTION].value,
                 }
             }
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.setState(()=>({ isLoading: false }), ()=>{
-                    addProducts(payload, (result)=> {
+                    addItem(payload, (result)=> {
                         this.props.addItem(Utils.getResListApi(result))
                     })
                     // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
@@ -55,32 +59,35 @@ class itemForm extends Component {
 
     render(){
         let { isShowAlert } = this.state
-        let { isFormValid } = this.props
+        let { isFormValid, formData } = this.props
+        let post_name = _.get(formData, `${PostDefined.NAME}.label`)
+        let post_content = _.get(formData, `${PostDefined.CONTENT}.label`)
+        let post_categoryid = _.get(formData, `${PostDefined.CATEGORYID}.label`)
         return(
-            <Form>
-                {/* { isShowAlert && <AlertCP content={`Success`} variant='success' />}
+            <React.Fragment>
+                { isShowAlert && <AlertCP content={`Success`} variant='success' />}
                 <Form.Group>
-                    <Form.Control type='text' name='name' onChange={this.handleOnInputChange} placeholder='Enter name...'/>
+                    <Form.Control type='text' name={PostDefined.NAME} onChange={this.handleOnInputChange} defaultValue='' placeholder={ post_name } />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Control as="textarea" rows="3" name='content' onChange={this.handleOnInputChange}></Form.Control>
+                    <Form.Control as="textarea" rows="3" name={PostDefined.CONTENT} defaultValue='' placeholder={ post_content } onChange={this.handleOnInputChange}></Form.Control>
                 </Form.Group>
                 <Form.Group>
-                    <CustomDropdown onInputChange = {this.handleOnInputChange} />
+                    <CustomDropdown defaultValue='' name={PostDefined.CATEGORYID} placeholder={ post_categoryid } onInputChange = {this.handleOnInputChange} />
                 </Form.Group>
                 <Form.Group>
-                    <CustomFile onInputChange = {this.handleOnInputChange} />
+                    <CustomFile defaultValue='' onInputChange = {this.handleOnInputChange} />
                 </Form.Group>
                 <Form.Group>
-                    <TagsOptions />
+                    <SeoForm onInputChange = {this.handleOnInputChange} formData={ formData } />
                 </Form.Group>
                 <Form.Group>
                     <Button variant="primary" disabled={isFormValid} type="button" onClick={this.handleSubmitForm}>Submit</Button>
-                </Form.Group> */}
+                </Form.Group>
                 <Form.Group>
                     <TagsOptions />
                 </Form.Group>
-            </Form>
+            </React.Fragment>
         )
     }
 }

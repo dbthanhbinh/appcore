@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(AppsContext))]
-    [Migration("20191028031513_InitialCreate")]
+    [Migration("20191028130821_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace AppCore.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("AppCore.Models.DBModel.Category", b =>
@@ -114,6 +114,28 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Post");
+                });
+
+            modelBuilder.Entity("AppCore.Models.DBModel.Seo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<DateTime>("Modified");
+
+                    b.Property<string>("SeoDescription");
+
+                    b.Property<string>("SeoKeys");
+
+                    b.Property<string>("SeoTitle");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Seo");
                 });
 #pragma warning restore 612, 618
         }

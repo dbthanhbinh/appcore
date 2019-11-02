@@ -2,11 +2,11 @@ const ADD_CATEGORY = 'ADD_CATEGORY'
 const FETCH_CATEGORY = 'FETCH_CATEGORY'
 
 const initialState = {
-    categoryLists: null
+    categoryList: null
 }
 
 export const actionCreators = {
-    fetchCategory: (categoryLists) => ({ type: FETCH_CATEGORY, payload: { categoryLists } }),
+    fetchCategory: (categoryList) => ({ type: FETCH_CATEGORY, payload: { categoryList } }),
     addCategory: (category) => ({ type: ADD_CATEGORY, payload: { category } }),
 }
 
@@ -14,14 +14,14 @@ export const reducer = (state, action) => {
     state = state || initialState
     switch(action.type){
         case FETCH_CATEGORY:
-            let { categoryLists } = action.payload
+            let { categoryList } = action.payload
             return {
-                categoryLists
+                categoryList
             }
         case ADD_CATEGORY:
             return {
                 ...state,
-                categoryLists: [ ...state.categoryLists, action.payload.category]
+                categoryList: [ ...state.categoryList, action.payload.category]
             }
         default:
             return state

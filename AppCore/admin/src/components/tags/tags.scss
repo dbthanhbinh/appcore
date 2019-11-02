@@ -1,12 +1,12 @@
 .tags-options {
     display: block;
     position: relative;
-    border: 1px solid teal;
     max-width: 400px;
     margin: 0;
     padding: 0;
 
     .tags-input-options {
+        border: 1px solid teal;
         .input-small {
             width: 100px;
         }
@@ -21,6 +21,10 @@
     }
 
     .tags-dropdown-options {
-
+        border: 1px solid teal;
+        display: none;
+        &.open {
+            display: block;
+        }
     }
 }

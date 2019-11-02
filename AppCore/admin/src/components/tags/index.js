@@ -1,5 +1,9 @@
 import React from 'react'
 import './tags.scss'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { actionCreators } from '../../store/Tag'
+// import { getItemList, addItemBase } from '../../store/TagActions'
 
 const TagList = [
     {id: 1, name: 'tag 1'},
@@ -16,10 +20,12 @@ const TagList = [
     {id: 12, name: 'tkkkag 12'},
 ]
 
-class TagsOptions extends React.Component{
+class tagsOptions extends React.Component{
     constructor(props){
         super(props)
         this.state = {
+            defaultValue: '',
+            isOpenFilter: false,
             tagListFilter: [],
             tagList: TagList,
             tagListSelected: [],
@@ -27,6 +33,28 @@ class TagsOptions extends React.Component{
         }
         this.handleCheckBoxTogetherItem = this.handleCheckBoxTogetherItem.bind(this)
         this.filterList = this.filterList.bind(this)
+        this.handleKeyDown = this.handleKeyDown.bind(this)
+        this.onFocusHandle = this.onFocusHandle.bind(this)
+        this.onBlurHandle = this.onBlurHandle.bind(this)
+    }
+
+    handleKeyDown(e){
+        if (e.key === 'Enter') {
+            if(e && e.target && e.target.value){
+                let { tagListSelected } = this.state
+                let val = e.target.value
+                tagListSelected = this.addItemToArray(tagListSelected, val)
+                this.setState(prevState => ({ tagListSelected, defaultValue: '' }))
+            }
+        }
+    }
+
+    onFocusHandle(e){
+        this.setState(prevState => ({ isOpenFilter: true }))
+    }
+
+    onBlurHandle(e){
+        this.setState(prevState => ({ isOpenFilter: false }))
     }
 
     handleRemoveItem(id) {
@@ -52,8 +80,14 @@ class TagsOptions extends React.Component{
         return arrayList
     }
 
+    addItemToArray(arrayList, name) {
+        let idx = arrayList.find((it) => { return it.name === name })
+        if(!idx && name) arrayList.push({id: name, name})
+        return arrayList
+    }
+
     togetherItemToArray(id, isChecked) {
-        let { tagList, tagListSelected, tagListMixed } = this.state
+        let { tagList, tagListSelected } = this.state
         if(!id) return tagListSelected
         let item = tagList.find((it) => { return it.id === id })
         if(isChecked) {
@@ -78,8 +112,10 @@ class TagsOptions extends React.Component{
     }
 
     render(){
-        let { tagList, tagListSelected, tagListMixed, tagListFilter } = this.state
+        let { isOpenFilter, tagListSelected, tagListMixed, tagListFilter, defaultValue } = this.state
         tagListMixed = (tagListFilter && tagListFilter.length > 0) ? tagListFilter : tagListMixed
+        console.log('====', defaultValue)
+        let tagsDropdownOpen = isOpenFilter ? 'tags-dropdown-options open' : 'tags-dropdown-options'
         return(
             <React.Fragment>
                 <div className='tags-options'>
@@ -89,9 +125,17 @@ class TagsOptions extends React.Component{
                                 return <span key={ item.id } className='tag-item'>{ item.name }<i onClick={ ()=>this.handleRemoveItem(item.id) }>X</i></span>
                             })
                         }
-                        <input type='text' className='input-small' name='' placeholder='Enter ...' onChange={this.filterList} />
+                        <input type='text'
+                            className='input-small'
+                            name='tagName'
+                            placeholder='Enter ...'
+                            onChange={this.filterList}
+                            onFocus={this.onFocusHandle}
+                            onBlur={this.onBlurHandle}
+                            onKeyDown={this.handleKeyDown}
+                        />
                     </div>
-                    <div className='tags-dropdown-options'>
+                    <div className={ tagsDropdownOpen }>
                         <div>
                             { tagListMixed && tagListMixed.map((item) => {
                                 return <div key={ item.id }>
@@ -111,4 +155,12 @@ class TagsOptions extends React.Component{
     }
 }
 
-export default TagsOptions
+const TagsOptions = tagsOptions
+function mapStateToProps(state){
+    let { tagList } = state.tagList
+    return { tagList }
+}
+export default connect(
+    mapStateToProps,
+    dispatch => bindActionCreators(actionCreators, dispatch)
+)(TagsOptions)

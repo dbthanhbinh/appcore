@@ -4,7 +4,7 @@ import { Form, Button, Modal } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../store/Category'
-import { addProducts, getProducts, addCategory } from '../../store/ItemActions'
+import { getItemList, addCategory } from '../../store/CategoryActions'
 import { getInputData, setFieldValue } from '../form/FormUtils'
 import Model from '../models/cat.model'
 import Utils from '../commons/utils'
@@ -28,7 +28,7 @@ class customDropdown extends Component {
             url: 'Category/getAllCategory',
             body: {}
         }
-        getProducts(payload, (result)=> {
+        getItemList(payload, (result)=> {
             let resultData = Utils.getResApi(result)
             resultData = Utils.sortList(resultData, 'desc')  // To sort list
             this.props.fetchCategory(resultData)
@@ -79,12 +79,12 @@ class customDropdown extends Component {
 
     render(){
         let { isShowModal } = this.state
-        let { categoryLists } = this.props
+        let { categoryList, placeholder, name } = this.props
         return(
             <Fragment>
-                <Form.Control name='categoryid' as='select' onChange={this.handleOnDropdownChange} defaultValue='1' >
+                <Form.Control name={ name } as='select' onChange={this.handleOnDropdownChange} defaultValue='1' >
                     <option key='-1' value='-1'>Select category</option>
-                    { categoryLists && categoryLists.map((item) => {
+                    { categoryList && categoryList.map((item) => {
                         return <option key={ item.id } value={ item.id }>{ item.name }</option>
                     }) }
                 </Form.Control>
@@ -97,7 +97,7 @@ class customDropdown extends Component {
                     <Modal.Body>
                         <Form>
                             <Form.Group>
-                                <Form.Control type='text' name='name' placeholder='Enter name...' onChange={this.handleOnInputChange}/>
+                                <Form.Control type='text' name='name' placeholder={ placeholder } onChange={this.handleOnInputChange}/>
                             </Form.Group>
                         </Form>
                     </Modal.Body>
@@ -116,8 +116,8 @@ class customDropdown extends Component {
 }
 
 function mapStateToProps(state) {
-    let { categoryLists } = state.categoryLists
-    return { categoryLists }
+    let { categoryList } = state.categoryList
+    return { categoryList }
 }
 
 const CustomDropdown = customDropdown

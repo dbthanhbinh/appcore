@@ -1,6 +1,6 @@
 import React from 'react'
 // import _ from 'lodash'
-import { getInputData, setFieldValue, validatorModel, validatorForm, initValidatorModel } from '../form/FormUtils'
+import { getInputData, setFieldValue, validatorModel, initValidatorModel } from '../form/FormUtils'
 
 const withFormBehaviors = (WrappedComponent, rawModel) => {  
     return class extends React.Component {

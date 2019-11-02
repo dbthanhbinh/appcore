@@ -26,8 +26,13 @@ namespace AppCore.Controllers.commons
         public string Name { get; set; }
         public string Content { get; set; }
         public Guid CategoryId { get; set; }
-        public IFormFile File { get; set; }
 
+        // For Seo
+        public virtual string SeoTitle { get; set; }
+        public virtual string SeoKeys { get; set; }
+        public virtual string SeoDescription { get; set; }
+
+        public virtual IFormFile File { get; set; }
         public virtual string PostType { get; set; } = "Post";
     }
 }

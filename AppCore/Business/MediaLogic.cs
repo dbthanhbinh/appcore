@@ -32,17 +32,21 @@ namespace AppCore.Business
         {
             try
             {
-                Uploaded uploaded = this.UploadFile(file);
-                _logger.LogWarning("Begin create media");
                 Media media = new Media();
-                if (uploaded != null)
+                if (file != null)
                 {
-                    media.Name = uploaded.FileName;
-                    media.Path = uploaded.UrlPath;
-                    media.Size = uploaded.Length;
-                    media.Type = uploaded.ContentType;
+                    Uploaded uploaded = this.UploadFile(file);
+                    _logger.LogWarning("Begin create media");
+                    if (uploaded != null)
+                    {
+                        media.Name = uploaded.FileName;
+                        media.Path = uploaded.UrlPath;
+                        media.Size = uploaded.Length;
+                        media.Type = uploaded.ContentType;
+                    }
+                    await _uow.GetRepository<Media>().AddAsync(media);
+                    return media;
                 }
-                await _uow.GetRepository<Media>().AddAsync(media);
                 return media;
             }
             catch (Exception ex)

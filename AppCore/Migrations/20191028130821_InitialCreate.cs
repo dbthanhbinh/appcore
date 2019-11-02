@@ -76,6 +76,23 @@ namespace AppCore.Migrations
                 {
                     table.PrimaryKey("PK_Post", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Seo",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    SeoTitle = table.Column<string>(nullable: true),
+                    SeoKeys = table.Column<string>(nullable: true),
+                    SeoDescription = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seo", x => x.Id);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -91,6 +108,9 @@ namespace AppCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "Post");
+
+            migrationBuilder.DropTable(
+                name: "Seo");
         }
     }
 }
