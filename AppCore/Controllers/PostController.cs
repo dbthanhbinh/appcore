@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
 using AppCore.Business;
 using AppCore.Controllers.commons;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppCore.Controllers
 {
     // [EnableCors("CorsPolicy")]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class PostController : BaseController
     {

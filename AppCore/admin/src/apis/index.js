@@ -1,6 +1,7 @@
 import { appendFormData } from '../components/form/FormUtils'
-const publicUrl = 'http://localhost:49981/api/'
+import { Cookies } from 'react-cookie'
 
+const publicUrl = 'http://localhost:49981/api/'
 var Api = {
     postForm: (payload, cb) => {
         if(payload && payload.url && payload.body){
@@ -52,6 +53,8 @@ var Api = {
         }
     },
     get: (payload, cb) => {
+        let cookies = new Cookies()
+        console.log('=====', cookies.get('MAP_cookies'))
         if(payload && payload.url && payload.body){
             let url = publicUrl + payload.url
             fetch(url).then(response => {

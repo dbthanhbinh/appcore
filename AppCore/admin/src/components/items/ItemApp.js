@@ -8,7 +8,6 @@ import ItemList from './ItemList'
 import ItemForm from './ItemForm'
 import { deleteItem, getItemList } from '../../store/ItemActions'
 import Utils from '../commons/utils'
-
 class ItemApp extends Component{
     constructor(props) {
         super(props)

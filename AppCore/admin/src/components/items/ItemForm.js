@@ -12,7 +12,7 @@ import Utils from '../commons/utils'
 import { PostDefined } from "../commons/Defined";
 import TagsOptions from '../tags'
 import SeoForm from '../../components/SeoForm'
-import ReactSelect from '../form/ReactSelect'
+// import ReactSelect from '../form/ReactSelect'
 
 class itemForm extends Component {
     constructor(props){

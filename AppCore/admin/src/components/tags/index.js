@@ -114,7 +114,6 @@ class tagsOptions extends React.Component{
     render(){
         let { isOpenFilter, tagListSelected, tagListMixed, tagListFilter, defaultValue } = this.state
         tagListMixed = (tagListFilter && tagListFilter.length > 0) ? tagListFilter : tagListMixed
-        console.log('====', defaultValue)
         let tagsDropdownOpen = isOpenFilter ? 'tags-dropdown-options open' : 'tags-dropdown-options'
         return(
             <React.Fragment>
