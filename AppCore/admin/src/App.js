@@ -26,8 +26,10 @@ function App() {
       <BrowserRouter>
         <AppRoute exact path='/' component={Home} layout={Layout}/>
         {/* None protected route */}
-        <Route path='/user/register' component={ Register } layout={UnLayout} />
-        <Route path='/user/login' component={ Login } layout={UnLayout} />
+        <UnLayout>
+          <Route path='/user/register' component={ Register } />
+          <Route path='/user/login' component={ Login } />
+        </UnLayout>
       </BrowserRouter>
     </Provider>
   )

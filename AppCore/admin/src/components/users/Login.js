@@ -45,10 +45,12 @@ class login extends Component{
                 }
             }
             if(!_.isNil(payload) && !_.isEmpty(payload)){
-                this.setState(()=>({ isLoading: false, redirectToReferrer: true }), ()=>{
+                this.setState(() => ({ isLoading: false, redirectToReferrer: true }), () => {
                     loginUser(payload, (err, result)=> { // For add user
+                        if(err) return
                         if(result){
                             cookies.set('MAP_cookies', result, { path: '/' })
+                            return <Redirect to='' />
                         }
                     })
                 })

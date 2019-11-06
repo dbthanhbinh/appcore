@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
 import { Table } from 'react-bootstrap'
-import LoadingItem from '../../components/commons/LoadingItem'
+import LoadingItem from '../commons/LoadingItem'
 import { deleteItem, getItemList } from '../../store/ItemActions'
 import Utils from '../commons/utils'
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { Form } from 'react-bootstrap'
-import { PostDefined } from './commons/Defined'
+import { PostDefined } from '../commons/Defined'
 
 class SeoForm extends Component {
     constructor(props){

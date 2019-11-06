@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import Loading from './commons/Loading'
+import Navitem from './Nav'
+// import Sidebar from './Sidebar'
+import Loading from '../components/commons/Loading'
 
 class Layout extends Component {
     render() {
@@ -8,7 +10,15 @@ class Layout extends Component {
             <Fragment>
                 <Container>
                     <Row>
-                        <Col sm={6}>
+                        <Navitem />
+                    </Row>
+                    <Row>
+                        <Col md={2}>
+                            <Row>
+                            {/* <Sidebar /> */}
+                            </Row>
+                        </Col>
+                        <Col md={10}>
                             <div className='main-contents'>
                                 {this.props.children}
                             </div>

@@ -33,6 +33,18 @@ namespace AppCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllCors",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+            });
+
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -99,13 +111,13 @@ namespace AppCore
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // global cors policy
-            //app.UseCors("CorsPolicy");
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .WithOrigins("http://localhost:3000", "http://localhost:3000/")
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
+            app.UseCors("AllowAllCors");
+            //app.UseCors(x => x
+            //    .AllowAnyOrigin()
+            //    .WithOrigins("http://localhost:3000", "http://localhost:3000/")
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader()
+            //    .AllowCredentials());
 
             if (env.IsDevelopment())
             {

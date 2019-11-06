@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppCore.Controllers
 {
-    // [EnableCors("CorsPolicy")]
+    [EnableCors("AllowAllCors")]
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
@@ -25,7 +25,7 @@ namespace AppCore.Controllers
         /**
          * Create new Post 
          */
-        [HttpPost("createPost", Name = "CreatePost")]
+        [HttpPost("createPost", Name = "CreatePostAsync")]
         public async Task<ActionResult> CreatePostAsync([FromForm] ReqCreatePost reqData)
         {
             var result = await _postLogic.CreatePostAsync(reqData);
@@ -35,7 +35,7 @@ namespace AppCore.Controllers
         /*
          * Delete post
          */
-        [HttpDelete("deletePost", Name = "DeletePost")]
+        [HttpDelete("deletePost", Name = "DeletePostAsync")]
         public ActionResult DeletePostAsync(ReqDeletePost reqDelete)
         {
             _postLogic.DeletePostAsync(reqDelete);

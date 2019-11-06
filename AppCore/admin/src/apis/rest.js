@@ -6,7 +6,7 @@ import _ from 'lodash'
 //let cookies = new Cookies()
 // console.log('=====', cookies.get('MAP_cookies'))
 
-const publicUrl = 'http://localhost:49981/api/'
+const publicUrl = 'http://localhost:49512/api/'
 class RestConnection{
     constructor (conf) {
         this.publicUrl = publicUrl
@@ -27,19 +27,17 @@ class RestConnection{
 
     postForm(payload, cb){
         let url = this.getPublicUrlFromPayload(payload)
-        let body = this.getBodyFromPayload(payload)
+        let body = this.getBodyFromFormPayload(payload)
         let formData = new FormData()
         formData = appendFormData(body)
 
         let options = this._conf
             options.headers = new Headers({
-                'Access-Control-Allow-Origin': true,
-                'Content-type': 'multipart/form-data',
-                'Accept': 'multipart/form-data',
                 Authorization: this.bearerToken,
             })
             options.method = 'POST'
             options.body = formData
+            //delete options['headers']
         this._fetch(url, options, cb)
     }
 
@@ -126,6 +124,13 @@ class RestConnection{
         let body = null
         let payloadBody = _.get(payload, 'body')
         if(payloadBody){ body = JSON.stringify(payloadBody) }
+        return body
+    }
+
+    getBodyFromFormPayload(payload) {
+        let body = null
+        let payloadBody = _.get(payload, 'body')
+        if(payloadBody){ body = payloadBody }
         return body
     }
 
