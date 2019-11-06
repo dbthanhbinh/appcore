@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import Navitem from './Nav'
+import Navitem from '../Nav'
 // import Sidebar from './Sidebar'
-import Loading from '../components/commons/Loading'
+import Loading from '../commons/Loading'
 
 class Layout extends Component {
     render() {
