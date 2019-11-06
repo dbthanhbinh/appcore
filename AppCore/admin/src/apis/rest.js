@@ -6,19 +6,20 @@ import _ from 'lodash'
 //let cookies = new Cookies()
 // console.log('=====', cookies.get('MAP_cookies'))
 
-const publicUrl = 'http://localhost:49981/api/'
+const publicUrl = 'http://localhost:50453/api/'
 class RestConnection{
     constructor (conf) {
         this.publicUrl = publicUrl
         let cookies = new Cookies()
         this.cookies = cookies.get('MAP_cookies')
         this.headers = { "Content-type": "application/json" }
+        this.bearerToken = `Bearer ${(this.cookies && this.cookies.token) ? this.cookies.token : ''}`
         this._conf = {
             headers: new Headers({
                 'Access-Control-Allow-Origin': '*',
                 'Content-type': 'application/json',
                 'Accept': 'application/json',
-                Authorization: `Bearer ${this.cookies.token}`,
+                Authorization: this.bearerToken,
             }),
             method: 'GET' // Default get method
         }
@@ -35,16 +36,31 @@ class RestConnection{
                 'Access-Control-Allow-Origin': true,
                 'Content-type': 'multipart/form-data',
                 'Accept': 'multipart/form-data',
-                Authorization: `Bearer ${this.cookies.token}`,
+                Authorization: this.bearerToken,
             })
             options.method = 'POST'
             options.body = formData
         this._fetch(url, options, cb)
     }
+
     post(payload, cb){
         let url = this.getPublicUrlFromPayload(payload)
         let body = this.getBodyFromPayload(payload)
         let options = this._conf
+            options.method = 'POST'
+            options.body = body
+        this._fetch(url, options, cb)
+    }
+
+    postNoToken(payload, cb){
+        let url = this.getPublicUrlFromPayload(payload)
+        let body = this.getBodyFromPayload(payload)
+        let options = this._conf
+            options.headers = new Headers({
+                'Access-Control-Allow-Origin': true,
+                'Content-type': 'multipart/form-data',
+                'Accept': 'multipart/form-data'
+            })
             options.method = 'POST'
             options.body = body
         this._fetch(url, options, cb)
@@ -135,7 +151,7 @@ class RestConnection{
 
     handleThenResponse(myJson, cb){
         if(myJson)
-            return cb(myJson)
+            return cb(null, myJson)
         else
             return cb('Error', null)
     }

@@ -59,17 +59,6 @@ namespace AppCore
                 };
             });
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy",
-            //        builder => builder.AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .WithMethods("GET", "PUT", "POST", "DELETE")
-            //        .AllowAnyHeader()
-            //        .WithHeaders("Accept", "Content-type", "Origin", "X-Custom-Header")
-            //        .AllowCredentials());
-            //});
-
             // Add framework services.
             services.AddDbContext<AppsContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));

@@ -28,7 +28,8 @@ class customDropdown extends Component {
             url: 'Category/getAllCategory',
             body: {}
         }
-        getItemList(payload, (result)=> {
+        getItemList(payload, (err, result)=> {
+            if(err) return
             let resultData = Utils.getResApi(result)
             resultData = Utils.sortList(resultData, 'desc')  // To sort list
             this.props.fetchCategory(resultData)
@@ -66,10 +67,10 @@ class customDropdown extends Component {
             }
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
-                this.setState(()=>({ isLoading: false }), ()=>{
-                    addCategory(payload, (result)=> {
-                        this.props.addCategory(Utils.getResApi(result))
-                        this.handleCloseModal()  // Close modal
+                this.setState(()=>({ isShowModal: false }), () => {
+                    addCategory(payload, (err, result)=> {
+                        if(err) return
+                        if(result) this.props.addCategory(Utils.getResApi(result))
                     })
                     // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
                 })

@@ -10,6 +10,7 @@ import Home from './components/Home'
 import Register from './components/users/Register'
 import Login from './components/users/Login'
 import AppRoute from '../src/components/AppRoute'
+import { Route, Redirect } from "react-router-dom"
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -24,8 +25,9 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <AppRoute exact path='/' component={Home} layout={Layout}/>
-        <AppRoute path='/user/register' component={ Register } layout={UnLayout} />
-        <AppRoute path='/user/login' component={ Login } layout={UnLayout} />
+        {/* None protected route */}
+        <Route path='/user/register' component={ Register } layout={UnLayout} />
+        <Route path='/user/login' component={ Login } layout={UnLayout} />
       </BrowserRouter>
     </Provider>
   )

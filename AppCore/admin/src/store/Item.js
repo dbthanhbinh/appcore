@@ -1,10 +1,6 @@
 const ADD_ITEM = 'ADD_ITEM'
 const FETCH_ITEM = 'FETCH_ITEM'
 const DEL_ITEM = 'DEL_ITEM'
-
-// For category
-const ADD_CAT = 'ADD_CAT'
-
 const initialState = {
     items: null
 }
@@ -12,8 +8,7 @@ const initialState = {
 export const actionCreators = {
     addItem: (item) => ({ type: ADD_ITEM, payload: { item } }),
     deleteItem: (id) => ({ type: DEL_ITEM, payload: { id } }),
-    fetchItem: (items) => ({ type: FETCH_ITEM, payload: { items } }),
-    addCategory: (category) => ({ type: ADD_CAT, payload: { category } })
+    fetchItem: (items) => ({ type: FETCH_ITEM, payload: { items } })
 }
 
 export const reducer = (state, action) => {
