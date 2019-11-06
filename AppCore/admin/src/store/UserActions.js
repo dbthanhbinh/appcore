@@ -1,17 +1,17 @@
-import Api from '../apis'
+import RestConnection from '../apis/rest'
 
 export function getUserList(payload, cb) {
-    return Api.get(payload, cb)
+    return new RestConnection().get(payload, cb)
 }
 
 export function addUser(payload, cb) {
-    return Api.post(payload, cb)
+    return new RestConnection().post(payload, cb)
 }
 
 export function deleteUser(payload, cb) {
-    return Api.put(payload, cb)
+    return new RestConnection().put(payload, cb)
 }
 
 export function loginUser(payload, cb) {
-    return Api.post(payload, cb)
+    return new RestConnection().post(payload, cb)
 }

@@ -82,7 +82,7 @@ class itemForm extends Component {
                     <SeoForm onInputChange = {this.handleOnInputChange} formData={ formData } />
                 </Form.Group>
                 <Form.Group>
-                    <Button variant="primary" disabled={isFormValid} type="button" onClick={this.handleSubmitForm}>Submit</Button>
+                    <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
                 </Form.Group>
                 <Form.Group>
                     <TagsOptions />

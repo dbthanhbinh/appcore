@@ -6,92 +6,90 @@ import _ from 'lodash'
 //let cookies = new Cookies()
 // console.log('=====', cookies.get('MAP_cookies'))
 
-const publicUrl = 'http://localhost:50453/api/'
+const publicUrl = 'http://localhost:49981/api/'
 class RestConnection{
     constructor (conf) {
         this.publicUrl = publicUrl
         let cookies = new Cookies()
         this.cookies = cookies.get('MAP_cookies')
-
         this.headers = { "Content-type": "application/json" }
         this._conf = {
-            headers: this.headers, 
-            credentials: 'include',
-        }
-        this._defaultHeaders = {
-          'pragma': 'no-cache',
-          'cache-control': 'no-cache'
+            headers: new Headers({
+                'Access-Control-Allow-Origin': '*',
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+                Authorization: `Bearer ${this.cookies.token}`,
+            }),
+            method: 'GET' // Default get method
         }
     }
 
-    postForm = (payload, cb) => {
-        if(payload && payload.url && payload.body){
-            let url = publicUrl + payload.url
-            let formData = new FormData()
-            formData = appendFormData(payload.body)
-            fetch(url, {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                return response.json()
-            }).then(myJson => {
-                return cb(myJson)
-            }).catch(error => {
-                console.log('error')
+    postForm(payload, cb){
+        let url = this.getPublicUrlFromPayload(payload)
+        let body = this.getBodyFromPayload(payload)
+        let formData = new FormData()
+        formData = appendFormData(body)
+
+        let options = this._conf
+            options.headers = new Headers({
+                'Access-Control-Allow-Origin': true,
+                'Content-type': 'multipart/form-data',
+                'Accept': 'multipart/form-data',
+                Authorization: `Bearer ${this.cookies.token}`,
             })
-        }
+            options.method = 'POST'
+            options.body = formData
+        this._fetch(url, options, cb)
     }
     post(payload, cb){
         let url = this.getPublicUrlFromPayload(payload)
         let body = this.getBodyFromPayload(payload)
-        if(url && body){
-            fetch(url, {
-                headers: this.headers,
-                method: 'POST',
-                body
-            }).then(response => {
-                return response.json()
-            }).then(myJson => {
-                return cb(myJson)
-            }).catch(error => {
-                console.log('error')
-            })
-        }
+        let options = this._conf
+            options.method = 'POST'
+            options.body = body
+        this._fetch(url, options, cb)
     }
 
-    put = (payload, cb) => {
-        if(payload && payload.url && payload.body){
-            let url = publicUrl + payload.url
-            fetch(url, {
-                headers: { "Content-type": "application/json" },
-                method: 'PUT',
-                body: JSON.stringify(payload.body)
-            }).then(response => {
-                return response.json()
-            }).then(myJson => {
-                return cb(myJson)
-            }).catch(error => {
-                console.log('error')
-            })
-        }
+    delete(payload, cb){
+        let url = this.getPublicUrlFromPayload(payload)
+        let body = this.getBodyFromPayload(payload)
+        let options = this._conf
+            options.method = 'DELETE'
+            options.body = body
+        this._fetch(url, options, cb)
+    }
+
+    put(payload, cb){
+        let url = this.getPublicUrlFromPayload(payload)
+        let body = this.getBodyFromPayload(payload)
+
+        let options = this._conf
+            options.method = 'PUT'
+            options.body = body
+        this._fetch(url, options, cb)
     }
 
     get(payload, cb){
         let url = this.getPublicUrlFromPayload(payload)
+        let options = this._conf
+        this._fetch(url, options, cb)
+    }
+
+
+    _fetch(url, options, cb){
         if(url){
-            fetch(url).then(response => {
-                return response.json()
+            fetch(url, options)
+            .then(response => {
+                return this.handleResponse(response, cb)                
             }).then(myJson => {
-                return cb(myJson)
+                return this.handleThenResponse(myJson, cb)
             }).catch(error => {
                 return this.handleErrorCatched(error, cb)
             })
         } else {
             return this.handleErrorPublicUrlIsNull(cb)
-        }
-        
+        } 
     }
-
 
     // ================================
     /**
@@ -103,14 +101,14 @@ class RestConnection{
     */
     getPublicUrlFromPayload(payload) {
         let publicUrl = null
-        let payloadUrl = _.get(payload, 'payload.url')
+        let payloadUrl = _.get(payload, 'url')
         if(payloadUrl){ publicUrl = this.publicUrl + payloadUrl }
         return publicUrl
     }
 
     getBodyFromPayload(payload) {
         let body = null
-        let payloadBody = _.get(payload, 'payload.body')
+        let payloadBody = _.get(payload, 'body')
         if(payloadBody){ body = JSON.stringify(payloadBody) }
         return body
     }
@@ -125,6 +123,21 @@ class RestConnection{
     handleErrorCatched(err, cb){
         console.log(err)
         return cb(err, null)
+    }
+
+    handleResponse(response, cb){
+        if(response.ok){
+            return response.json()
+        } else {
+            return cb(response.statusText, null)
+        }
+    }
+
+    handleThenResponse(myJson, cb){
+        if(myJson)
+            return cb(myJson)
+        else
+            return cb('Error', null)
     }
 }
 

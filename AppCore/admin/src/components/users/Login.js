@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { actionCreators } from '../../store/User'
 
 import { withFormBehaviors } from '../form/form'
-import Utils from '../commons/utils'
 import { Defined } from './Defined'
 import { loginUser } from '../../store/UserActions'
 import Model from './Login.model'
@@ -43,9 +42,9 @@ class login extends Component{
             }
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.setState(()=>({ isLoading: false }), ()=>{
-                    loginUser(payload, (result)=> { // For add user
+                    loginUser(payload, (err, result)=> { // For add user
                         if(result)
-                            cookies.set('MAP_cookies', JSON.stringify(result))
+                            cookies.set('MAP_cookies', result, { path: '/' })
                     })
                 })
             }

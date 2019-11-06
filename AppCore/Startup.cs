@@ -59,14 +59,16 @@ namespace AppCore
                 };
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy",
+            //        builder => builder.AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .WithMethods("GET", "PUT", "POST", "DELETE")
+            //        .AllowAnyHeader()
+            //        .WithHeaders("Accept", "Content-type", "Origin", "X-Custom-Header")
+            //        .AllowCredentials());
+            //});
 
             // Add framework services.
             services.AddDbContext<AppsContext>(options =>
@@ -111,6 +113,7 @@ namespace AppCore
             //app.UseCors("CorsPolicy");
             app.UseCors(x => x
                 .AllowAnyOrigin()
+                .WithOrigins("http://localhost:3000", "http://localhost:3000/")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

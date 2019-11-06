@@ -2,6 +2,7 @@
 using AppCore.Business;
 using AppCore.Controllers.commons;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppCore.Controllers
@@ -34,7 +35,7 @@ namespace AppCore.Controllers
         /*
          * Delete post
          */
-        [HttpPut("deletePost", Name = "DeletePost")]
+        [HttpDelete("deletePost", Name = "DeletePost")]
         public ActionResult DeletePostAsync(ReqDeletePost reqDelete)
         {
             _postLogic.DeletePostAsync(reqDelete);
