@@ -1,14 +1,18 @@
 import React from 'react'
-
 import { Provider } from 'react-redux'
 import { createBrowserHistory } from 'history'
 import configureStore from './store/configureStore'
-
-import { BrowserRouter, Route } from "react-router-dom"
+import { BrowserRouter } from "react-router-dom"
 import './App.scss'
-import Layout from './components/Layout'
+import Layout from './components/layouts/Layout'
+import UnLayout from './components/layouts/UnLayout'
 import Home from './components/Home'
-
+import PostApp from './components/posts'
+import Register from './components/users/Register'
+import Login from './components/users/Login'
+import AppRoute from '../src/components/layouts/AppRoute'
+import { Route } from "react-router-dom"
+import NotFound from './components/Notfound/404'
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -22,9 +26,14 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Layout>
-          <Route exact path='/' component={Home}/>
-        </Layout>
+        <AppRoute exact path='/' component={Home} layout={Layout}/>
+        <AppRoute exact path='/posts' component={PostApp} layout={Layout}/>
+        {/* None protected route */}
+        <UnLayout>
+          <Route path='/user/register' component={ Register } />
+          <Route path='/user/login' component={ Login } />
+          <Route path="*" component={ NotFound } />
+        </UnLayout>
       </BrowserRouter>
     </Provider>
   )

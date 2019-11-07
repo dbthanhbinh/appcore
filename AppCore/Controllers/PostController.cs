@@ -1,12 +1,15 @@
 ﻿using System.Threading.Tasks;
 using AppCore.Business;
 using AppCore.Controllers.commons;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppCore.Controllers
 {
-    // [EnableCors("CorsPolicy")]
+    [EnableCors("AllowAllCors")]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class PostController : BaseController
     {
@@ -22,7 +25,7 @@ namespace AppCore.Controllers
         /**
          * Create new Post 
          */
-        [HttpPost("createPost", Name = "CreatePost")]
+        [HttpPost("createPost", Name = "CreatePostAsync")]
         public async Task<ActionResult> CreatePostAsync([FromForm] ReqCreatePost reqData)
         {
             var result = await _postLogic.CreatePostAsync(reqData);
@@ -32,7 +35,7 @@ namespace AppCore.Controllers
         /*
          * Delete post
          */
-        [HttpPut("deletePost", Name = "DeletePost")]
+        [HttpDelete("deletePost", Name = "DeletePostAsync")]
         public ActionResult DeletePostAsync(ReqDeletePost reqDelete)
         {
             _postLogic.DeletePostAsync(reqDelete);
