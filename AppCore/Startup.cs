@@ -103,7 +103,7 @@ namespace AppCore
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "admin/build";
+                configuration.RootPath = "Admin/build";
             });
         }
 
@@ -142,7 +142,7 @@ namespace AppCore
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "admin";
+                spa.Options.SourcePath = "Admin";
 
                 if (env.IsDevelopment())
                 {
