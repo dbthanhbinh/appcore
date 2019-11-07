@@ -3,10 +3,11 @@ import { Provider } from 'react-redux'
 import { createBrowserHistory } from 'history'
 import configureStore from './store/configureStore'
 import { BrowserRouter } from "react-router-dom"
-import './App.scss'
+import './styles/App.scss'
 import Layout from './components/layouts/Layout'
+import HLayout from './components/layouts/HLayout'
 import UnLayout from './components/layouts/UnLayout'
-import Home from './components/Home'
+import Home from './components/pages/Home'
 import PostApp from './components/posts'
 import Register from './components/users/Register'
 import Login from './components/users/Login'
@@ -25,7 +26,7 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <AppRoute exact path='/' component={Home} layout={Layout}/>
+        <AppRoute exact path='/' component={Home} layout={HLayout}/>
         <AppRoute exact path='/posts' component={PostApp} layout={Layout}/>
         {/* None protected route */}
         <UnLayout>
