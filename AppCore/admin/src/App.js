@@ -4,12 +4,13 @@ import { createBrowserHistory } from 'history'
 import configureStore from './store/configureStore'
 import { BrowserRouter } from "react-router-dom"
 import './App.scss'
-import Layout from './components/Layout'
-import UnLayout from './components/UnLayout'
+import Layout from './components/layouts/Layout'
+import UnLayout from './components/layouts/UnLayout'
 import Home from './components/Home'
+import PostApp from './components/posts'
 import Register from './components/users/Register'
 import Login from './components/users/Login'
-import AppRoute from '../src/components/AppRoute'
+import AppRoute from '../src/components/layouts/AppRoute'
 import { Route, Redirect } from "react-router-dom"
 
 // Create browser history to use in the Redux store
@@ -25,6 +26,7 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <AppRoute exact path='/' component={Home} layout={Layout}/>
+        <AppRoute exact path='/posts' component={PostApp} layout={Layout}/>
         {/* None protected route */}
         <UnLayout>
           <Route path='/user/register' component={ Register } />

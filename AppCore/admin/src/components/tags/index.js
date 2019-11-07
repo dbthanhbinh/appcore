@@ -118,6 +118,7 @@ class tagsOptions extends React.Component{
         return(
             <React.Fragment>
                 <div className='tags-options'>
+                    <h5>Add tags</h5>
                     <div className='tags-input-options'>
                         {
                             tagListSelected && tagListSelected.map((item) => {
@@ -130,11 +131,10 @@ class tagsOptions extends React.Component{
                             placeholder='Enter ...'
                             onChange={this.filterList}
                             onFocus={this.onFocusHandle}
-                            onBlur={this.onBlurHandle}
                             onKeyDown={this.handleKeyDown}
                         />
                     </div>
-                    <div className={ tagsDropdownOpen }>
+                    <div className={ tagsDropdownOpen } onBlur={this.onBlurHandle}>
                         <div>
                             { tagListMixed && tagListMixed.map((item) => {
                                 return <div key={ item.id }>

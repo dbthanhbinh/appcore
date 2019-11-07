@@ -11,7 +11,7 @@ import { addItem } from '../../store/ItemActions'
 import Utils from '../commons/utils'
 import { PostDefined } from "../commons/Defined";
 import TagsOptions from '../tags'
-import SeoForm from '../SeoForm'
+import SeoForm from '../seos/SeoForm'
 // import ReactSelect from '../form/ReactSelect'
 
 class itemForm extends Component {

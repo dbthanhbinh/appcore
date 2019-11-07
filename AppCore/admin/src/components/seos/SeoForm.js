@@ -20,6 +20,7 @@ class SeoForm extends Component {
         let seo_description = _.get(formData, `${PostDefined.SEODESCRIPTION}.label`)
         return(
             <React.Fragment>
+                <h5>Config SEO</h5>
                 <Form.Group>
                     <Form.Control type='text' name={ PostDefined.SEOTITLE } onChange={this.handleOnInputChange} defaultValue='' placeholder={ seo_title }/>
                 </Form.Group>
