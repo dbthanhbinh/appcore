@@ -12,6 +12,7 @@ import Register from './components/users/Register'
 import Login from './components/users/Login'
 import AppRoute from '../src/components/layouts/AppRoute'
 import { Route } from "react-router-dom"
+import NotFound from './components/Notfound/404'
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -31,6 +32,7 @@ function App() {
         <UnLayout>
           <Route path='/user/register' component={ Register } />
           <Route path='/user/login' component={ Login } />
+          <Route path="*" component={ NotFound } />
         </UnLayout>
       </BrowserRouter>
     </Provider>
