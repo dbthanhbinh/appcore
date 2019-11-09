@@ -43,9 +43,5 @@
       "ie 9"
     ]
   },
-  "devDependencies": {
-    "@editorjs/editorjs": "^2.15.1",
-    "@editorjs/paragraph": "^2.6.0",
-    "react-editor-js": "^1.4.1"
-  }
+  "devDependencies": {}
 }
