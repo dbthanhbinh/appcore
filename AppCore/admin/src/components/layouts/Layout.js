@@ -13,12 +13,7 @@ class Layout extends Component {
                         <Navitem />
                     </Row>
                     <Row>
-                        <Col md={2}>
-                            <Row>
-                            {/* <Sidebar /> */}
-                            </Row>
-                        </Col>
-                        <Col md={10}>
+                        <Col md={12}>
                             <div className='main-contents'>
                                 {this.props.children}
                             </div>

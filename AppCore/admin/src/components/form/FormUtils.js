@@ -16,6 +16,28 @@ export function setFieldValue(name, value, obj){
     return obj.model
 }
 
+export function pickKeysFromModel(rawModel){
+    let models = rawModel
+    let keys = null
+    if(models){
+        keys = _.keysIn(models)
+    }
+    return keys
+}
+
+export function mappingModelDefaultData(rawModel, defaultObjValue){
+    let models = rawModel
+    if(models){
+        Object.keys(models).forEach((key) => {
+            let data = _.get(defaultObjValue, `${key}`)
+            if(data) {
+                models[key].value = data
+            }
+        })
+    }
+    return models
+}
+
 export function initValidatorModel(rawModel){
     let models = rawModel ? rawModel.model.bind(this)() : {}
     if(models){

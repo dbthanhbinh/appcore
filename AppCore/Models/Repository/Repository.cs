@@ -77,14 +77,11 @@ namespace AppCore.Models.Repository
             if (existing != null) _dbSet.Remove(existing);
         }
 
-
-        [Obsolete("Method is replaced by GetList")]
-        public IEnumerable<T> Get()
+        public T Get(object id)
         {
-            return _dbSet.ToList();
+            return _dbSet.Find(id);
         }
 
-        [Obsolete("Method is replaced by GetList")]
         public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
         {
             return _dbSet.Where(predicate).AsEnumerable();

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { Form } from 'react-bootstrap'
-import { PostDefined } from '../commons/Defined'
+import { SeoDefined } from '../commons/Defined'
 
 class SeoForm extends Component {
     constructor(props){
@@ -14,21 +14,31 @@ class SeoForm extends Component {
     }
 
     render(){
-        let { formData } = this.props
-        let seo_title = _.get(formData, `${PostDefined.SEOTITLE}.label`)
-        let seo_keys = _.get(formData, `${PostDefined.SEOKEYS}.label`)
-        let seo_description = _.get(formData, `${PostDefined.SEODESCRIPTION}.label`)
+        let { model } = this.props
+        let seoTitleLabel = _.get(model, `${SeoDefined.SEOTITLE}.label`)
+        let seoKeysLabel = _.get(model, `${SeoDefined.SEOKEYS}.label`)
+        let seoDescriptionLabel = _.get(model, `${SeoDefined.SEODESCRIPTION}.label`)
+
+        let seoTitle = _.get(model, `${SeoDefined.SEOTITLE}.value`)
+        let seoKeys = _.get(model, `${SeoDefined.SEOKEYS}.value`)
+        let seoDescription = _.get(model, `${SeoDefined.SEODESCRIPTION}.value`)
+        
         return(
             <React.Fragment>
                 <h5>Config SEO</h5>
                 <Form.Group>
-                    <Form.Control type='text' name={ PostDefined.SEOTITLE } onChange={this.handleOnInputChange} defaultValue='' placeholder={ seo_title }/>
+                    <Form.Control type='text' name={ SeoDefined.SEOTITLE }
+                        onChange={this.handleOnInputChange} defaultValue={ seoTitle } placeholder={ seoTitleLabel }
+                    />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Control type='text' name={ PostDefined.SEOKEYS } onChange={this.handleOnInputChange} defaultValue='' placeholder={ seo_keys } />
+                    <Form.Control type='text' name={ SeoDefined.SEOKEYS }
+                        onChange={this.handleOnInputChange} defaultValue={ seoKeys } placeholder={ seoKeysLabel }
+                    />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Control as="textarea" rows="4" name={ PostDefined.SEODESCRIPTION } defaultValue='' placeholder={ seo_description } onChange={this.handleOnInputChange}></Form.Control>
+                    <Form.Control as="textarea" rows="4" name={ SeoDefined.SEODESCRIPTION }
+                        placeholder={ seoDescriptionLabel } onChange={this.handleOnInputChange}>{ seoDescription }</Form.Control>
                 </Form.Group>
             </React.Fragment>
         )

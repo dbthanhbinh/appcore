@@ -22,6 +22,11 @@ namespace AppCore.Controllers.commons
         public Guid Id { get; set; }
     }
 
+    public class ReqDetailCategory
+    {
+        public Guid Id { get; set; }
+    }
+
     public class ReqCreatePost {
         public string Name { get; set; }
         public string Content { get; set; }

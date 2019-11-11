@@ -4,14 +4,16 @@ import { createBrowserHistory } from 'history'
 import configureStore from './store/configureStore'
 import { BrowserRouter } from "react-router-dom"
 import './App.scss'
+import AppRoute from '../src/components/layouts/AppRoute'
+import { Route } from "react-router-dom"
+
 import Layout from './components/layouts/Layout'
 import UnLayout from './components/layouts/UnLayout'
 import Home from './components/Home'
 import PostApp from './components/posts'
+import Category from './components/categories'
 import Register from './components/users/Register'
 import Login from './components/users/Login'
-import AppRoute from '../src/components/layouts/AppRoute'
-import { Route } from "react-router-dom"
 import NotFound from './components/Notfound/404'
 
 // Create browser history to use in the Redux store
@@ -26,13 +28,15 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <AppRoute exact path='/' component={Home} layout={Layout}/>
-        <AppRoute exact path='/posts' component={PostApp} layout={Layout}/>
+        <AppRoute exact path='/' component={ Home } layout={ Layout }/>
+        <AppRoute exact path='/posts' component={ PostApp } layout={ Layout }/>
+        <AppRoute exact path='/categories' component={ Category } layout={ Layout } />
+        <AppRoute exact path='/categories/edit/:id' component={ Category } layout={ Layout } />
         {/* None protected route */}
         <UnLayout>
           <Route path='/user/register' component={ Register } />
           <Route path='/user/login' component={ Login } />
-          <Route path="*" component={ NotFound } />
+          {/* <Route path="*" component={ NotFound } /> */}
         </UnLayout>
       </BrowserRouter>
     </Provider>

@@ -9,7 +9,7 @@ import * as User from './User'
 export default function configureStore(history, initialState) {
   const reducers = {
     items: Item.reducer,
-    categoryList: Category.reducer,
+    categoryData: Category.reducer,
     tagList: Tag.reducer,
     users: User.reducer
   };

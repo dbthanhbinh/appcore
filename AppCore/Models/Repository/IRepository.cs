@@ -25,7 +25,8 @@ namespace AppCore.Models.Repository
         void Update(params T[] entities);
         void Update(IEnumerable<T> entities);
 
-        IEnumerable<T> Get();
+        T Get(object id);
+        IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
         List<T> GetAll();
 
         Task<bool> AddAsync(T entity);
