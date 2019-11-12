@@ -4,7 +4,8 @@ import { Form, Button, Modal } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../store/Category'
-import { getItemList, addCategory } from '../../store/CategoryActions'
+// import { getItemList, addCategory } from '../../store/CategoryActions'
+import CategoryActions from '../../store/CategoryActions'
 import { getInputData, setFieldValue } from '../form/FormUtils'
 import Model from '../models/cat.model'
 import Utils from '../commons/utils'
@@ -12,6 +13,7 @@ import Utils from '../commons/utils'
 class customDropdown extends Component {
     constructor(props){
         super(props)
+        this.CategoryActions = new CategoryActions()
         this.state = {
             isShowModal: false,
             model: Model.model()
@@ -28,7 +30,7 @@ class customDropdown extends Component {
             url: 'Category/getAllCategory',
             body: {}
         }
-        getItemList(payload, (err, result)=> {
+        this.CategoryActions.getListItems(payload, (err, result)=> {
             if(err) return
             let resultData = Utils.getResApi(result)
             resultData = Utils.sortList(resultData, 'desc')  // To sort list
@@ -68,7 +70,7 @@ class customDropdown extends Component {
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.setState(()=>({ isShowModal: false }), () => {
-                    addCategory(payload, (err, result)=> {
+                    this.CategoryActions.addItem(payload, (err, result)=> {
                         if(err) return
                         if(result) this.props.addCategory(Utils.getResApi(result))
                     })

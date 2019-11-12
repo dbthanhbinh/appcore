@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 import { Table } from 'react-bootstrap'
 import LoadingItem from '../commons/LoadingItem'
-import { deleteItem, getItemList } from '../../store/ItemActions'
+import PostActions from '../../store/PostActions'
 import Utils from '../commons/utils'
 
 /**
@@ -13,6 +13,7 @@ import Utils from '../commons/utils'
 class PostList extends React.Component{
     constructor(props){
         super(props)
+        this.PostActions = new PostActions()
         this.state = {
             isLoading: true
         }
@@ -23,7 +24,7 @@ class PostList extends React.Component{
             url: 'Post/getAll',
             body: {}
         }
-        getItemList(payload, (err, result)=> {
+        this.PostActions.getListItems(payload, (err, result)=> {
             if(err) return
             let resultData = result ? Utils.getResApi(result) : null
             if(resultData)
@@ -40,7 +41,7 @@ class PostList extends React.Component{
         }
         if(!_.isNil(payload) && !_.isEmpty(payload)){
             this.setState(()=>({ isLoading: false }), ()=>{
-                deleteItem(payload, (err, result)=> {
+                this.PostActions.deleteItem(payload, (err, result)=> {
                     if(err) return
                     if(!err && result) this.props.deleteItem(id)
                 })

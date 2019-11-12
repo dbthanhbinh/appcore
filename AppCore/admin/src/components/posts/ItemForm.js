@@ -7,7 +7,7 @@ import Model from '../models/addPost.model'
 import { withFormBehaviors } from '../form/form'
 import CustomDropdown from '../form/CustomDropdown'
 import CustomFile from '../form/CustomFile'
-import { addItem } from '../../store/ItemActions'
+import PostActions from '../../store/PostActions'
 import Utils from '../commons/utils'
 import { PostDefined } from "../commons/Defined";
 import TagsOptions from '../tags'
@@ -18,7 +18,7 @@ import SeoForm from '../seos/SeoForm'
 class itemForm extends Component {
     constructor(props){
         super(props)
-        
+        this.PostActions = new PostActions()
         this.state = {
             isShowAlert: false,
             isLoading: false
@@ -50,7 +50,7 @@ class itemForm extends Component {
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.setState(()=>({ isLoading: false }), ()=>{
-                    addItem(payload, (err, result)=> {
+                    this.PostActions.addItem(payload, (err, result)=> {
                         if(err) return
                         if(result) this.props.addItem(Utils.getResListApi(result))
                     })

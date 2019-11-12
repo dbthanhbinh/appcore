@@ -9,22 +9,17 @@ import { Row, Col } from 'react-bootstrap'
 import CategoryList from './ItemList'
 import CategoryForm from './form'
 import Utils from '../commons/utils'
-import {
-    getItemList,
-    addCategory,
-    deleteCategory,
-    updateCategory,
-    detailCategoryWithEdit
- } from '../../store/CategoryActions'
 import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, pickKeysFromModel } from '../form/FormUtils'
 import CatModel from '../models/addCategory.model'
 import SeoModel from '../models/seo.model'
 import { CategoryDefined, SeoDefined } from '../commons/Defined'
 import { withFormBehaviors } from '../form/form'
+import CategoryActions from '../../store/CategoryActions'
 
 class Category extends Component{
     constructor(props){
         super(props)
+        this.CategoryActions = new CategoryActions()
         let Model = _.merge(CatModel.model(), SeoModel.model())
         this.state = {
             currentRoute: 'categories',
@@ -40,7 +35,7 @@ class Category extends Component{
     
 
     componentDidMount(){
-        // For Edit case
+        // // For Edit case
         let payload = {}
         let id = _.get(this.props, 'match.params.id')
         if(id) {
@@ -50,7 +45,7 @@ class Category extends Component{
                 url: `Category/getCategoriesWithEdit/${id}`
             }
 
-            detailCategoryWithEdit(payload, (err, result)=> {
+            this.CategoryActions.detailItemWithEdit(payload, (err, result)=> {
                 if(err) return
                 let resultData = Utils.getResApi(result)
                 
@@ -75,7 +70,7 @@ class Category extends Component{
                 url: 'Category/getAllCategory',
                 body: {}
             }
-            getItemList(payload, (err, result)=> {
+            this.CategoryActions.getListItems(payload, (err, result)=> {
                 if(err) return
                 let resultData = Utils.getResApi(result)
                 resultData = Utils.sortList(resultData, 'desc')  // To sort list
@@ -98,7 +93,7 @@ class Category extends Component{
             body: { Id: id }
         }
         if(!_.isNil(payload) && !_.isEmpty(payload)){
-            deleteCategory(payload, (err, result)=> {
+            this.CategoryActions.deleteItem(payload, (err, result)=> {
                 if(err) return
                 if(!err && result) this.props.deleteCategory(id)
             })
@@ -124,7 +119,7 @@ class Category extends Component{
                 }
             }
             if(!_.isNil(payload) && !_.isEmpty(payload)){
-                addCategory(payload, (err, result)=> {
+                this.CategoryActions.addItem(payload, (err, result)=> {
                     if(err) return
                     let categoryData = _.get(Utils.getResApi(result), 'categoryData')
                     if(result) this.props.addCategory(categoryData)
@@ -150,7 +145,7 @@ class Category extends Component{
             }
         }
         if(!_.isNil(payload) && !_.isEmpty(payload)){
-            updateCategory(payload, (err, result)=> {
+            this.CategoryActions.updateItem(payload, (err, result)=> {
                 if(err) return
                 if(result) this.props.updateCategory(Utils.getResApi(result))
             })
@@ -158,6 +153,7 @@ class Category extends Component{
     }
 
     render(){
+        console.log('====', CategoryActions)
         let { categoryData } = this.props
         let { currentRoute, model } = this.state
         return (
