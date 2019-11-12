@@ -3,7 +3,7 @@ import _ from 'lodash'
 // import eventEmitter from '../../utils/eventEmitter'
 import { Form, Button } from 'react-bootstrap'
 import AlertCP from '../commons/AlertCP'
-import Model from '../models/ItemApp.model'
+import Model from '../models/addPost.model'
 import { withFormBehaviors } from '../form/form'
 import CustomDropdown from '../form/CustomDropdown'
 import CustomFile from '../form/CustomFile'
@@ -12,11 +12,13 @@ import Utils from '../commons/utils'
 import { PostDefined } from "../commons/Defined";
 import TagsOptions from '../tags'
 import SeoForm from '../seos/SeoForm'
+
 // import ReactSelect from '../form/ReactSelect'
 
 class itemForm extends Component {
     constructor(props){
         super(props)
+        
         this.state = {
             isShowAlert: false,
             isLoading: false

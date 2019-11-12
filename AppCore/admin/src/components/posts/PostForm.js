@@ -3,7 +3,6 @@ import _ from 'lodash'
 // import eventEmitter from '../../utils/eventEmitter'
 import { Form, Button, Modal, Container, Row, Col } from 'react-bootstrap'
 import AlertCP from '../commons/AlertCP'
-import Model from '../models/ItemApp.model'
 import { withFormBehaviors } from '../form/form'
 import CustomDropdown from '../form/CustomDropdown'
 import CustomFile from '../form/CustomFile'
@@ -12,15 +11,19 @@ import Utils from '../commons/utils'
 import { PostDefined } from "../commons/Defined";
 import TagsOptions from '../tags'
 import SeoForm from '../seos/SeoForm'
-// import ReactSelect from '../form/ReactSelect'
+import PostModel from '../models/addPost.model'
+import SeoModel from '../models/seo.model'
 import 'bootstrap/dist/css/bootstrap.min.css'
+
 class postForm extends Component {
     constructor(props){
         super(props)
+        const Model = _.merge(PostModel.model(), SeoModel.model())
         this.state = {
             isShowModal: false,
             isShowAlert: false,
-            isLoading: false
+            isLoading: false,
+            model: Model
         }
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
@@ -70,11 +73,10 @@ class postForm extends Component {
     }
 
     render(){
-        let { isShowAlert, isShowModal } = this.state
-        let { isFormValid, formData } = this.props
-        let post_name = _.get(formData, `${PostDefined.NAME}.label`)
-        let post_content = _.get(formData, `${PostDefined.CONTENT}.label`)
-        let post_categoryid = _.get(formData, `${PostDefined.CATEGORYID}.label`)
+        let { isShowAlert, isShowModal, model } = this.state
+        let post_name = _.get(model, `${PostDefined.NAME}.label`)
+        let post_content = _.get(model, `${PostDefined.CONTENT}.label`)
+        let post_categoryid = _.get(model, `${PostDefined.CATEGORYID}.label`)
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
@@ -109,7 +111,7 @@ class postForm extends Component {
                                         <TagsOptions />
                                     </Form.Group>
                                     <Form.Group>
-                                        <SeoForm onInputChange = {this.handleOnInputChange} formData={ formData } />
+                                        <SeoForm onInputChange = {this.handleOnInputChange} model={ model } />
                                     </Form.Group>
                                     <Form.Group>
                                         <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
@@ -128,5 +130,5 @@ class postForm extends Component {
         )
     }
 }
-const PostForm = withFormBehaviors(postForm, Model)
+const PostForm = withFormBehaviors(postForm, null)
 export default PostForm

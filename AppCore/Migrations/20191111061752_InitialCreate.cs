@@ -16,6 +16,8 @@ namespace AppCore.Migrations
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: false),
+                    Slug = table.Column<string>(nullable: true),
+                    ParentId = table.Column<Guid>(nullable: true),
                     CreatedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

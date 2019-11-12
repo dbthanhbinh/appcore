@@ -17,7 +17,7 @@ import {
     detailCategoryWithEdit
  } from '../../store/CategoryActions'
 import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, pickKeysFromModel } from '../form/FormUtils'
-import CatModel from '../models/addNewCategory.model'
+import CatModel from '../models/addCategory.model'
 import SeoModel from '../models/seo.model'
 import { CategoryDefined, SeoDefined } from '../commons/Defined'
 import { withFormBehaviors } from '../form/form'
@@ -126,7 +126,8 @@ class Category extends Component{
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 addCategory(payload, (err, result)=> {
                     if(err) return
-                    if(result) this.props.addCategory(Utils.getResApi(result))
+                    let categoryData = _.get(Utils.getResApi(result), 'categoryData')
+                    if(result) this.props.addCategory(categoryData)
                 })
             }
         }

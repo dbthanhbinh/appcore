@@ -118,7 +118,7 @@ class customDropdown extends Component {
 }
 
 function mapStateToProps(state) {
-    let { categoryList } = state.categoryList
+    let { categoryList } = state.categoryData
     return { categoryList }
 }
 

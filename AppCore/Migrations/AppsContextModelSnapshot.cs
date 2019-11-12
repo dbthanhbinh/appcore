@@ -35,6 +35,10 @@ namespace AppCore.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<Guid?>("ParentId");
+
+                    b.Property<string>("Slug");
+
                     b.HasKey("Id");
 
                     b.ToTable("Category");

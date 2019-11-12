@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(AppsContext))]
-    [Migration("20191106062955_InitialCreate")]
+    [Migration("20191111061752_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,10 @@ namespace AppCore.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired();
+
+                    b.Property<Guid?>("ParentId");
+
+                    b.Property<string>("Slug");
 
                     b.HasKey("Id");
 

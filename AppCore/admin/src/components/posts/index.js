@@ -5,8 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../store/Item'
 
-import ItemList from './ItemList'
-// import ItemForm from './ItemForm'
+import PostList from './PostList'
 import HeaderSection from '../commons/HeaderSection'
 
 class PostApp extends Component{
@@ -20,9 +19,8 @@ class PostApp extends Component{
             <Fragment>
                 <Row>
                     <Col md={12}>
-                        {/* <ItemForm { ...this.props } /> */}
                         <HeaderSection />
-                        <ItemList items={ items } {...this.props} />
+                        <PostList items={ items } {...this.props} />
                     </Col>
                 </Row>
             </Fragment>
