@@ -80,24 +80,6 @@ namespace AppCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seo",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    Modified = table.Column<DateTime>(nullable: false),
-                    SeoTitle = table.Column<string>(nullable: true),
-                    SeoKeys = table.Column<string>(nullable: true),
-                    SeoDescription = table.Column<string>(nullable: true),
-                    ObjectId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Seo", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -115,6 +97,49 @@ namespace AppCore.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Seo",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    SeoTitle = table.Column<string>(nullable: true),
+                    SeoKeys = table.Column<string>(nullable: true),
+                    SeoDescription = table.Column<string>(nullable: true),
+                    ObjectId = table.Column<Guid>(nullable: false),
+                    PostId = table.Column<Guid>(nullable: true),
+                    PostId1 = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Seo_Post_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Post",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Seo_Post_PostId1",
+                        column: x => x.PostId1,
+                        principalTable: "Post",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seo_PostId",
+                table: "Seo",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seo_PostId1",
+                table: "Seo",
+                column: "PostId1",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -129,13 +154,13 @@ namespace AppCore.Migrations
                 name: "ObjectMedia");
 
             migrationBuilder.DropTable(
-                name: "Post");
-
-            migrationBuilder.DropTable(
                 name: "Seo");
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Post");
         }
     }
 }

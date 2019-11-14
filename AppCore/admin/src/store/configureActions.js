@@ -16,6 +16,10 @@ class ConfigActions{
     return this.RestConfig.post(payload, cb)
   }
 
+  addItemWithForm(payload, cb) {
+    return this.RestConfig.postForm(payload, cb)
+  }
+
   updateItem(payload, cb) {
     return this.RestConfig.post(payload, cb)
   }

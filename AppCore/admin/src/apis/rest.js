@@ -6,7 +6,7 @@ import _ from 'lodash'
 //let cookies = new Cookies()
 // console.log('=====', cookies.get('MAP_cookies'))
 
-const publicUrl = 'http://localhost:50453/api/'
+const publicUrl = 'http://localhost:49512/api/'
 class RestConnection{
     constructor (conf) {
         this.publicUrl = publicUrl

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AppCore.Models.DBModel
 {
     public class Seo : DbEntity

@@ -153,7 +153,6 @@ class Category extends Component{
     }
 
     render(){
-        console.log('====', CategoryActions)
         let { categoryData } = this.props
         let { currentRoute, model } = this.state
         return (

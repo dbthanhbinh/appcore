@@ -8,12 +8,13 @@ import CustomDropdown from '../form/CustomDropdown'
 import CustomFile from '../form/CustomFile'
 import PostActions from '../../store/PostActions'
 import Utils from '../commons/utils'
-import { PostDefined } from "../commons/Defined";
+import { PostDefined, SeoDefined } from "../commons/Defined";
 import TagsOptions from '../tags'
 import SeoForm from '../seos/SeoForm'
 import PostModel from '../models/addPost.model'
 import SeoModel from '../models/seo.model'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { getInputData, setFieldValue } from '../form/FormUtils'
 
 class postForm extends Component {
     constructor(props){
@@ -41,31 +42,36 @@ class postForm extends Component {
     }
 
     handleOnInputChange(e, data){
-        this.props.onInputChange(e, data)
+        let { name, value } = getInputData(e, data)
+        this.setState((prevState)=>{
+            return { model: setFieldValue(name, value, prevState) }
+        })
     }
 
     handleSubmitForm(e, data){
-        let {isFormValid, formData} = this.props
+        let {isFormValid} = this.props
+        let { model } = this.state
         let payload = {}
         if(isFormValid){
             payload = {
                 url: 'Post/createPost',
                 body: {
-                    Name: formData[PostDefined.NAME].value,
-                    Content: formData[PostDefined.CONTENT].value,
-                    CategoryId: formData[PostDefined.CATEGORYID].value,
-                    File: formData[PostDefined.FILE].value,
-                    SeoTitle: formData[PostDefined.SEOTITLE].value,
-                    SeoKeys: formData[PostDefined.SEOKEYS].value,
-                    SeoDescription: formData[PostDefined.SEODESCRIPTION].value,
+                    Name: model[PostDefined.NAME].value,
+                    Content: model[PostDefined.CONTENT].value,
+                    CategoryId: model[PostDefined.CATEGORYID].value,
+                    File: model[PostDefined.FILE].value,
+                    SeoTitle: model[SeoDefined.SEOTITLE].value,
+                    SeoKeys: model[SeoDefined.SEOKEYS].value,
+                    SeoDescription: model[SeoDefined.SEODESCRIPTION].value,
                 }
             }
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.setState(()=>({ isLoading: false, isShowModal: false }), ()=>{
-                    this.PostActions.addItem(payload, (err, result)=> {
+                    this.PostActions.addItemWithForm(payload, (err, result)=> {
                         if(err) return
-                        if(result) this.props.addItem(Utils.getResListApi(result))
+                        let postData = Utils.getResListApi(result)
+                        if(result) this.props.addItem(postData)
                     })
                     // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
                 })

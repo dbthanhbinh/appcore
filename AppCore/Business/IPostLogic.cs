@@ -10,7 +10,7 @@ namespace AppCore.Business
     public interface IPostLogic : IBaseLogic<Post>
     {
         Task<CreatedPostVM> CreatePostAsync(ReqCreatePost postData);
-        void DeletePostAsync(ReqDeletePost reqDelete);
+        Task<bool> DeletePostAsync(ReqDeletePost reqDelete);
         
     }
 }

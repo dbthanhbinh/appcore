@@ -3,23 +3,19 @@ import _ from 'lodash'
 import { Row, Col } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../store/Item'
+import { actionCreators } from '../../store/Post'
 
 import PostList from './PostList'
 import HeaderSection from '../commons/HeaderSection'
 
 class PostApp extends Component{
-    constructor(props) {
-        super(props)
-    }
-    
     render() {
         let { items } = this.props
         return(
             <Fragment>
                 <Row>
                     <Col md={12}>
-                        <HeaderSection />
+                        <HeaderSection {...this.props} />
                         <PostList items={ items } {...this.props} />
                     </Col>
                 </Row>

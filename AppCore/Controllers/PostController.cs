@@ -36,9 +36,9 @@ namespace AppCore.Controllers
          * Delete post
          */
         [HttpDelete("deletePost", Name = "DeletePostAsync")]
-        public ActionResult DeletePostAsync(ReqDeletePost reqDelete)
+        public async Task<ActionResult> DeletePostAsync(ReqDeletePost reqDelete)
         {
-            _postLogic.DeletePostAsync(reqDelete);
+            await _postLogic.DeletePostAsync(reqDelete);
             return Ok(new BaseResponse());
         }
 

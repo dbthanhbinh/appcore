@@ -37,12 +37,11 @@ namespace AppCore.Business
 
                 // Created Post
                 _logger.LogWarning("Begin create post");
-                Post postData = new Post
-                {
-                    Name = reqData.Name,
-                    CategoryId = reqData.CategoryId,
-                    Content = reqData.Content
-                };                
+                Post postData = new Post();
+                postData.Name = reqData.Name;
+                postData.CategoryId = reqData.CategoryId;
+                postData.Content = reqData.Content;
+                
                 Task<bool> postCreated = _uow.GetRepository<Post>().AddAsync(postData);
                 await Task.WhenAll(mediaCreated, postCreated);
 
@@ -77,14 +76,21 @@ namespace AppCore.Business
             }
         }
 
-        public void DeletePostAsync(ReqDeletePost reqDelete)
+        public async Task<bool> DeletePostAsync(ReqDeletePost reqDelete)
         {
             try
             {
                 var post = new Post();
                 post.Id = reqDelete.Id;
+
+                IEnumerable<Seo> Seos = _uow.GetRepository<Seo>().Get((item) => item.ObjectId == reqDelete.Id);
+                
                 _uow.GetRepository<Post>().Delete(reqDelete.Id);
-                _uow.SaveChanges();
+
+                // Delete Seo object
+
+                //_uow.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {

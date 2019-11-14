@@ -4,7 +4,7 @@ import PostForm from '../posts/PostForm'
 const HeaderSection = (props) => {
     return(
         <div className='header-section'>
-            <PostForm />
+            <PostForm { ...props }/>
         </div>
     )
 }
