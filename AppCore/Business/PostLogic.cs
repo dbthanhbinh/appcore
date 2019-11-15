@@ -4,7 +4,9 @@ using AppCore.Models.UnitOfWork;
 using AppCore.Models.VMModel;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppCore.Business
@@ -80,17 +82,26 @@ namespace AppCore.Business
         {
             try
             {
-                var post = new Post();
-                post.Id = reqDelete.Id;
-
-                IEnumerable<Seo> Seos = _uow.GetRepository<Seo>().Get((item) => item.ObjectId == reqDelete.Id);
-                
-                _uow.GetRepository<Post>().Delete(reqDelete.Id);
-
-                // Delete Seo object
-
-                //_uow.SaveChanges();
+                await _seoLogic.DeleteSeoWithObjectIdAsync(reqDelete.Id);
+                await this.DeletePost(reqDelete.Id);
+                _uow.SaveChanges();
                 return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
+        public async Task<Post> DeletePost(Guid id)
+        {
+            try
+            {
+                var post = new Post();
+                post.Id = id;
+                _uow.GetRepository<Post>().Delete(id);
+                return await Task.FromResult(post);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using AppCore.Models.DBModel;
+﻿using AppCore.Controllers.commons;
+using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
 using Microsoft.Extensions.Logging;
 using System;
@@ -31,6 +32,48 @@ namespace AppCore.Business
                     return seodata;
                 }
                 return seo;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
+        public async Task<Seo> DeleteSeoWithObjectIdAsync(Guid objectId)
+        {
+            try
+            {
+                IEnumerable<Seo> Seos = _uow.GetRepository<Seo>().Get((item) => item.ObjectId == objectId);
+                Seo aFirst = new Seo();
+                if (Seos != null)
+                {
+                    aFirst = Seos.FirstOrDefault();
+                }
+                
+                if (aFirst != null)
+                {
+                    _uow.GetRepository<Seo>().Delete(aFirst.Id);
+                }
+                return await Task.FromResult(aFirst);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
+        public async Task<Seo> DeleteSeoAsync(ReqDeleteSeo reqDelete)
+        {
+            try
+            {
+                var seo = new Seo
+                {
+                    Id = reqDelete.Id
+                };
+                _uow.GetRepository<Seo>().DeleteAsync(seo);
+                return await Task.FromResult(seo);
             }
             catch (Exception ex)
             {

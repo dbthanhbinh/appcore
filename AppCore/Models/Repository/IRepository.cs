@@ -18,7 +18,7 @@ namespace AppCore.Models.Repository
         void Delete(object id);
         void Delete(params T[] entities);
         void Delete(IEnumerable<T> entities);
-        void DeletePostAsync(T entity);
+        void DeleteAsync(T entity);
 
 
         void Update(T entity);

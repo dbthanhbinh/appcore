@@ -72,7 +72,7 @@ namespace AppCore.Models.Repository
             _dbSet.RemoveRange(entities);
         }
 
-        public void DeletePostAsync(T entity)
+        public void DeleteAsync(T entity)
         {
             var existing = _dbSet.Find(entity);
             if (existing != null) _dbSet.Remove(existing);
