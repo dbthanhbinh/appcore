@@ -17,6 +17,8 @@ import Login from './components/users/Login'
 import NotFound from './components/Notfound/404'
 import Media from './components/medias'
 
+import FLayout from './frontend/layouts/Layout'
+
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const history = createBrowserHistory({ basename: baseUrl });
@@ -30,7 +32,11 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         {/* For Front end */}
-        <AppRoute exact path='/' component={ Home } layout={ Layout }/>
+        <FLayout>
+          <Route exact path='/' component={ Home } />
+        </FLayout>
+
+        {/* <AppRoute exact path='/' component={ Home } layout={ Layout }/> */}
         <AppRoute exact path='/posts' component={ PostApp } layout={ Layout }/>
         <AppRoute exact path='/categories' component={ Category } layout={ Layout } />
         <AppRoute exact path='/categories/edit/:id' component={ Category } layout={ Layout } />

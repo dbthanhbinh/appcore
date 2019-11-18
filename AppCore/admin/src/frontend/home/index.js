@@ -11,24 +11,12 @@ class Home extends React.Component{
         super(props)
     }
 
-    componentDidMount(){
-        // let payload = {
-        //     url: 'SimCard/getAll',
-        //     body: {}
-        // }
-        // this.CategoryActions.getListItems(payload, (err, result)=> {
-        //     if(err) return
-        //     let resultData = Utils.getResApi(result)
-        //     resultData = Utils.sortList(resultData, 'desc')  // To sort list
-        //     this.props.fetchCategory(resultData)
-        // })
-    }
+    componentDidMount(){}
 
     render(){
         return(
             <React.Fragment>
-                <span>Hom page</span>
-                <ItemList />
+                Home
             </React.Fragment>
         )
     }
