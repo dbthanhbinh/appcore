@@ -11,6 +11,13 @@ var Utils = {
         }
         return resultData
     },
+    getResTaskApi: (result) => {
+        let resultData = null
+        if(result && result.statusCode === 200 && result.success === 'Success'){
+            resultData = result.data.result
+        }
+        return resultData
+    },
     getResApi: (result) => {
         let resultData = null
         if(result && result.statusCode === 200 && result.success === 'Success'){

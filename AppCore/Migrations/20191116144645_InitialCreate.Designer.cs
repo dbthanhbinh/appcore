@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(AppsContext))]
-    [Migration("20191112173539_InitialCreate")]
+    [Migration("20191116144645_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -133,10 +133,6 @@ namespace AppCore.Migrations
 
                     b.Property<Guid>("ObjectId");
 
-                    b.Property<Guid?>("PostId");
-
-                    b.Property<Guid?>("PostId1");
-
                     b.Property<string>("SeoDescription");
 
                     b.Property<string>("SeoKeys");
@@ -145,12 +141,29 @@ namespace AppCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("PostId1")
-                        .IsUnique();
-
                     b.ToTable("Seo");
+                });
+
+            modelBuilder.Entity("AppCore.Models.DBModel.SimCard", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<DateTime>("Modified");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Price");
+
+                    b.Property<string>("Supplier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SimCard");
                 });
 
             modelBuilder.Entity("AppCore.Models.DBModel.User", b =>
@@ -177,18 +190,6 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("AppCore.Models.DBModel.Seo", b =>
-                {
-                    b.HasOne("AppCore.Models.DBModel.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId");
-
-                    b.HasOne("AppCore.Models.DBModel.Post")
-                        .WithOne("Seo")
-                        .HasForeignKey("AppCore.Models.DBModel.Seo", "PostId1")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -83,6 +83,7 @@ namespace AppCore
             services.AddScoped<IObjectMediaLogic, ObjectMediaLogic>();
             services.AddScoped<ISeoLogic, SeoLogic>();
             services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<ISimCardLogic, SimCardLogic>();
 
             services.AddLogging(config =>
             {

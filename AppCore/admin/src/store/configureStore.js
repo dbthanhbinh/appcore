@@ -5,13 +5,17 @@ import * as Post from './Post'
 import * as Category from './Category'
 import * as Tag from './Tag'
 import * as User from './User'
+import * as Media from './Media'
+import * as SimCard from './SimCard'
 
 export default function configureStore(history, initialState) {
   const reducers = {
-    items: Post.reducer,
+    postData: Post.reducer,
     categoryData: Category.reducer,
-    tagList: Tag.reducer,
-    users: User.reducer
+    tagData: Tag.reducer,
+    userData: User.reducer,
+    mediaData: Media.reducer,
+    simCardData: SimCard.reducer
   };
 
   const middleware = [

@@ -9,12 +9,13 @@ import { Route } from "react-router-dom"
 
 import Layout from './components/layouts/Layout'
 import UnLayout from './components/layouts/UnLayout'
-import Home from './components/Home'
+import Home from './frontend/home'
 import PostApp from './components/posts'
 import Category from './components/categories'
 import Register from './components/users/Register'
 import Login from './components/users/Login'
 import NotFound from './components/Notfound/404'
+import Media from './components/medias'
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -28,10 +29,15 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
+        {/* For Front end */}
         <AppRoute exact path='/' component={ Home } layout={ Layout }/>
         <AppRoute exact path='/posts' component={ PostApp } layout={ Layout }/>
         <AppRoute exact path='/categories' component={ Category } layout={ Layout } />
         <AppRoute exact path='/categories/edit/:id' component={ Category } layout={ Layout } />
+        <AppRoute exact path='/medias' component={ Media } layout={ Layout }/>
+        
+        {/* For backend admin */}
+
         {/* None protected route */}
         <UnLayout>
           <Route path='/user/register' component={ Register } />

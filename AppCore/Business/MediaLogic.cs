@@ -4,6 +4,7 @@ using FileService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AppCore.Business
@@ -45,6 +46,7 @@ namespace AppCore.Business
                         media.Type = uploaded.ContentType;
                     }
                     await _uow.GetRepository<Media>().AddAsync(media);
+                    _uow.SaveChanges();
                     return media;
                 }
                 return media;
@@ -72,6 +74,12 @@ namespace AppCore.Business
                 _logger.LogError(ex.Message.ToString());
                 throw ex;
             }
+        }
+
+        // Get all media
+        public List<Media> GetAll()
+        {
+            return _uow.GetRepository<Media>().GetAll();
         }
     }
 }

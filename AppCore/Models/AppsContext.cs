@@ -12,5 +12,6 @@ namespace AppCore.Models
         DbSet<ObjectMedia> ObjectMedia { get; set; }
         DbSet<Seo> Seo { get; set; }
         DbSet<User> User { get; set; }
+        DbSet<SimCard> SimCard { get; set; }
     }
 }
