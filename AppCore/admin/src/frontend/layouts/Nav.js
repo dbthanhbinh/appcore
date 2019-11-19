@@ -6,13 +6,16 @@ const Navitem = () => {
         <Fragment>
             <Nav>
                 <Nav.Item>
-                    <Nav.Link href='#'>Link1</Nav.Link>
+                    <Nav.Link href='#'>Trang chủ</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link href='#'>Link2</Nav.Link>
+                    <Nav.Link href='#'>Cam kết</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link href='#'>Link3</Nav.Link>
+                    <Nav.Link href='#'>Thanh toán</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link href='#'>Liên hệ</Nav.Link>
                 </Nav.Item>
             </Nav>
         </Fragment>

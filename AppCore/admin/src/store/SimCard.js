@@ -17,9 +17,16 @@ export const reducer = (state, action) => {
     state = state || initialState
     switch(action.type){
         case FETCH_SIMCARD:
-            let { mediaList } = action.payload
-            state.mediaData.mediaList = mediaList
-            return Object.assign({}, state)
+            let { simCardList } = action.payload
+            return {
+                ...state,
+                simCardData: {
+                  ...state.simCardData,
+                  simCardList: {
+                    ...state.simCardData.simCardList
+                  }                  
+                }
+            }
         default:
             return state
     }

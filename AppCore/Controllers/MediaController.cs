@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using FileService;
 using AppCore.Controllers.commons;
 using System.Collections;
-using ExtensionService;
 
 namespace AppCore.Controllers
 {
@@ -48,9 +47,6 @@ namespace AppCore.Controllers
         public ActionResult GetAll()
         {
             // My test open excel
-            DoExtensionFile doExtensionFile = new DoExtensionFile();
-            doExtensionFile.ReadExcelFile();
-
             object a = _mediaLogic.GetAll();
             return Ok(new BaseResponse(a));
         }

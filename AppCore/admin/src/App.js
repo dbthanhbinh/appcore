@@ -45,11 +45,11 @@ function App() {
         {/* For backend admin */}
 
         {/* None protected route */}
-        <UnLayout>
+        {/* <UnLayout>
           <Route path='/user/register' component={ Register } />
           <Route path='/user/login' component={ Login } />
-          {/* <Route path="*" component={ NotFound } /> */}
-        </UnLayout>
+          <Route path="*" component={ NotFound } />
+        </UnLayout> */}
       </BrowserRouter>
     </Provider>
   )

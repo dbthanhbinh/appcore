@@ -31,8 +31,8 @@ namespace AppCore.Controllers
         /*
          * Get all SimCard
          */
-        [HttpGet("getAll", Name = "GetAll")]
-        public ActionResult GetAll()
+        [HttpGet("getAll", Name = "GetAllSimCard")]
+        public ActionResult GetAllSimCard()
         {
             object a = _simCardLogic.GetAll();
             return Ok(new BaseResponse(a));

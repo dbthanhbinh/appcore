@@ -10,8 +10,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppCore", "AppCore\AppCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileService", "FileService\FileService.csproj", "{7E9689E5-DD02-41E1-A63F-E5FD95278081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionService", "ExtensionService\ExtensionService.csproj", "{53E079B6-D076-4EBA-8F20-E52C465E60F0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,10 +24,6 @@ Global
 		{7E9689E5-DD02-41E1-A63F-E5FD95278081}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E9689E5-DD02-41E1-A63F-E5FD95278081}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E9689E5-DD02-41E1-A63F-E5FD95278081}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53E079B6-D076-4EBA-8F20-E52C465E60F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53E079B6-D076-4EBA-8F20-E52C465E60F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53E079B6-D076-4EBA-8F20-E52C465E60F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53E079B6-D076-4EBA-8F20-E52C465E60F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
