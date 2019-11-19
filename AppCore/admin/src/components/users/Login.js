@@ -80,8 +80,8 @@ class login extends Component{
 const Login = withFormBehaviors(login, Model)
 
 function mapStateToProps(state) {
-    let { users } = state.users
-    return { users }
+    let { userData } = state.userData
+    return { userData }
 }
 
 export default connect(

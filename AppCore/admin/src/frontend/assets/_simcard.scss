@@ -1,0 +1,27 @@
+.suplier-list {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+
+    .suplier-item {
+        display: inline-flex;
+        margin: 0 2px;
+        width: 20%;
+        text-align: center;
+        background: #ffffff;
+
+        border-radius: 3px;
+        border: 1px solid $border-color;
+        padding: 5px 20px;
+        &:hover {
+            border-color: $color-red;
+            background: #fef3df;
+        }
+
+        .suplier-item-des {
+            
+        }
+    }
+}

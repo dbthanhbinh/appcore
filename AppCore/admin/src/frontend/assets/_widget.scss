@@ -1,0 +1,31 @@
+.box-widget {
+    background: #ffffff;
+    .box-widget-header {
+        background: $box-widget-header-color-red;
+        color: $main-color;
+        padding: 10px;
+
+        text-transform: uppercase;
+    }
+
+    .box-widget-content {
+        p {
+            margin: 0;
+            padding: 0;
+        }
+        .Ulist {
+            margin: 0;
+            padding: 0;
+
+            li {
+                list-style: none;
+                border-bottom: 1px solid $border-color;
+            }
+        }
+
+        .item {
+            padding: 5px 0 5px 10px;
+            border-bottom: 1px solid $border-color;
+        }
+    }
+}
