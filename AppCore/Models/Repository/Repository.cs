@@ -14,12 +14,28 @@ namespace AppCore.Models.Repository
     {
         public Repository(AppsContext context) : base(context)
         {}
-
+                
         public List<T> GetAll()
         {
             return _dbSet.ToList();
         }
-               
+
+        public T Get(object id)
+        {
+            return _dbSet.Find(id);
+        }
+
+        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
+        {
+            return _dbSet.Where(predicate).AsEnumerable();
+        }
+
+        public List<T> GetByFilter(Expression<Func<T, bool>> predicate)
+        {
+            return _dbSet.Where(predicate).ToList();
+        }
+
+        // For Add
         public void Add(T entity)
         {
             _dbSet.Add(entity);
@@ -36,14 +52,19 @@ namespace AppCore.Models.Repository
             _dbSet.AddRange(entities);
         }
 
+        public async Task<bool> AddAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+            return true;
+        }
 
+        // For Delete
         public void Delete(T entity)
         {
             var existing = _dbSet.Find(entity);
             if (existing != null) _dbSet.Remove(existing);
         }
-
-
+        
         public void Delete(object id)
         {
             var typeInfo = typeof(T).GetTypeInfo();
@@ -78,16 +99,7 @@ namespace AppCore.Models.Repository
             if (existing != null) _dbSet.Remove(existing);
         }
 
-        public T Get(object id)
-        {
-            return _dbSet.Find(id);
-        }
-
-        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
-        {
-            return _dbSet.Where(predicate).AsEnumerable();
-        }
-
+        // For Update
         public void Update(T entity)
         {
             _dbSet.Update(entity);
@@ -97,8 +109,7 @@ namespace AppCore.Models.Repository
         {
             _dbSet.UpdateRange(entities);
         }
-
-
+        
         public void Update(IEnumerable<T> entities)
         {
             _dbSet.UpdateRange(entities);
@@ -107,12 +118,6 @@ namespace AppCore.Models.Repository
         public void Dispose()
         {
             _dbContext?.Dispose();
-        }
-
-        public async Task<bool> AddAsync(T entity)
-        {
-            await _dbSet.AddAsync(entity);
-            return true;
-        }
+        }        
     }
 }

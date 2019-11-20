@@ -106,7 +106,7 @@ namespace AppCore.Migrations
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Price = table.Column<string>(nullable: true),
+                    Price = table.Column<int>(nullable: false),
                     Supplier = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

@@ -37,5 +37,21 @@ namespace AppCore.Controllers
             object a = _simCardLogic.GetAll();
             return Ok(new BaseResponse(a));
         }
+
+        /**
+         * FilterSimCardBy
+         * supplier = Supplier
+        */
+        [HttpPost("filterSimCardBy", Name = "FilterSimCardBy")]
+        public async Task<ActionResult> FilterSimCardBy([FromBody] ReqFilterSimCard reqFilterSimCard)
+        {
+            object result = null;
+            if (reqFilterSimCard != null)
+            {   
+                result = await _simCardLogic.FilterSimCardBy(reqFilterSimCard);
+            }
+
+            return Ok(new BaseResponse(result));
+        }
     }
 }

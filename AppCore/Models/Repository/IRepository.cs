@@ -12,6 +12,7 @@ namespace AppCore.Models.Repository
         void Add(T entity);
         void Add(params T[] entities);
         void Add(IEnumerable<T> entities);
+        Task<bool> AddAsync(T entity);
 
 
         void Delete(T entity);
@@ -28,7 +29,6 @@ namespace AppCore.Models.Repository
         T Get(object id);
         IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
         List<T> GetAll();
-
-        Task<bool> AddAsync(T entity);
+        List<T> GetByFilter(Expression<Func<T, bool>> predicate);        
     }
 }

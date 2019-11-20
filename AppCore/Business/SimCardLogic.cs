@@ -1,4 +1,5 @@
-﻿using AppCore.Models.DBModel;
+﻿using AppCore.Controllers.commons;
+using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -88,7 +89,7 @@ namespace AppCore.Business
         {
             try
             {
-                string strDoc = @"C:\Users\Public\Downloads\Book1.xlsx";
+                string strDoc = @"C:\Users\binh.trinh\Downloads\Book1.xlsx";
                 //Lets open the existing excel file and read through its content . Open the excel using openxml sdk
                 using (SpreadsheetDocument doc = SpreadsheetDocument.Open(strDoc, false))
                 {
@@ -153,7 +154,7 @@ namespace AppCore.Business
                                         }
                                         else if (firstChar == "C")
                                         {
-                                            simCardItem.Price = holdData;
+                                            simCardItem.Price = int.Parse(holdData);
                                         }
                                     } else
                                     {
@@ -191,6 +192,51 @@ namespace AppCore.Business
         public List<SimCard> GetAll()
         {
             return _uow.GetRepository<SimCard>().GetAll();
+        }
+
+        public async Task<List<SimCard>> FilterSimCardBy(ReqFilterSimCard reqFilterSimCard)
+        {
+            string supplier = reqFilterSimCard.Supplier.ToString();
+            int minPrice = reqFilterSimCard.MinPrice;
+            int maxPrice = reqFilterSimCard.MaxPrice;
+            string FirstNumbers = reqFilterSimCard.FirstNumbers.ToString();
+            string EndNumbers = reqFilterSimCard.EndNumbers.ToString();
+            List<string> ExceptNumbers = reqFilterSimCard.ExceptNumbers;
+
+            // Case 1: Filter by supplier
+            // List <SimCard> result = this.GetFilterSimCardBySupplier(supplier);
+
+
+            List<SimCard> result = this.GetFilterSimCardByPrice(0, 150);
+
+            return await Task.FromResult(result);
+        }
+
+        // Logic
+
+        public List<SimCard> GetFilterSimCardBySupplier(string supplier)
+        {
+            return _uow.GetRepository<SimCard>().GetByFilter((x) => x.Supplier.Contains(supplier.ToString()));
+        }
+
+        public List<SimCard> GetFilterSimCardByPrice(int minPrice, int maxPrice)
+        {
+            return _uow.GetRepository<SimCard>().GetByFilter((x) => x.Price >= minPrice && x.Price <= maxPrice);
+        }
+
+        public List<SimCard> GetFilterSimCardByFirstNumber(string firstNumber)
+        {
+            return _uow.GetRepository<SimCard>().GetByFilter((x) => x.Name.StartsWith(firstNumber));
+        }
+
+        public List<SimCard> GetFilterSimCardByEndNumber(string firstNumber)
+        {
+            return _uow.GetRepository<SimCard>().GetByFilter((x) => x.Name.EndsWith(firstNumber));
+        }
+
+        public List<SimCard> GetFilterSimCardByExcept(string firstNumber)
+        {
+            return _uow.GetRepository<SimCard>().GetByFilter((x) => !x.Name.Contains(firstNumber));
         }
     }
 }
