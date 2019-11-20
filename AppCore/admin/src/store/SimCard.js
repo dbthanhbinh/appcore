@@ -18,15 +18,14 @@ export const reducer = (state, action) => {
     switch(action.type){
         case FETCH_SIMCARD:
             let { simCardList } = action.payload
-            return {
+            let temp = {
                 ...state,
                 simCardData: {
                   ...state.simCardData,
-                  simCardList: {
-                    ...state.simCardData.simCardList
-                  }                  
+                  simCardList         
                 }
             }
+            return temp;
         default:
             return state
     }

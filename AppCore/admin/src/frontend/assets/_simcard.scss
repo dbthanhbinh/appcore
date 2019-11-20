@@ -25,3 +25,22 @@
         }
     }
 }
+
+.book-form-modal {
+    .modal-dialog {
+        max-width: 30vw!important;
+        .modal-header {
+            padding: 5px 20px;
+        }
+
+        .modal-body {
+            .group-info {
+                p {
+                    margin-bottom: 5px;
+                    padding-bottom: 5px;
+                    border-bottom: 1px solid $border-color;
+                }
+            }
+        }
+    }
+}

@@ -1,13 +1,10 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
 import { Table } from 'react-bootstrap'
-import LoadingItem from '../../components/commons/LoadingItem'
+import LoadingItem from '../../../../components/commons/LoadingItem'
+import SimCardUtil from '../commons/utils'
+import BookForm from './bookForm'
 
-/**
- * Input: items: [] => array of list item
- * @param {*} props 
- * Output: render list of Item as listgroup item
- */
 class ItemList extends React.Component{
     constructor(props){
         super(props)
@@ -19,6 +16,7 @@ class ItemList extends React.Component{
     render(){
         let { items, currentRoute } = this.props
         let { isLoading } = this.state
+        let i = 1;
         return(
             isLoading ? <LoadingItem />
             : <Fragment>
@@ -27,7 +25,8 @@ class ItemList extends React.Component{
                         <tr>
                             <th>No</th>
                             <th>Name</th>
-                            <th>Slug</th>
+                            <th>Price</th>
+                            <th>Supplier</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -36,12 +35,16 @@ class ItemList extends React.Component{
                             items && !_.isEmpty(items) && items.map((item) => {
                                 return (
                                     <tr key={ item.id }>
-                                        <td>00</td>
+                                        <td>{ i++ }</td>
                                         <td>{ item.name }</td>
-                                        <td>{ item.slug }</td>
+                                        <td>{ SimCardUtil.getPrice(item.price) }</td>
+                                        <td>{ SimCardUtil.getSupplier(item.supplier) }</td>
                                         <td>
-                                            <span as='a' onClick={()=>this.props.onDeleteCategory(item.id)}>Del</span> |
-                                            <a href={`${currentRoute}/edit/${item.id}`}>Edit</a>
+                                            <BookForm 
+                                                name = { item.name }
+                                                price = { SimCardUtil.getPrice(item.price) }
+                                                supplier = { SimCardUtil.getSupplier(item.supplier) }
+                                            /> 
                                         </td>
                                     </tr>
                                 )
