@@ -6,22 +6,29 @@ const SortTypes = {
 var Utils = {
     getResListApi: (result) => {
         let resultData = null
-        if(result && result.statusCode === 200 && result.success === 'Success'){
+        if(result && result.statusCode === 200 && result.success === 'Success' && result.data && result.data.postData){
             resultData = result.data.postData
         }
         return resultData
     },
     getResTaskApi: (result) => {
         let resultData = null
-        if(result && result.statusCode === 200 && result.success === 'Success'){
+        if(result && result.statusCode === 200 && result.success === 'Success' && result.data && result.data.result){
             resultData = result.data.result
         }
         return resultData
     },
     getResApi: (result) => {
         let resultData = null
-        if(result && result.statusCode === 200 && result.success === 'Success'){
+        if(result && result.statusCode === 200 && result.success === 'Success' && result.data){
             resultData = result.data
+        }
+        return resultData
+    },
+    getResPagingApi: (result) => {
+        let resultData = null
+        if(result && result.statusCode === 200 && result.success === 'Success' && result.paging){
+            resultData = result.paging
         }
         return resultData
     },

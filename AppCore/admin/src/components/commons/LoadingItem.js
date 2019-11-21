@@ -10,6 +10,19 @@ class LoadingItem extends Component {
         this.state = {
             isShow: true
         }
+        this.handleSubmitFormDataEvent = this.handleSubmitFormDataEvent.bind(this)
+    }
+
+    handleSubmitFormDataEvent(payload){
+        if(!_.isNull(payload) && !_.isEmpty(payload)){
+            this.setState(()=>({
+                isShow: payload.isLoading
+            }))
+        }
+    }
+
+    componentDidMount(){
+        eventEmitter.on('handle-loading-list-simcart', this.handleSubmitFormDataEvent)
     }
     
     render(){

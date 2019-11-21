@@ -198,22 +198,43 @@ namespace AppCore.Business
 
         public async Task<PagingResponse> FilterSimCardBy(ReqFilterSimCard reqFilterSimCard)
         {
-            string supplier = reqFilterSimCard.Supplier.ToString();
-            int minPrice = reqFilterSimCard.MinPrice;
-            int maxPrice = reqFilterSimCard.MaxPrice;
-            string FirstNumbers = reqFilterSimCard.FirstNumbers;
-            string EndNumbers = reqFilterSimCard.EndNumbers;
-            List<string> ExceptNumbers = reqFilterSimCard.ExceptNumbers;
+            try
+            {
+                _logger.LogInformation("Begin filter simcard");
+                string supplier = null;
+                if (reqFilterSimCard.Supplier != null)
+                {
+                    supplier = reqFilterSimCard.Supplier.ToString();
+                }
+                int minPrice = reqFilterSimCard.MinPrice;
+                int maxPrice = reqFilterSimCard.MaxPrice;
+                int currentPage = reqFilterSimCard.CurrentPage;
+                int pageSize = reqFilterSimCard.PageSize;
+                string firstNumbers = reqFilterSimCard.FirstNumbers;
+                string endNumbers = reqFilterSimCard.EndNumbers;
+                List<string> exceptNumbers = reqFilterSimCard.ExceptNumbers;
 
-            // Case 1: Filter by supplier
-            List <SimCard> result = this.GetFilterSimCardBySupplier(supplier);
+                // Default get all supplier
+                List<SimCard> result = null;
+                if (supplier != null)
+                {
+                    result = this.GetFilterSimCardBySupplier(supplier);
+                }
+                else
+                {
+                    result = this.GetAll();
+                }
+                var resultPg = PagingHelper<SimCard>.GetPagingList(result, currentPage, pageSize);
+                await Task.FromResult(resultPg);
+                _logger.LogInformation("End filter simcard");
 
-
-            //List<SimCard> result = this.GetFilterSimCardByPrice(0, 150);
-
-            var resultPg = PagingHelper<SimCard>.GetPagingList(result, 1, 5);
-            await Task.FromResult(resultPg);
-            return resultPg;
+                return resultPg;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
         }
         
         // Logic

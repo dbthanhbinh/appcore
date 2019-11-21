@@ -12,6 +12,8 @@ namespace AppCore.Controllers.commons
     public class ReqFilterSimCard
     {
         public virtual string Supplier { get; set; }
+        public virtual int CurrentPage { get; set; } = 1;
+        public virtual int PageSize { get; set; } = 50;
         public virtual int MinPrice { get; set; }
         public virtual int MaxPrice { get; set; }
         public virtual string FirstNumbers { get; set; }

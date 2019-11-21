@@ -47,14 +47,16 @@ namespace AppCore.Controllers.commons
 
     public class BasePagingResponse
     {
+        public int TotalRecords { get; set; }
         public int TotalPages { get; set; }
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public bool IsPaging { get; set; }
 
-        public BasePagingResponse(int totalPages, int currentPage, int pageSize, bool isPaging)
+        public BasePagingResponse(int totalPages, int totalRecords, int currentPage, int pageSize, bool isPaging)
         {
             this.TotalPages = totalPages;
+            this.TotalRecords = totalRecords;
             this.CurrentPage = currentPage;
             this.PageSize = pageSize;
             this.IsPaging = isPaging;

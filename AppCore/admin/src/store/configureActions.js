@@ -8,7 +8,7 @@ class ConfigActions{
     return this.RestConfig.get(payload, cb)
   }
 
-  getFilterItemsBy(payload, cb) {
+  filterItemsBy(payload, cb) {
     return this.RestConfig.post(payload, cb)
   }
 

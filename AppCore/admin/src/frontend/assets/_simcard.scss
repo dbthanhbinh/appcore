@@ -27,6 +27,36 @@
     }
 }
 
+.container-list-simcard {
+    clear: both;
+    width: 100%;
+    position: relative;
+
+    .list-simcard-section {
+        position: relative;
+        width: 100%;   
+    }
+
+    .page-loading-item {
+        position: absolute !important;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background: #000000;
+        opacity: 0.3;
+        text-align: center;
+        z-index: 999;
+        .spinner-border {
+            position: relative;
+            top: 43%;
+            z-index: 10000;
+        }
+    }
+
+    .pagination-section {}
+}
+
 .book-form-modal {
     .modal-dialog {
         max-width: 30vw!important;

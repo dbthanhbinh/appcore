@@ -4,6 +4,19 @@ const SortTypes = {
 }
 
 var Utils = {
+    getDefaultConfigRequestFilter: () => {
+        return {
+            Supplier: null,
+            MinPrice: 0,
+            MaxPrice: 0,
+            CurrentPage: 1,
+            PageSize: 5,
+            FirstNumbers: null,
+            EndNumbers: null,
+            ExceptNumbers: []
+        }
+    },
+
     getPrice: (price) => {
         let resultPrice = null
         if(price){

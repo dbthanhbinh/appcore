@@ -8,18 +8,14 @@ import BookForm from './bookForm'
 class ItemList extends React.Component{
     constructor(props){
         super(props)
-        this.state = {
-            isLoading: false
-        }
+        this.state = {}
     }
 
     render(){
         let { items, currentRoute } = this.props
-        let { isLoading } = this.state
         let i = 1;
         return(
-            isLoading ? <LoadingItem />
-            : <Fragment>
+            <Fragment>
                 <Table striped bordered hover size="sm">
                     <thead>
                         <tr>
