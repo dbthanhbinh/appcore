@@ -1,8 +1,10 @@
 ﻿using AppCore.Controllers.commons;
+using AppCore.Helpers;
 using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -89,7 +91,7 @@ namespace AppCore.Business
         {
             try
             {
-                string strDoc = @"C:\Users\binh.trinh\Downloads\Book1.xlsx";
+                string strDoc = @"C:\Users\Public\Downloads\Book1.xlsx";
                 //Lets open the existing excel file and read through its content . Open the excel using openxml sdk
                 using (SpreadsheetDocument doc = SpreadsheetDocument.Open(strDoc, false))
                 {
@@ -194,25 +196,48 @@ namespace AppCore.Business
             return _uow.GetRepository<SimCard>().GetAll();
         }
 
-        public async Task<List<SimCard>> FilterSimCardBy(ReqFilterSimCard reqFilterSimCard)
+        public async Task<PagingResponse> FilterSimCardBy(ReqFilterSimCard reqFilterSimCard)
         {
             string supplier = reqFilterSimCard.Supplier.ToString();
             int minPrice = reqFilterSimCard.MinPrice;
             int maxPrice = reqFilterSimCard.MaxPrice;
-            string FirstNumbers = reqFilterSimCard.FirstNumbers.ToString();
-            string EndNumbers = reqFilterSimCard.EndNumbers.ToString();
+            string FirstNumbers = reqFilterSimCard.FirstNumbers;
+            string EndNumbers = reqFilterSimCard.EndNumbers;
             List<string> ExceptNumbers = reqFilterSimCard.ExceptNumbers;
 
             // Case 1: Filter by supplier
-            // List <SimCard> result = this.GetFilterSimCardBySupplier(supplier);
+            List <SimCard> result = this.GetFilterSimCardBySupplier(supplier);
 
 
-            List<SimCard> result = this.GetFilterSimCardByPrice(0, 150);
+            //List<SimCard> result = this.GetFilterSimCardByPrice(0, 150);
 
-            return await Task.FromResult(result);
+            var resultPg = PagingHelper<SimCard>.GetPagingList(result, 1, 5);
+            await Task.FromResult(resultPg);
+            return resultPg;
         }
-
+        
         // Logic
+
+        public List<SimCard> getPagingList(List<SimCard> simCardList, int pageNumber)
+        {
+            List<SimCard> resultPg = null;
+            if(simCardList.Count < 1)
+            {
+                return resultPg;
+            }
+            int pageSize = 5;
+            int toTalPages = simCardList.Count / pageSize;
+            int mode = simCardList.Count % pageSize;
+            if (mode > 1)
+            {
+                toTalPages++;
+            }
+            if (pageNumber >= 1 && pageNumber <= toTalPages)
+            {
+                resultPg = simCardList.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            }
+            return resultPg;
+        }
 
         public List<SimCard> GetFilterSimCardBySupplier(string supplier)
         {

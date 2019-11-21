@@ -18,6 +18,18 @@ var Utils = {
             resultSupplier = supplier
         }
         return resultSupplier
+    },
+
+    getSupplierData: () => {
+        return ["Viettel", "MobiFone", "Vinaphone", "Gmobile"]
+    },
+
+    getActiveSupplier: (key, defaultSupplier) => {
+        if(key && defaultSupplier) {
+            return (key === defaultSupplier) ? 'active' : ''
+        }
+
+        return ''
     }
 }
 

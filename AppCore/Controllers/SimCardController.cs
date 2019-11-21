@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppCore.Business;
 using AppCore.Controllers.commons;
+using AppCore.Helpers;
+using AppCore.Models.DBModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,13 +47,14 @@ namespace AppCore.Controllers
         [HttpPost("filterSimCardBy", Name = "FilterSimCardBy")]
         public async Task<ActionResult> FilterSimCardBy([FromBody] ReqFilterSimCard reqFilterSimCard)
         {
-            object result = null;
+            PagingResponse result = null;
             if (reqFilterSimCard != null)
             {   
                 result = await _simCardLogic.FilterSimCardBy(reqFilterSimCard);
             }
 
-            return Ok(new BaseResponse(result));
+            //List<SimCard> resultPg = PagingHelper<SimCard>.getPagingList(result, 1);
+            return Ok(new BaseResponse(result.Data, result.Paging));
         }
     }
 }

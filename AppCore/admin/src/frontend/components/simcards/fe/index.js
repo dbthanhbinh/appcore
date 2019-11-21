@@ -6,6 +6,7 @@ import { actionCreators } from '../../../../store/SimCard'
 import { Container, Row, Col } from 'react-bootstrap'
 import ItemList from './ItemList'
 import Utils from '../../../commons/utils'
+import SimCardUtil from '../commons/utils'
 import SimCardActions from '../../../../store/SimCardActions'
 
 class SimCard extends React.Component{
@@ -14,6 +15,7 @@ class SimCard extends React.Component{
         this.state = {
             supplierActive: null
         }
+        this.supplierActive = null
         this.SimCardActions = new SimCardActions()
     }
 
@@ -22,11 +24,19 @@ class SimCard extends React.Component{
             url: 'SimCard/getAll',
             body: {}
         }
-        this.filterListItems(payload)
+        this.getListItems(payload)
+    }
+
+    getListItems(payload){
+        this.SimCardActions.getListItems(payload, (err, result)=> {
+            if(err) return
+            let resultData = Utils.getResApi(result)
+            this.props.fetchSimCard(resultData)
+        })
     }
 
     filterListItems(payload){
-        this.SimCardActions.getListItems(payload, (err, result)=> {
+        this.SimCardActions.getFilterItemsBy(payload, (err, result)=> {
             if(err) return
             let resultData = Utils.getResApi(result)
             this.props.fetchSimCard(resultData)
@@ -36,10 +46,13 @@ class SimCard extends React.Component{
     filterSimCardBy(key){
         let state = this.state
         if(key){
+            this.supplierActive = key
             state.supplierActive = key
             let payload = {
-                url: 'SimCard/filterSimCardBy/',
-                body: {}
+                url: 'SimCard/filterSimCardBy',
+                body: {
+                    Supplier: key
+                }
             }
             this.filterListItems(payload)
         }
@@ -50,35 +63,35 @@ class SimCard extends React.Component{
         return(
             <React.Fragment>
                 <div className='suplier-list'> 
-                    <div className='suplier-item' onClick={() => this.filterSimCardBy('Viettel')} >
+                    <div className={`suplier-item ${ SimCardUtil.getActiveSupplier(this.supplierActive, 'Viettel') }`} onClick={() => this.filterSimCardBy('Viettel')} >
                         <div className='suplier-item-des'>
                             <div className='suplier-logo'>
                                 <img src='images/viettel.svg' alt='Sim Viettel' width='40' />
                             </div>
                         </div>
                     </div>
-                    <div className='suplier-item'  onClick={() => this.filterSimCardBy('Mobifone')} >
+                    <div className={`suplier-item ${ SimCardUtil.getActiveSupplier(this.supplierActive, 'MobiFone') }`}  onClick={() => this.filterSimCardBy('MobiFone')} >
                         <div className='suplier-item-des'>
                         <div className='suplier-logo'>
                                     <img src='images/mobifone_1.svg' alt='Sim Viettel' width='40' />
                                 </div>
                         </div>
                     </div>
-                    <div className='suplier-item' onClick={() => this.filterSimCardBy('Vietnammobile')} >
+                    <div className={`suplier-item ${ SimCardUtil.getActiveSupplier(this.supplierActive, 'Vietnamobile') }`} onClick={() => this.filterSimCardBy('Vietnamobile')} >
                         <div className='suplier-item-des'>
                         <div className='suplier-logo'>
                                     <img src='images/vietnammobile.svg' alt='Sim Viettel' width='40' />
                                 </div>
                         </div>
                     </div>
-                    <div className='suplier-item' onClick={() => this.filterSimCardBy('Vinaphone')} >
+                    <div className={`suplier-item ${ SimCardUtil.getActiveSupplier(this.supplierActive, 'Vinaphone') }`} onClick={() => this.filterSimCardBy('Vinaphone')} >
                         <div className='suplier-item-des'>
                         <div className='suplier-logo'>
                                     <img src='images/vinaphone_1.svg' alt='Sim Viettel' width='40' />
                                 </div>
                         </div>
                     </div>
-                    <div className='suplier-item' onClick={() => this.filterSimCardBy('Gmobile')} >
+                    <div className={`suplier-item ${ SimCardUtil.getActiveSupplier(this.supplierActive, 'Gmobile') }`} onClick={() => this.filterSimCardBy('Gmobile')} >
                         <div className='suplier-item-des'>
                         <div className='suplier-logo'>
                                     <img src='images/gmobile.svg' alt='Sim Viettel' width='40' />

@@ -8,6 +8,10 @@ class ConfigActions{
     return this.RestConfig.get(payload, cb)
   }
 
+  getFilterItemsBy(payload, cb) {
+    return this.RestConfig.post(payload, cb)
+  }
+
   deleteItem(payload, cb) {
     return this.RestConfig.delete(payload, cb)
   }

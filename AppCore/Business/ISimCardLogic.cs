@@ -1,5 +1,6 @@
 ﻿using AppCore.Controllers.commons;
 using AppCore.Models.DBModel;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace AppCore.Business
     public interface ISimCardLogic : IBaseLogic<SimCard>
     {
         void ReadExcelFile();
-        Task<List<SimCard>> FilterSimCardBy(ReqFilterSimCard reqFilterSimCard);
+        Task<PagingResponse> FilterSimCardBy(ReqFilterSimCard reqFilterSimCard);
     }
 }
