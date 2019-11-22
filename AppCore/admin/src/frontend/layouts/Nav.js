@@ -9,13 +9,13 @@ const Navitem = () => {
                     <Nav.Link href='#'>Trang chủ</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link href='#'>Cam kết</Nav.Link>
+                    <Nav.Link href='/about'>About</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link href='/contact'>Contact</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                     <Nav.Link href='#'>Thanh toán</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link href='#'>Liên hệ</Nav.Link>
                 </Nav.Item>
             </Nav>
         </Fragment>

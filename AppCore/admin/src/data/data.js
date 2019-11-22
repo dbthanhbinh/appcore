@@ -27,3 +27,31 @@ export const dataCategories = [
         name: 'Cat 05'
     }
 ]
+
+export const publicSetting = {
+    companyInfomations: {
+        companyName: null,
+        companySlogan: null,
+        companyAddress: null,
+        companyEmail: null,
+        companyPhone: null,
+        companyHotline: null,
+        companyCopyright: null,
+        companyMap: null,
+        companyContactName: null,
+        googleAnalyticsCode: null
+    },
+    seoInfomations: {
+        seoTitle: 'Seo title',
+        seoKeys: 'Seo key',
+        seoDescription: 'Seo Descripttionss',
+        objectId: null,
+        canonical: null,
+        image: null
+    },
+    socialNetworkInfomations: {
+        facebookFanPage: null
+    },
+    supportInfomations: {},
+    agentSystemInfomations: {}
+}

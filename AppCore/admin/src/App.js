@@ -9,15 +9,16 @@ import { Route } from "react-router-dom"
 
 import Layout from './components/layouts/Layout'
 import UnLayout from './components/layouts/UnLayout'
-import Home from './frontend/home'
 import PostApp from './components/posts'
 import Category from './components/categories'
 import Register from './components/users/Register'
 import Login from './components/users/Login'
 import NotFound from './components/Notfound/404'
 import Media from './components/medias'
-
 import FLayout from './frontend/layouts/Layout'
+import Home from './frontend/home'
+import About from './frontend/pages/About'
+import Contact from './frontend/pages/Contact'
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -34,6 +35,8 @@ function App() {
         {/* For Front end */}
         <FLayout>
           <Route exact path='/' component={ Home } />
+          <Route exact path='/about' component={ About } />
+          <Route exact path='/contact' component={ Contact } />
         </FLayout>
 
         {/* <AppRoute exact path='/' component={ Home } layout={ Layout }/> */}

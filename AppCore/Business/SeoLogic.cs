@@ -81,5 +81,21 @@ namespace AppCore.Business
                 throw ex;
             }
         }
+
+        public async Task<Seo> GetSeoBySlug(string slug)
+        {
+            Seo seoVM = new Seo();
+            try
+            {
+                IEnumerable<Seo> enumerable = _uow.GetRepository<Seo>().Get((x) => x.Slug == slug);
+                seoVM = enumerable.FirstOrDefault();
+                return await Task.FromResult(seoVM);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
     }
 }
