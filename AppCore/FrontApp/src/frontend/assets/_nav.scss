@@ -1,0 +1,14 @@
+.app-nav {
+    .nav {
+        clear: both;
+        background: $nav-background;
+        margin-bottom: 15px;
+
+        .nav-item {
+            a {
+                color: $nav-color;
+                text-transform: uppercase;
+            }
+        }
+    }
+}

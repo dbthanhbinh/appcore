@@ -8,7 +8,7 @@ namespace FileService
     {
         public const long MAX_FILE_SIZE = 10485760;
         public const long MIN_FILE_SIZE = 0;
-        public const string UPLOADED = "Admin/public/Uploads";
+        public const string UPLOADED = "FrontApp/public/Uploads";
         public const string NOT_FOUND_FILE = "Please select file to upload.";
         public const string FILE_TYPE_NOt_ALLOW = "The file type is not allow.";
         public const string FILE_SIZE_TOO_BIG = "The file size is too big.";
