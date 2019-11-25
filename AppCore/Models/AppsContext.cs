@@ -13,5 +13,7 @@ namespace AppCore.Models
         DbSet<Seo> Seo { get; set; }
         DbSet<User> User { get; set; }
         DbSet<SimCard> SimCard { get; set; }
+        DbSet<Tag> Tag { get; set; }
+        DbSet<ObjectTag> ObjectTag { get; set; }
     }
 }

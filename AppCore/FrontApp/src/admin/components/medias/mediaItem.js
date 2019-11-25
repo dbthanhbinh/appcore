@@ -4,7 +4,7 @@ const MediaItem = (props) => {
     let { item } = props
     return(
         <Fragment>
-            <img src={`Uploads/${item.path}`} />
+            <img src={`Uploads/${item.path}`} alt='' />
             <span>{ item.name }</span>
         </Fragment>
     )

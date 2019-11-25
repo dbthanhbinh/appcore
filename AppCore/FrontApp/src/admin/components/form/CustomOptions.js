@@ -4,7 +4,7 @@ import { Form } from 'react-bootstrap'
 
 const CustomOptions = (props) => {
     let { categoryList, name, parentId, isEdit, currentCatId } = props
-    if(isEdit && currentCatId){
+    if(isEdit && currentCatId && categoryList){
         categoryList = categoryList.filter((f) => f.id !== currentCatId)
     }
     let labelParent = 'Select parent'

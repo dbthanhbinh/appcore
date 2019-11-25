@@ -84,6 +84,7 @@ namespace AppCore
             services.AddScoped<ISeoLogic, SeoLogic>();
             services.AddScoped<IUserLogic, UserLogic>();
             services.AddScoped<ISimCardLogic, SimCardLogic>();
+            services.AddScoped<ITagLogic, TagLogic>();
 
             services.AddLogging(config =>
             {

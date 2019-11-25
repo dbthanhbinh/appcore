@@ -4,7 +4,6 @@ import eventEmitter from '../../../../utils/eventEmitter'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../../../store/SimCard'
-import { Container, Row, Col } from 'react-bootstrap'
 import ItemList from './ItemList'
 import Utils from '../../../commons/utils'
 import SimCardUtil from '../commons/utils'
@@ -151,7 +150,6 @@ class SimCard extends React.Component{
                             items = { simCardData && simCardData.simCardList ? simCardData.simCardList : null }
                         />
                     </div>
-                    <div className='pagination-section'></div>
                     {
                         this.pagination && this.pagination.totalRecords > this.pagination.pageSize
                         ? <Pagination

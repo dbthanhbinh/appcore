@@ -1,165 +1,187 @@
-import React from 'react'
-import './tags.scss'
+import React, { Component, Fragment } from 'react'
+import _ from 'lodash'
+// Redux process
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../../store/Tag'
-// import { getItemList, addItemBase } from '../../../store/TagActions'
 
-const TagList = [
-    {id: 1, name: 'tag 1'},
-    {id: 2, name: 'tsag 2'},
-    {id: 3, name: 'tdag 3'},
-    {id: 4, name: 'tfag 4'},
-    {id: 5, name: 'tgag 5'},
-    {id: 6, name: 'tcag 6'},
-    {id: 7, name: 'tgag 7'},
-    {id: 8, name: 'thgag 8'},
-    {id: 9, name: 'tfasag 9'},
-    {id: 10, name: 'trưag 10'},
-    {id: 11, name: 'tadsag 11'},
-    {id: 12, name: 'tkkkag 12'},
-]
+import { Row, Col } from 'react-bootstrap'
+import TagList from './ItemList'
+import TagForm from './form'
+import Utils from '../../../apis/utils'
+import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel }
+from '../../../utils/FormUtils'
+import TagModel from '../models/addTag.model'
+import { TagDefined } from '../commons/Defined'
+import { withFormBehaviors } from '../form/form'
+import TagActions from '../../../store/TagActions'
 
-class tagsOptions extends React.Component{
+class Tag extends Component{
     constructor(props){
         super(props)
+        this.TagActions = new TagActions()
+        let Model = TagModel.model()
         this.state = {
-            defaultValue: '',
-            isOpenFilter: false,
-            tagListFilter: [],
-            tagList: TagList,
-            tagListSelected: [],
-            tagListMixed: TagList
+            currentRoute: 'tags',
+            model: Model
         }
-        this.handleCheckBoxTogetherItem = this.handleCheckBoxTogetherItem.bind(this)
-        this.filterList = this.filterList.bind(this)
-        this.handleKeyDown = this.handleKeyDown.bind(this)
-        this.onFocusHandle = this.onFocusHandle.bind(this)
-        this.onBlurHandle = this.onBlurHandle.bind(this)
+        this.isEdit = false
+        this.handleOnCreateTag = this.handleOnCreateTag.bind(this)
+        this.handleOnDeleteTag = this.handleOnDeleteTag.bind(this)
+        this.handleOnInputChange = this.handleOnInputChange.bind(this)
+        this.handleOnUpdateTag = this.handleOnUpdateTag.bind(this)
     }
 
-    handleKeyDown(e){
-        if (e.key === 'Enter') {
-            if(e && e.target && e.target.value){
-                let { tagListSelected } = this.state
-                let val = e.target.value
-                tagListSelected = this.addItemToArray(tagListSelected, val)
-                this.setState(prevState => ({ tagListSelected, defaultValue: '' }))
+    
+
+    componentDidMount(){
+        // // For Edit case
+        let payload = {}
+        let id = _.get(this.props, 'match.params.id')
+        if(id) {
+            this.isEdit = true
+            let { model } = this.state
+            payload = {
+                url: `Tag/getTagWithEdit/${id}`
+            }
+
+            this.TagActions.detailItemWithEdit(payload, (err, result)=> {
+                if(err) return
+                let resultData = Utils.getResApi(result)
+                
+                // Mapping data
+                this.setState((prevState)=>{
+                    let data = _.get(resultData, 'result')
+                    let TagData = _.get(data, 'Tag')
+                    let result = TagData
+                    let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
+                    this.props.detailTagWithEdit(data)
+                    return { model: models, isFormValid }
+                })
+            })
+        }
+        
+        // // For get all case
+        if(!this.isEdit) {
+            payload = {
+                url: 'Tag/getAllTag',
+                body: {}
+            }
+            this.TagActions.getListItems(payload, (err, result)=> {
+                if(err) return
+                let resultData = Utils.getResApi(result)
+                resultData = Utils.sortList(resultData, 'desc')  // To sort list
+                this.props.fetchTag(resultData)
+            })
+        }
+    }
+
+    handleOnInputChange = (e, data) => {
+        let { name, value } = getInputData(e, data)
+        this.setState((prevState)=>{
+            return { model: setFieldValue(name, value, prevState) }
+        })
+    }
+
+    handleOnDeleteTag(id){
+        if(!id) return
+        let payload = {
+            url: 'Tag/deleteTag',
+            body: { Id: id }
+        }
+        if(!_.isNil(payload) && !_.isEmpty(payload)){
+            this.TagActions.deleteItem(payload, (err, result)=> {
+                if(err) return
+                if(!err && result) this.props.deleteTag(id)
+            })
+        }
+    }
+
+    handleOnCreateTag(e, data){
+        let { model } = this.state
+        let {isFormValid} = this.props
+        isFormValid = true
+        let payload = {}
+        if(isFormValid){
+            payload = {
+                url: 'Tag/createTag',
+                body: { 
+                    Name: model[TagDefined.NAME].value,
+                    Slug: model[TagDefined.SLUG].value
+                }
+            }
+            if(!_.isNil(payload) && !_.isEmpty(payload)){
+                this.TagActions.addItem(payload, (err, result)=> {
+                    if(err) return
+                    let tagData = Utils.getResApi(result)
+                    if(result) this.props.addTag(tagData)
+                })
             }
         }
     }
 
-    onFocusHandle(e){
-        this.setState(prevState => ({ isOpenFilter: true }))
-    }
-
-    onBlurHandle(e){
-        this.setState(prevState => ({ isOpenFilter: false }))
-    }
-
-    handleRemoveItem(id) {
-        let { tagListSelected } = this.state
-        if(id) {
-            id = Number(id)
-            tagListSelected = this.removeItemFromArray(tagListSelected, id)
-            this.setState(prevState => ({ tagListSelected }))
+    handleOnUpdateTag(id){
+        if(!id) return
+        let { model } = this.state
+        let payload = {
+            url: 'Tag/updateTag',
+            body: {
+                Name: model.name.value,
+                Slug: model.slug.value,
+                Id: id
+            }
         }
-    }
-
-    handleCheckBoxTogetherItem(e) {
-        if(e && e.target && e.target.type === 'checkbox'){
-            let item = e.target.value || null
-            let isChecked = e.target.checked
-            item && this.togetherItemToArray(Number(item), isChecked)
-        }
-    }
-
-    removeItemFromArray(arrayList, id) {
-        let idx2 = arrayList.findIndex(it => it.id === id)
-        arrayList.splice(idx2,1)
-        return arrayList
-    }
-
-    addItemToArray(arrayList, name) {
-        let idx = arrayList.find((it) => { return it.name === name })
-        if(!idx && name) arrayList.push({id: name, name})
-        return arrayList
-    }
-
-    togetherItemToArray(id, isChecked) {
-        let { tagList, tagListSelected } = this.state
-        if(!id) return tagListSelected
-        let item = tagList.find((it) => { return it.id === id })
-        if(isChecked) {
-            let idx = tagListSelected.find((it) => { return it.id === id })
-            if(!idx && item) tagListSelected.push(item)
-        } else {
-            tagListSelected = this.removeItemFromArray(tagListSelected, id)
-        }
-        this.setState(prevState => ({ tagListSelected }))
-    }
-
-    filterList(e){
-        if(e && e.target && e.target.value){
-            let { tagListMixed } = this.state
-            let str = e.target.value
-            tagListMixed = tagListMixed.filter(function(item){
-            return item.name.toLowerCase().search(
-                str.toLowerCase()) !== -1;
-            });
-            this.setState(prevState => ({ tagListFilter: tagListMixed }))
+        if(!_.isNil(payload) && !_.isEmpty(payload)){
+            this.TagActions.updateItem(payload, (err, result)=> {
+                if(err) return
+                if(result) this.props.updateTag(Utils.getResApi(result))
+            })
         }
     }
 
     render(){
-        let { isOpenFilter, tagListSelected, tagListMixed, tagListFilter } = this.state
-        tagListMixed = (tagListFilter && tagListFilter.length > 0) ? tagListFilter : tagListMixed
-        let tagsDropdownOpen = isOpenFilter ? 'tags-dropdown-options open' : 'tags-dropdown-options'
-        return(
-            <React.Fragment>
-                <div className='tags-options'>
-                    <h5>Add tags</h5>
-                    <div className='tags-input-options'>
-                        {
-                            tagListSelected && tagListSelected.map((item) => {
-                                return <span key={ item.id } className='tag-item'>{ item.name }<i onClick={ ()=>this.handleRemoveItem(item.id) }>X</i></span>
-                            })
-                        }
-                        <input type='text'
-                            className='input-small'
-                            name='tagName'
-                            placeholder='Enter ...'
-                            onChange={this.filterList}
-                            onFocus={this.onFocusHandle}
-                            onKeyDown={this.handleKeyDown}
+        let { tagData } = this.props
+        let { currentRoute, model } = this.state
+        let tagList = _.get(tagData, 'tagList')
+        let detailData = _.get(tagData, 'detailData')
+        let catId = _.get(detailData, 'tag.id')
+        return (
+            <Fragment>
+                <Row>
+                    <Col md={5}>
+                        <TagForm
+                            isEdit={ this.isEdit }
+                            currentEditId={catId}
+                            model={ model }
+                            items={ tagList }
+                            detailData={ detailData }
+                            onCreateTag={ this.handleOnCreateTag }
+                            onInputChange = { this.handleOnInputChange }
+                            OnUpdateTag = { this.handleOnUpdateTag }
                         />
-                    </div>
-                    <div className={ tagsDropdownOpen } onBlur={this.onBlurHandle}>
-                        <div>
-                            { tagListMixed && tagListMixed.map((item) => {
-                                return <div key={ item.id }>
-                                        <input type='checkbox'
-                                            name='checkBoxList[]'
-                                            value={ item.id }
-                                            onClick={ this.handleCheckBoxTogetherItem }
-                                        />
-                                        { item.name }
-                                    </div>
-                            }) }
-                        </div>
-                    </div>
-                </div>
-            </React.Fragment>
+                    </Col>
+                    <Col md={7}>
+                        <TagList
+                            isEdit={ this.isEdit }
+                            currentEditId={catId}
+                            currentRoute={ currentRoute }
+                            items={ tagList }
+                            onDeleteTag = { this.handleOnDeleteTag }
+                        />
+                    </Col>
+                </Row>
+            </Fragment>
         )
     }
 }
 
-const TagsOptions = tagsOptions
 function mapStateToProps(state){
     let { tagData } = state.tagData
     return { tagData }
 }
+
 export default connect(
     mapStateToProps,
     dispatch => bindActionCreators(actionCreators, dispatch)
-)(TagsOptions)
+)(withFormBehaviors(Tag, null))
+

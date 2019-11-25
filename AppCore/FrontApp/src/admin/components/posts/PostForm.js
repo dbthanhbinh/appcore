@@ -8,13 +8,14 @@ import CustomDropdown from '../form/CustomDropdown'
 import CustomFile from '../form/CustomFile'
 import PostActions from '../../../store/PostActions'
 import Utils from '../../../apis/utils'
-import { PostDefined, SeoDefined } from "../commons/Defined";
+import { PostDefined, SeoDefined } from "../commons/Defined"
 import TagsOptions from '../tags'
 import SeoForm from '../seos/SeoForm'
 import PostModel from '../models/addPost.model'
 import SeoModel from '../models/seo.model'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { getInputData, setFieldValue } from '../../../utils/FormUtils'
+import CKEditor from 'ckeditor4-react'
 
 class postForm extends Component {
     constructor(props){
@@ -104,7 +105,12 @@ class postForm extends Component {
                                         <Form.Control type='text' name={PostDefined.NAME} onChange={this.handleOnInputChange} defaultValue='' placeholder={ post_name } />
                                     </Form.Group>
                                     <Form.Group>
-                                        <Form.Control as="textarea" rows="3" name={PostDefined.CONTENT} defaultValue='' placeholder={ post_content } onChange={this.handleOnInputChange}></Form.Control>
+                                        {/* <Form.Control as="textarea" rows="3" name={PostDefined.CONTENT} defaultValue='' placeholder={ post_content } onChange={this.handleOnInputChange}></Form.Control> */}
+                                        <CKEditor
+                                            name='cke_editor3'
+                                            id='cke_editor3'
+                                            data=""
+                                        />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={6} md={4}>

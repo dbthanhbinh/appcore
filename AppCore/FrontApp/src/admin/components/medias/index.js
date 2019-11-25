@@ -7,6 +7,8 @@ import _ from 'lodash'
 import MediaActions from '../../../store/MediaActions'
 import MediaItem from './mediaItem'
 import Utils from '../../../apis/utils'
+import Pagination from '../../../helpers/Pagination'
+import './media.scss'
 
 class Media extends Component {
     constructor(props){
@@ -15,20 +17,53 @@ class Media extends Component {
         this.state = {
             file: null
         }
+        this.pagination = this.resetPagination()  // Current process pagination
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
         this.handleOnChangeFile = this.handleOnChangeFile.bind(this)
     }
 
+    resetPagination(){
+        return {
+            totalPages: 0,
+            totalRecords: 0,
+            currentPage: 0,
+            pageSize: 0,
+            isPaging: false
+        }
+    }
+
+    mapPaginationValue(pagingData){
+        if(pagingData){
+            this.pagination = {
+                totalPages: pagingData.totalPages,
+                totalRecords: pagingData.totalRecords,
+                currentPage: pagingData.currentPage,
+                pageSize: pagingData.pageSize,
+                isPaging: pagingData.isPaging
+            }
+        }
+    }
+
+    onPageChanged = data => {
+        // const { currentPage, totalPages, pageLimit } = data;
+        // let initBody = SimCardUtil.getDefaultConfigRequestFilter()
+        // initBody.Supplier = this.currentSupplierActive
+        // initBody.CurrentPage = currentPage
+        // this.requestFilterListItems(initBody)
+    }
+
     componentDidMount(){
         let payload = {
-            url: 'SimCard/importFromExcelFile',
+            url: 'Media/getAll',
             body: {}
         }
         this.MediaActions.getListItems(payload, (err, result)=> {
             if(err) return
             let resultData = result ? Utils.getResApi(result) : null
-            if(resultData)
+            if(resultData){
                 this.props.fetchMedia(resultData)
+                this.mapPaginationValue(Utils.getResPagingApi(result))
+            }
             this.setState({isLoading: false})
         })
     }
@@ -70,11 +105,25 @@ class Media extends Component {
                     </Form.Group>
                 </div>
                 <div className='media-list'>
+                    <Row>
                     { mediaList && mediaList.map((item) => {
-                    return <li key={ item.id }>
+                    return <Col md={2} className='media-item' key={ item.id }>
                             <MediaItem item={item} />
-                        </li>
+                        </Col>
                     }) }
+                    </Row>
+                    {
+                        this.pagination && this.pagination.totalRecords > this.pagination.pageSize
+                        ? <Pagination
+                            totalRecords={ this.pagination.totalRecords }
+                            pageLimit={ this.pagination.pageSize }
+                            currentPage={ this.pagination.currentPage }
+                            pageNeighbours={1}
+                            onPageChanged={this.onPageChanged}
+                            items = { mediaList || null }
+                        /> : null
+
+                    }
                 </div>
             </Fragment>
         )

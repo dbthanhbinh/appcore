@@ -31,7 +31,10 @@ export const reducer = (state, action) => {
         case ADD_MEDIA:
             return {
                 ...state,
-                mediaList: [ ...state.mediaData.mediaList, action.payload.media]
+                mediaData: {
+                    ...state.mediaData,
+                    mediaList: [...state.mediaData.mediaList, action.payload.media]
+                }
             }
         case UPDATE_MEDIA:
             let myState = Object.assign({}, state)

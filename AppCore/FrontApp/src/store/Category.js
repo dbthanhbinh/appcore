@@ -46,31 +46,45 @@ export const reducer = (state, action) => {
             }
             return tep
         case UPDATE_CATEGORY:
-            let myState = Object.assign({}, state)
-            myState.categoryList.forEach((e, i) => {
+            let updateCategoryList = _.get(state, 'categoryData.categoryList')
+            updateCategoryList && updateCategoryList.forEach((e, i) => {
                 if(e.id === action.payload.category.id) {
-                    myState.categoryList[i] = action.payload.category
+                    updateCategoryList[i] = action.payload.category
                 }
             })
-            return myState
-        case DEL_CATEGORY:   // Delete item
-            return { 
+            return {
                 ...state,
-                categoryList: state.categoryList.filter((f) => f.id !== action.payload.id)
+                categoryData: {
+                    ...state.categoryData,
+                    categoryList: updateCategoryList
+                }
+            }
+        case DEL_CATEGORY:   // Delete item
+            let deleteCategoryList = _.get(state, 'categoryData.categoryList')
+            let filterList = deleteCategoryList.filter((f) => f.id !== action.payload.id)
+            return {
+                ...state,
+                categoryData: {
+                    ...state.categoryData,
+                    categoryList: filterList
+                }
             }
         case DETAIL_CATEGORY:            
             return Object.assign({}, state, {
                 detailData: _.get(action.payload, 'detailData')
               })
         case DETAIL_CATEGORY_WITH_EDIT:
-                let category = _.get(action.payload, 'detailData.category')
-            return Object.assign({}, state, {
-                categoryList: _.get(action.payload, 'detailData.categoryList'),
-                detailData: {
-                    category: category,
-                    seoData: _.get(action.payload, 'detailData.seo')
+            return {
+                ...state,
+                categoryData: {
+                    ...state.categoryData,
+                    categoryList: _.get(action.payload, 'detailData.categoryList'),
+                    detailData: {
+                        category: _.get(action.payload, 'detailData.category'),
+                        seoData: _.get(action.payload, 'detailData.seo')
+                    }         
                 }
-            })
+            }
         default:
             return state
     }

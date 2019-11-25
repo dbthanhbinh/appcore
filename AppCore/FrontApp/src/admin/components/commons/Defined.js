@@ -11,6 +11,12 @@ export const CategoryDefined = {
     PARENTID: 'parentId'
 }
 
+export const TagDefined = {
+    NAME: 'name',
+    SLUG: 'slug',
+    TYPE: 'type'
+}
+
 export const SeoDefined = {
     SEOTITLE: 'seoTitle',
     SEOKEYS: 'seoKeys',

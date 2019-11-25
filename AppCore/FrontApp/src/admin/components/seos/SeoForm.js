@@ -38,7 +38,8 @@ class SeoForm extends Component {
                 </Form.Group>
                 <Form.Group>
                     <Form.Control as="textarea" rows="4" name={ SeoDefined.SEODESCRIPTION }
-                        placeholder={ seoDescriptionLabel } onChange={this.handleOnInputChange}>{ seoDescription }</Form.Control>
+                        placeholder={ seoDescriptionLabel } onChange={this.handleOnInputChange} value={seoDescription || ''}>
+                    </Form.Control>
                 </Form.Group>
             </React.Fragment>
         )

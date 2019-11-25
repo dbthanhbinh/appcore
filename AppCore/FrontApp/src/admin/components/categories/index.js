@@ -156,15 +156,19 @@ class Category extends Component{
     render(){
         let { categoryData } = this.props
         let { currentRoute, model } = this.state
+        let categoryList = _.get(categoryData, 'categoryData.categoryList')
+        let detailData = _.get(categoryData, 'categoryData.detailData')
+        let catId = _.get(detailData, 'category.id')
         return (
             <Fragment>
                 <Row>
                     <Col md={5}>
                         <CategoryForm
                             isEdit={ this.isEdit }
-                            model={model}
-                            items={ categoryData && categoryData.categoryList }
-                            detailData={ categoryData && categoryData.detailData }
+                            currentEditId={catId}
+                            model={ model }
+                            items={ categoryList }
+                            detailData={ detailData }
                             onCreateCategory={ this.handleOnCreateCategory }
                             onInputChange = { this.handleOnInputChange }
                             OnUpdateCategory = { this.handleOnUpdateCategory }
@@ -172,8 +176,10 @@ class Category extends Component{
                     </Col>
                     <Col md={7}>
                         <CategoryList
+                            isEdit={ this.isEdit }
+                            currentEditId={catId}
                             currentRoute={ currentRoute }
-                            items={ categoryData && categoryData.categoryList }
+                            items={ categoryList }
                             onDeleteCategory = { this.handleOnDeleteCategory }
                         />
                     </Col>

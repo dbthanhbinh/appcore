@@ -2,18 +2,14 @@ var ItemAppModel = {
   model: function () {
     let modelFields = {
       name: {
-        label: 'Category name',
+        label: 'Tag name',
         value: null,
         validators: [
-            { compare: 'required', message: 'Require message' }
+            { compare: 'required', message: 'The name is not empty!' }
         ]
       },
       slug: {
-        label: 'Category slug',
-        value: null,
-        validators: []
-      },
-      parentId: {
+        label: 'Tag slug',
         value: null,
         validators: []
       }

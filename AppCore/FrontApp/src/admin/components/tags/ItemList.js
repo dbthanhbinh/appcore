@@ -34,7 +34,7 @@ class ItemList extends React.Component{
         let { isLoading } = this.state
         return(
             isLoading ? <LoadingItem />
-            : (items && !_.isEmpty(items)) && <Fragment>
+            : <Fragment>
                 <Table striped bordered hover size="sm">
                     <thead>
                         <tr>
@@ -46,7 +46,7 @@ class ItemList extends React.Component{
                     </thead>
                     <tbody>                    
                         {
-                            items.map((item) => {
+                            (items && !_.isEmpty(items)) && items.map((item) => {
                                 return (
                                     <tr key={ item.id }>
                                         <td>00</td>

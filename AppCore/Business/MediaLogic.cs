@@ -1,4 +1,6 @@
-﻿using AppCore.Models.DBModel;
+﻿using AppCore.Controllers.commons;
+using AppCore.Helpers;
+using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
 using FileService;
 using Microsoft.AspNetCore.Http;
@@ -77,9 +79,12 @@ namespace AppCore.Business
         }
 
         // Get all media
-        public List<Media> GetAll()
+        public async Task<PagingResponse> GetAll()
         {
-            return _uow.GetRepository<Media>().GetAll();
+            List<Media> result = _uow.GetRepository<Media>().GetAll();
+            PagingResponse resultPg = PagingHelper<Media>.GetPagingList(result, 1, 5);
+            await Task.FromResult(resultPg);
+            return resultPg;
         }
     }
 }

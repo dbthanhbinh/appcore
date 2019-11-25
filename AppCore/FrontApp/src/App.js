@@ -12,6 +12,7 @@ import ALayout from './admin/components/layouts/Layout'
 import UnLayout from './admin/components/layouts/UnLayout'
 import PostApp from './admin/components/posts'
 import Category from './admin/components/categories'
+import Tags from './admin/components/tags'
 import Register from './admin/components/users/Register'
 import Login from './admin/components/users/Login'
 import NotFound from './admin/components/Notfound/404'
@@ -52,7 +53,11 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <AppRoute exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
-        <AppRoute exact path='/admin/categories' component={PostApp } layout={ appLayout } />
+        <AppRoute exact path='/admin/categories' component={Category } layout={ ALayout } />
+        <AppRoute exact path='/admin/categories/edit/:id' component={ Category } layout={ ALayout } />
+
+        <AppRoute exact path='/admin/tags' component={Tags } layout={ ALayout } />
+        <AppRoute exact path='/admin/medias' component={ Media } layout={ ALayout }/>
 
         <AppRoute exact path='/' component={ Home } layout={ appLayout }/>
         <AppRoute exact path='/about' component={ About } layout={ appLayout }/>
