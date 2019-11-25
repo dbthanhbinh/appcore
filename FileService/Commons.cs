@@ -55,7 +55,7 @@ namespace FileService
 
         public string GetExtensionFileName()
         {
-            return DateTime.Now.ToString("yyyyMMddHmmssff");
+            return DateTime.Now.ToString("yyMMddHmmssff");
         }
 
         // Create new fileName if is Exists
