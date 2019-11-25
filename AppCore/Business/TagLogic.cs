@@ -13,12 +13,12 @@ namespace AppCore.Business
     public class TagLogic : ITagLogic
     {
         private readonly IUnitOfWork _uow;
-        public ILogger<TagLogic> _logger { get; }
+        public ILogger<TagLogic> Logger { get; }
 
         public TagLogic(IUnitOfWork uow, ILogger<TagLogic> logger)
         {
             _uow = uow;
-            _logger = logger;
+            Logger = logger;
         }
 
         public List<Tag> GetAll()
@@ -35,7 +35,7 @@ namespace AppCore.Business
             {
                 Tag createdTagVM = new Tag();
                 // Created Category
-                _logger.LogInformation("Create new tag");
+                Logger.LogInformation("Create new tag");
                 string SlugName = StringHelper.GenerateSlug(reqData.Name);
                 if (SlugName != "")
                 {
@@ -53,9 +53,32 @@ namespace AppCore.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }
+
+        /*
+        // * Delete Tag
+        // */
+        public async Task<Tag> DeleteTagAsync(ReqDeleteTag reqDelete)
+        {
+            try
+            {
+                var tag = new Tag
+                {
+                    Id = reqDelete.Id
+                };
+                _uow.GetRepository<Tag>().Delete(reqDelete.Id);
+                _uow.SaveChanges();
+                return await Task.FromResult(tag);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
     }
 }

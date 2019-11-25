@@ -15,21 +15,18 @@ namespace AppCore.Business
     public class CategoryLogic : ICategoryLogic
     {
         private readonly IUnitOfWork _uow;
-        public ILogger<CategoryLogic> _logger { get; }
+        public ILogger<CategoryLogic> Logger { get; }
         private readonly ISeoLogic _seoLogic;
-        private readonly IObjectMediaLogic _objectMediaLogic;
 
         public CategoryLogic(
             IUnitOfWork uow,
             ISeoLogic seoLogic,
-            IObjectMediaLogic objectMediaLogic,
             ILogger<CategoryLogic> logger
         )
         {
             _uow = uow;
             _seoLogic = seoLogic;
-            _objectMediaLogic = objectMediaLogic;
-            _logger = logger;
+            Logger = logger;
         }
 
         /*
@@ -41,7 +38,7 @@ namespace AppCore.Business
             {
                 CreatedCategoryVM createdCategoryVM = new CreatedCategoryVM();
                 // Created Category
-                _logger.LogInformation("Create new category");
+                Logger.LogInformation("Create new category");
                 string SlugName = StringHelper.GenerateSlug(reqData.Name);
                 reqData.Slug = SlugName;
                 reqData.ParentId = reqData.ParentId ?? Guid.Empty;
@@ -55,13 +52,15 @@ namespace AppCore.Business
                 Task<bool> categoryCreated = _uow.GetRepository<Category>().AddAsync(categoryData);
 
                 // Created seo
-                _logger.LogInformation("Create new seo");
+                Logger.LogInformation("Create new seo");
                 Task<Seo> seoCreated = null;
-                Seo seoData = new Seo();
-                seoData.SeoTitle = reqData.SeoTitle;
-                seoData.SeoKeys = reqData.SeoKeys;
-                seoData.SeoDescription = reqData.SeoDescription;
-                seoData.ObjectId = categoryData.Id;
+                Seo seoData = new Seo
+                {
+                    SeoTitle = reqData.SeoTitle,
+                    SeoKeys = reqData.SeoKeys,
+                    SeoDescription = reqData.SeoDescription,
+                    ObjectId = categoryData.Id
+                };
                 seoCreated = _seoLogic.CreateSeoAsync(seoData);
 
                 _uow.SaveChanges();
@@ -73,7 +72,7 @@ namespace AppCore.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }
@@ -86,7 +85,7 @@ namespace AppCore.Business
             try
             {
                 // Update category
-                _logger.LogInformation("Update category");
+                Logger.LogInformation("Update category");
                 Category category = _uow.GetRepository<Category>().Get(categoryData.Id);
                 category.Name = categoryData.Name;
                 category.ParentId = categoryData.ParentId ?? Guid.Empty;
@@ -94,7 +93,7 @@ namespace AppCore.Business
                 
 
                 // Update seo
-                _logger.LogInformation("Update seo");
+                Logger.LogInformation("Update seo");
                 var qr = _uow.GetRepository<Seo>();
                 IEnumerable<Seo> enumerable = qr.Get((x) => x.ObjectId == categoryData.Id);
 
@@ -112,7 +111,7 @@ namespace AppCore.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }
@@ -128,7 +127,7 @@ namespace AppCore.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }
@@ -149,7 +148,7 @@ namespace AppCore.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }
@@ -166,27 +165,29 @@ namespace AppCore.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }
 
-        ///*
+        /*
         // * Delete category
         // */
         public async Task<Category> DeleteCategoryAsync(ReqDeleteCategory reqDelete)
         {
             try
             {
-                var category = new Category();
-                category.Id = reqDelete.Id;
+                var category = new Category
+                {
+                    Id = reqDelete.Id
+                };
                 _uow.GetRepository<Category>().Delete(reqDelete.Id);
                 _uow.SaveChanges();
                 return await Task.FromResult(category);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }

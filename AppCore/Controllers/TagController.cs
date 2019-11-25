@@ -26,10 +26,20 @@ namespace AppCore.Controllers
             return Ok(new BaseResponse(a));
         }
 
-        [HttpPost("createTag", Name = "CreateTag")]
+        [HttpPost("createTag", Name = "CreateTagAsync")]
         public async Task<ActionResult> CreateTagAsync([FromBody] ReqCreateTag tag)
         {
             var result = await _tagLogic.CreateTagAsync(tag);
+            return Ok(new BaseResponse(result));
+        }
+
+        /*
+         * Delete Category
+         */
+        [HttpDelete("deleteTag", Name = "DeleteTagAsync")]
+        public async Task<ActionResult> DeleteTagAsync(ReqDeleteTag reqDelete)
+        {
+            var result = await _tagLogic.DeleteTagAsync(reqDelete);
             return Ok(new BaseResponse(result));
         }
     }

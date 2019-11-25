@@ -65,7 +65,7 @@ namespace AppCore.Controllers.commons
 
     public class PagingResponse : BaseResponse
     {
-        public BasePagingResponse Paging { get; set; }
+        public new BasePagingResponse Paging { get; set; }
 
         public PagingResponse(object data, BasePagingResponse paging)
         {

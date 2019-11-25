@@ -11,5 +11,6 @@ namespace AppCore.Business
     {
         List<Tag> GetAll();
         Task<Tag> CreateTagAsync(ReqCreateTag reqData);
+        Task<Tag> DeleteTagAsync(ReqDeleteTag reqDelete);
     }
 }

@@ -17,7 +17,7 @@ namespace AppCore.Business
     public class SimCardLogic : ISimCardLogic
     {
         private readonly IUnitOfWork _uow;
-        public ILogger<SimCardLogic> _logger { get; }
+        public ILogger<SimCardLogic> Logger { get; }
 
         public static readonly IDictionary<string, string> MapCellSupplierDictionary = new Dictionary<string, string>
         {
@@ -56,7 +56,7 @@ namespace AppCore.Business
 
         public SimCardLogic(IUnitOfWork uow, ILogger<SimCardLogic> logger) {
             _uow = uow;
-            _logger = logger;
+            Logger = logger;
         }
 
         public string GetSupplier(string supplierKey)
@@ -101,7 +101,6 @@ namespace AppCore.Business
                     List<SimCard> simCards = new List<SimCard>();
                     int sheetLevel = 1;
                     int Started = 1;
-                    int RowLimit = 1000;
                     bool IsAdded = false;
 
                     //using for each loop to get the sheet from the sheetcollection
@@ -113,7 +112,6 @@ namespace AppCore.Business
                             Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
 
                             SheetData thesheetdata = (SheetData)theWorksheet.GetFirstChild<SheetData>();
-                            int RowStarted = 1;
                             foreach (Row thecurrentrow in thesheetdata)
                             {
                                 SimCard simCardItem = new SimCard();
@@ -126,8 +124,7 @@ namespace AppCore.Business
                                     {
                                         if (thecurrentcell.DataType == CellValues.SharedString)
                                         {
-                                            int id;
-                                            if (Int32.TryParse(thecurrentcell.InnerText, out id))
+                                            if (int.TryParse(thecurrentcell.InnerText, out int id))
                                             {
                                                 SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
                                                 if (item.InnerText != null)
@@ -187,7 +184,8 @@ namespace AppCore.Business
             }
             catch (Exception ex)
             {
-                
+                Logger.LogError(ex.Message.ToString());
+                throw ex;
             }
         }
 
@@ -200,7 +198,7 @@ namespace AppCore.Business
         {
             try
             {
-                _logger.LogInformation("Begin filter simcard");
+                Logger.LogInformation("Begin filter simcard");
                 string supplier = null;
                 if (reqFilterSimCard.Supplier != null)
                 {
@@ -226,20 +224,20 @@ namespace AppCore.Business
                 }
                 var resultPg = PagingHelper<SimCard>.GetPagingList(result, currentPage, pageSize);
                 await Task.FromResult(resultPg);
-                _logger.LogInformation("End filter simcard");
+                Logger.LogInformation("End filter simcard");
 
                 return resultPg;
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }
         
         // Logic
 
-        public List<SimCard> getPagingList(List<SimCard> simCardList, int pageNumber)
+        public List<SimCard> GetPagingList(List<SimCard> simCardList, int pageNumber)
         {
             List<SimCard> resultPg = null;
             if(simCardList.Count < 1)
