@@ -1,0 +1,45 @@
+@import-normalize;
+@import 'colors';
+@import 'variables';
+
+@import 'nav';
+@import 'leftsidebar';
+@import 'widget';
+@import 'footer';
+
+@import 'simcard';
+
+
+body {
+  margin: 0;
+  font-family: "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  background: $background-color;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+a {
+  color: $a-color;
+}
+
+.Ulist {
+  margin: 0;
+  padding: 0;
+
+  li {
+      list-style: none;
+      border-bottom: 1px solid $border-color;
+      padding: 5px 0 5px 10px;
+  }
+}

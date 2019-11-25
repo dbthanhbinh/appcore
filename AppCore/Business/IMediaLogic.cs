@@ -1,4 +1,5 @@
-﻿using AppCore.Models.DBModel;
+﻿using AppCore.Controllers.commons;
+using AppCore.Models.DBModel;
 using FileService;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace AppCore.Business
     {
         Uploaded UploadFile(IFormFile file);
         Task<Media> CreateMediaAsync(IFormFile file);
-        List<Media> GetAll();
+        // List<Media> GetAll();
+        Task<PagingResponse> GetAll();
     }
 }

@@ -12,5 +12,6 @@ namespace AppCore.Business
         Task<Seo> CreateSeoAsync(Seo seo);
         Task<Seo> DeleteSeoAsync(ReqDeleteSeo reqDelete);
         Task<Seo> DeleteSeoWithObjectIdAsync(Guid objectId);
+        Task<Seo> GetSeoBySlug(string slug);
     }
 }

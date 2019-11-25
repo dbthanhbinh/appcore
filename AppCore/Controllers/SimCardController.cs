@@ -52,8 +52,6 @@ namespace AppCore.Controllers
             {   
                 result = await _simCardLogic.FilterSimCardBy(reqFilterSimCard);
             }
-
-            //List<SimCard> resultPg = PagingHelper<SimCard>.getPagingList(result, 1);
             return Ok(new BaseResponse(result.Data, result.Paging));
         }
     }

@@ -8,6 +8,8 @@ namespace AppCore.Models.DBModel
         public string SeoTitle { get; set; }
         public string SeoKeys { get; set; }
         public string SeoDescription { get; set; }
+        public string Slug { get; set; }
+        public string ObjectType { get; set; }
         public Guid ObjectId { get; set; }
     }
 }

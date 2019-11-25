@@ -9,6 +9,6 @@ namespace AppCore.Models.DBModel
     {
         public string Name { get; set; }
         public string Slug { get; set; }
-        public string Type { get; set; } = "post";
+        public virtual string Type { get; set; } = "general";
     }
 }

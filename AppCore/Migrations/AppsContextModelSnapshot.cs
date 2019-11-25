@@ -16,7 +16,7 @@ namespace AppCore.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("AppCore.Models.DBModel.Category", b =>
@@ -93,6 +93,28 @@ namespace AppCore.Migrations
                     b.ToTable("ObjectMedia");
                 });
 
+            modelBuilder.Entity("AppCore.Models.DBModel.ObjectTag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<DateTime>("Modified");
+
+                    b.Property<Guid>("ObjectId");
+
+                    b.Property<string>("ObjectType");
+
+                    b.Property<Guid>("TagId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ObjectTag");
+                });
+
             modelBuilder.Entity("AppCore.Models.DBModel.Post", b =>
                 {
                     b.Property<Guid>("Id")
@@ -131,11 +153,15 @@ namespace AppCore.Migrations
 
                     b.Property<Guid>("ObjectId");
 
+                    b.Property<string>("ObjectType");
+
                     b.Property<string>("SeoDescription");
 
                     b.Property<string>("SeoKeys");
 
                     b.Property<string>("SeoTitle");
+
+                    b.Property<string>("Slug");
 
                     b.HasKey("Id");
 
@@ -162,6 +188,28 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SimCard");
+                });
+
+            modelBuilder.Entity("AppCore.Models.DBModel.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<DateTime>("Modified");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Slug");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("AppCore.Models.DBModel.User", b =>
