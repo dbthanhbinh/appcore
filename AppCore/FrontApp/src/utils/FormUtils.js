@@ -1,13 +1,22 @@
 import _ from 'lodash'
 
 export function getInputData(e, data){
-    let target = e ? e.target : {}
+    let target = (e && e.target) ? e.target : {}
     let name = target && target.name ? target.name : (data && data.name ? data.name : '')
     let value = target && target.value ? target.value : (data && data.value ? data.value : '')
     let checked = target && _.isBoolean(target.checked) ? target.checked : (data && _.isBoolean(data.checked) ? data.checked : '')
     let type = target && target.type ? target.type : (data && data.type ? data.type : '')
     if (type === 'checkbox') value = checked ? 1 : 0
     if(type === 'file') value = e.target.files[0]
+    return { name, value }
+}
+
+export function getEditorData(e){
+    let name = 'editor1'
+    let value = ''
+    if(e && e.name === 'change' && e.editor) {
+        value = e.editor.getData()
+    }
     return { name, value }
 }
 

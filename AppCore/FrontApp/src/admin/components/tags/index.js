@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../../store/Tag'
 
-import { Row, Col } from 'react-bootstrap'
+import {  Grid } from 'semantic-ui-react'
 import TagList from './ItemList'
 import TagForm from './form'
 import Utils from '../../../apis/utils'
@@ -147,29 +147,31 @@ class Tag extends Component{
         let catId = _.get(detailData, 'tag.id')
         return (
             <Fragment>
-                <Row>
-                    <Col md={5}>
-                        <TagForm
-                            isEdit={ this.isEdit }
-                            currentEditId={catId}
-                            model={ model }
-                            items={ tagList }
-                            detailData={ detailData }
-                            onCreateTag={ this.handleOnCreateTag }
-                            onInputChange = { this.handleOnInputChange }
-                            OnUpdateTag = { this.handleOnUpdateTag }
-                        />
-                    </Col>
-                    <Col md={7}>
-                        <TagList
-                            isEdit={ this.isEdit }
-                            currentEditId={catId}
-                            currentRoute={ currentRoute }
-                            items={ tagList }
-                            onDeleteTag = { this.handleOnDeleteTag }
-                        />
-                    </Col>
-                </Row>
+                <Grid>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={6}>
+                            <TagForm
+                                isEdit={ this.isEdit }
+                                currentEditId={catId}
+                                model={ model }
+                                items={ tagList }
+                                detailData={ detailData }
+                                onCreateTag={ this.handleOnCreateTag }
+                                onInputChange = { this.handleOnInputChange }
+                                OnUpdateTag = { this.handleOnUpdateTag }
+                            />
+                        </Grid.Column>
+                        <Grid.Column width={10}>
+                            <TagList
+                                isEdit={ this.isEdit }
+                                currentEditId={catId}
+                                currentRoute={ currentRoute }
+                                items={ tagList }
+                                onDeleteTag = { this.handleOnDeleteTag }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Fragment>
         )
     }

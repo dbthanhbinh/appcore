@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Spinner } from 'react-bootstrap'
+import { Loader, Dimmer, Segment } from 'semantic-ui-react'
 import './loading.scss'
 
 class LoadingItem extends Component {
@@ -13,7 +13,11 @@ class LoadingItem extends Component {
     render(){
         let { isShow } = this.state
         return(
-            isShow && <div className='page-loading-item'><Spinner animation="border" variant="primary" /></div>
+            isShow &&  <Segment className='page-loading-item'>
+                <Dimmer active>
+                    <Loader />
+                </Dimmer>
+            </Segment>
         )
     }
 }    

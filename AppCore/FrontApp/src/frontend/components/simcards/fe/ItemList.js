@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
-import { Table } from 'react-bootstrap'
+import { Table } from 'semantic-ui-react'
 import SimCardUtil from '../commons/utils'
 import BookForm from './bookForm'
 
@@ -15,7 +15,7 @@ class ItemList extends React.Component{
         let i = 1;
         return(
             <Fragment>
-                <Table striped bordered hover size="sm">
+                <Table>
                     <thead>
                         <tr>
                             <th>No</th>

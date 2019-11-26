@@ -1,17 +1,13 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Grid } from 'semantic-ui-react'
 
 class Contact extends React.Component{
-    constructor(props){
-        super(props)
-    }
-
     render(){
         return(
             <React.Fragment>
-                <Row>
+                <Grid.Row>
                     Contact page
-                </Row>
+                </Grid.Row>
             </React.Fragment>
         )
     }

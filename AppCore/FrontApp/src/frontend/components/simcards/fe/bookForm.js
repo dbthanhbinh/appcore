@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Container, Row, Col, Button, Modal, Form } from 'react-bootstrap'
+import { Button, Modal, Form, ModalHeader } from 'semantic-ui-react'
 
 class BookForm extends React.Component{
     constructor(props){
@@ -28,34 +28,32 @@ class BookForm extends React.Component{
 
                 <Modal className='book-form-modal' show={isShowModal}>
                     <Modal.Header>
-                        <Modal.Title>Đặt mua sim</Modal.Title>
+                        <ModalHeader>Đặt mua sim</ModalHeader>
                         <Button variant="secondary" onClick={this.handleCloseModal}>
                             Close
                         </Button>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Content>
                         <Form>
-                            <Form.Group className='group-info'>
+                            <Form.Field className='group-info'>
                                 <p>Sim số: { name }</p>
                                 <p>Price: { price }</p>
                                 <p>Supplier: { supplier }</p>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Control type='text' name='name' placeholder='Name...'/>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Control type='text' name='phone' placeholder='Điện thoại..' />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Control type='text' name='email' placeholder='Email...' />
-                            </Form.Group>
+                            </Form.Field>
+                            <Form.Field>
+                                <input name='name' placeholder='Name...' />
+                            </Form.Field>
+                            <Form.Field>
+                                <input name='phone' placeholder='Điện thoại..' />
+                            </Form.Field>
+                            <Form.Field>
+                                <input name='email' placeholder='Email...' />
+                            </Form.Field>
                         </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
                         <Button variant="primary">
                             Save Changes
                         </Button>
-                    </Modal.Footer>
+                    </Modal.Content>
                 </Modal>
             </Fragment>
         )

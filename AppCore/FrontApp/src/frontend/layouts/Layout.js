@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Grid } from 'semantic-ui-react'
 import Navitem from './Nav'
 import Loading from '../commons/Loading'
 import LSidebar from './LSidebar'
@@ -25,42 +25,40 @@ class Layout extends Component {
                     <meta name="description" content={this.configSeoDefault.seoDescription} />
                 </Helmet>
                 <Container>
-                    <Row className='app-header'>
-                        <Col md={12}>
-                            {
-                                headerInfomations && headerInfomations.bannerHeader && headerInfomations.bannerHeader.src
-                                ? <img src={headerInfomations.bannerHeader.src} alt='' />
-                                : null
-                            }
-                            
-                        </Col>
-                    </Row>
-                    <Row className='app-nav'>
-                        <Col md={12}><Navitem navigation={navigationInfomations.navigation}/></Col>
-                    </Row>
-                    <Row className='app-main-body'>
-                        <Col className='app-contents' md={9}>
-                            <Row>
-                                <Col md={4}>
-                                    <LSidebar />
-                                </Col>
-                                <Col className='main-contents' md={8}>
-                                    {this.props.children}
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col md={3}>
-                            <RSidebar />
-                        </Col>
-                    </Row>
-                    <Row className='app-footer'>
-                        <Col md={12}>
-                            <Footer
-                                companyInfomations = { publicSetting.companyInfomations }
-                                socialNetworkInfomations = { publicSetting.socialNetworkInfomations }
-                            />
-                        </Col>
-                    </Row>
+                    <Grid>
+                        <Grid.Row className='app-header'>
+                            <Grid.Column>
+                                {
+                                    headerInfomations && headerInfomations.bannerHeader && headerInfomations.bannerHeader.src
+                                    ? <img src={headerInfomations.bannerHeader.src} alt='' />
+                                    : null
+                                }
+                                
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row className='app-nav'>
+                            <Grid.Column md={12}><Navitem navigation={navigationInfomations.navigation}/></Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row  columns={3} className='app-main-body'>
+                            <Grid.Column width={3}>
+                                <LSidebar />
+                            </Grid.Column>
+                            <Grid.Column width={10} className='main-contents'>
+                                {this.props.children}
+                            </Grid.Column>
+                            <Grid.Column  width={3}>
+                                <RSidebar />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row className='app-footer'>
+                            <Grid.Column>
+                                <Footer
+                                    companyInfomations = { publicSetting.companyInfomations }
+                                    socialNetworkInfomations = { publicSetting.socialNetworkInfomations }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                 </Container>
                 <Loading />
             </Fragment>

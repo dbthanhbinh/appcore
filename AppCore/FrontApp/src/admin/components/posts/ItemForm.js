@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 // import eventEmitter from '../../../utils/eventEmitter'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button } from 'semantic-ui-react'
 import AlertCP from '../commons/AlertCP'
 import Model from '../models/addPost.model'
 import { withFormBehaviors } from '../form/form'

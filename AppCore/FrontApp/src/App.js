@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history'
 import configureStore from './store/configureStore'
 import { BrowserRouter } from "react-router-dom"
 import './styles/App.scss'
-import { Route } from "react-router-dom"
+// import { Route } from "react-router-dom"
 import AppRoute from './routes/AppRoute'
 
 // For admin
@@ -13,9 +13,9 @@ import UnLayout from './admin/components/layouts/UnLayout'
 import PostApp from './admin/components/posts'
 import Category from './admin/components/categories'
 import Tags from './admin/components/tags'
-import Register from './admin/components/users/Register'
+// import Register from './admin/components/users/Register'
 import Login from './admin/components/users/Login'
-import NotFound from './admin/components/Notfound/404'
+// import NotFound from './admin/components/Notfound/404'
 import Media from './admin/components/medias'
 
 // For Frontend

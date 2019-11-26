@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
-import { Form, Button, Modal } from 'react-bootstrap'
+import { Form, Button, Modal, ModalHeader, ModalContent } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../../store/Category'
@@ -86,33 +86,33 @@ class customDropdown extends Component {
         return(
             <Fragment>
                 <h5>Select Category</h5>
-                <Form.Control name={ name } as='select' onChange={this.handleOnDropdownChange} defaultValue='1' >
+                <Form.Field name={ name } as='select' onChange={this.handleOnDropdownChange} defaultValue='1' >
                     <option key='-1' value='-1'>Select category</option>
                     { categoryData && categoryData.categoryList && categoryData.categoryList.map((item) => {
                         return <option key={ item.id } value={ item.id }>{ item.name }</option>
                     }) }
-                </Form.Control>
+                </Form.Field>
                 {/* <span as='a' onClick={this.handleOpenModal}>Add Cat</span> */}
 
-                <Modal show={isShowModal}>
-                    <Modal.Header>
-                        <Modal.Title>Add Cat</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
+                <Modal open={isShowModal}>
+                    <ModalHeader>
+                        <h4>Add Cat</h4>
+                    </ModalHeader>
+                    <ModalContent>
                         <Form>
-                            <Form.Group>
-                                <Form.Control type='text' name='name' placeholder={ placeholder } onChange={this.handleOnInputChange}/>
-                            </Form.Group>
+                            <Form.Field>
+                                <input type='text' name='name' placeholder={ placeholder } onChange={this.handleOnInputChange}/>
+                            </Form.Field>
+                            <Form.Field>
+                                <Button variant="secondary" onClick={this.handleCloseModal}>
+                                    Close
+                                </Button>
+                                <Button variant="primary" onClick={this.handleSubmitForm}>
+                                    Save Changes
+                                </Button>
+                            </Form.Field>
                         </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleCloseModal}>
-                            Close
-                        </Button>
-                        <Button variant="primary" onClick={this.handleSubmitForm}>
-                            Save Changes
-                        </Button>
-                    </Modal.Footer>
+                    </ModalContent>
                 </Modal>
             </Fragment>
         )

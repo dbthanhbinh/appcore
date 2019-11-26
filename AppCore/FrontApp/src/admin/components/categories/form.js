@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button } from 'semantic-ui-react'
 import CustomOptions from '../form/CustomOptions'
 import { withFormBehaviors } from '../form/form'
 
@@ -28,29 +28,29 @@ class CategoryForm extends React.Component{
 
         let nameLabel = _.get(model, `${CategoryDefined.NAME}.label`)
         let slugLabel = _.get(model, `${CategoryDefined.SLUG}.label`)
-        let parentIdLabel = _.get(model, `${CategoryDefined.PARENTID}.label`)
+        // let parentIdLabel = _.get(model, `${CategoryDefined.PARENTID}.label`)
 
         return(
             <Fragment>
                 <a href='admin/categories'>Add new</a>
                 <Form>
-                    <Form.Group>
-                        <Form.Control type='text'
+                    <Form.Field>
+                        <input type='text'
                             placeholder={nameLabel}
                             name='name'
                             onChange={this.props.onInputChange}
                             defaultValue={ nameValue }
                         />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Control type='text'
+                    </Form.Field>
+                    <Form.Field>
+                        <input type='text'
                             placeholder={slugLabel}
                             name='slug'
                             onChange={this.props.onInputChange}
                             defaultValue={ slugValue }
                         />
-                    </Form.Group>
-                    <Form.Group>
+                    </Form.Field>
+                    <Form.Field>
                         <CustomOptions
                             isEdit={isEdit}
                             currentCatId={currentEditId}
@@ -59,18 +59,18 @@ class CategoryForm extends React.Component{
                             parentId={ parentIdValue }
                             onInputChange={ this.props.onInputChange }
                         />
-                    </Form.Group>
-                    <Form.Group>
+                    </Form.Field>
+                    <Form.Field>
                         <SeoForm
                             model={model}
                             seoData={ _.get(detailData, 'seo') }
                             onInputChange = { this.props.onInputChange } />
-                    </Form.Group>
-                    <Form.Group>
+                    </Form.Field>
+                    <Form.Field>
                         <Button variant="primary" onClick={ isEdit ? () => this.props.OnUpdateCategory(currentEditId) : this.props.onCreateCategory }>
                             Save Changes
                         </Button>
-                    </Form.Group>
+                    </Form.Field>
                 </Form>
             </Fragment>
         )

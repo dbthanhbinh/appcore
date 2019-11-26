@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 const FETCH_SIMCARD = 'FETCH_SIMCARD'
 
 const initialState = {

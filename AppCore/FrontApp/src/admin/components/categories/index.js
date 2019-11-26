@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../../store/Category'
 
-import { Row, Col } from 'react-bootstrap'
+import { Grid } from 'semantic-ui-react'
 import CategoryList from './ItemList'
 import CategoryForm from './form'
 import Utils from '../../../apis/utils'
@@ -161,29 +161,31 @@ class Category extends Component{
         let catId = _.get(detailData, 'category.id')
         return (
             <Fragment>
-                <Row>
-                    <Col md={5}>
-                        <CategoryForm
-                            isEdit={ this.isEdit }
-                            currentEditId={catId}
-                            model={ model }
-                            items={ categoryList }
-                            detailData={ detailData }
-                            onCreateCategory={ this.handleOnCreateCategory }
-                            onInputChange = { this.handleOnInputChange }
-                            OnUpdateCategory = { this.handleOnUpdateCategory }
-                        />
-                    </Col>
-                    <Col md={7}>
-                        <CategoryList
-                            isEdit={ this.isEdit }
-                            currentEditId={catId}
-                            currentRoute={ currentRoute }
-                            items={ categoryList }
-                            onDeleteCategory = { this.handleOnDeleteCategory }
-                        />
-                    </Col>
-                </Row>
+                <Grid>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={6}>
+                            <CategoryForm
+                                isEdit={ this.isEdit }
+                                currentEditId={catId}
+                                model={ model }
+                                items={ categoryList }
+                                detailData={ detailData }
+                                onCreateCategory={ this.handleOnCreateCategory }
+                                onInputChange = { this.handleOnInputChange }
+                                OnUpdateCategory = { this.handleOnUpdateCategory }
+                            />
+                        </Grid.Column>
+                        <Grid.Column width={10}>
+                            <CategoryList
+                                isEdit={ this.isEdit }
+                                currentEditId={catId}
+                                currentRoute={ currentRoute }
+                                items={ categoryList }
+                                onDeleteCategory = { this.handleOnDeleteCategory }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Fragment>
         )
     }

@@ -95,7 +95,7 @@ class SimCard extends React.Component{
     }
 
     onPageChanged = data => {
-        const { currentPage, totalPages, pageLimit } = data;
+        const { currentPage } = data;
         let initBody = SimCardUtil.getDefaultConfigRequestFilter()
         initBody.Supplier = this.currentSupplierActive
         initBody.CurrentPage = currentPage

@@ -8,7 +8,7 @@ var ItemAppModel = {
             { compare: 'required', message: 'The name is not empty!' }
         ]
       },
-      content: {
+      editor1: {
         label: 'Post content',
         value: null,
         validators: []

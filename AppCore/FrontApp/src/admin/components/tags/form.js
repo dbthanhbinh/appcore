@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button } from 'semantic-ui-react'
 import { withFormBehaviors } from '../form/form'
 import TagModel from '../models/addTag.model'
 import { TagDefined } from "../commons/Defined";
@@ -27,27 +27,27 @@ class TagForm extends React.Component{
             <Fragment>
                 <a href='admin/tags'>Add new</a>
                 <Form>
-                    <Form.Group>
-                        <Form.Control type='text'
+                    <Form.Field>
+                        <input type='text'
                             placeholder={nameLabel}
                             name='name'
                             onChange={this.props.onInputChange}
                             defaultValue={ nameValue }
                         />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Control type='text'
+                    </Form.Field>
+                    <Form.Field>
+                        <input type='text'
                             placeholder={slugLabel}
                             name='slug'
                             onChange={this.props.onInputChange}
                             defaultValue={ slugValue }
                         />
-                    </Form.Group>
-                    <Form.Group>
+                    </Form.Field>
+                    <Form.Field>
                         <Button variant="primary" onClick={ isEdit ? () => this.props.OnUpdateTag(currentEditId) : this.props.onCreateTag }>
                             Save Changes
                         </Button>
-                    </Form.Group>
+                    </Form.Field>
                 </Form>
             </Fragment>
         )

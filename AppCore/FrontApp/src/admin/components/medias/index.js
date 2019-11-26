@@ -2,7 +2,7 @@ import React, { Fragment, Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../../store/Media'
-import { Form, Button, Modal, Container, Row, Col } from 'react-bootstrap'
+import { Form, Button, Grid } from 'semantic-ui-react'
 import _ from 'lodash'
 import MediaActions from '../../../store/MediaActions'
 import MediaItem from './mediaItem'
@@ -105,13 +105,13 @@ class Media extends Component {
                     </Form.Group>
                 </div>
                 <div className='media-list'>
-                    <Row>
+                    <Grid.Row>
                     { mediaList && mediaList.map((item) => {
-                    return <Col md={2} className='media-item' key={ item.id }>
+                    return <Grid.Column md={2} className='media-item' key={ item.id }>
                             <MediaItem item={item} />
-                        </Col>
+                        </Grid.Column>
                     }) }
-                    </Row>
+                    </Grid.Row>
                     {
                         this.pagination && this.pagination.totalRecords > this.pagination.pageSize
                         ? <Pagination

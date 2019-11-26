@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
-import _ from 'lodash'
-import { Form } from 'react-bootstrap'
+import { Form } from 'semantic-ui-react'
 
 const CustomOptions = (props) => {
     let { categoryList, name, parentId, isEdit, currentCatId } = props
@@ -11,12 +10,12 @@ const CustomOptions = (props) => {
     return(
         <Fragment>
             <h5>{ labelParent }</h5>
-            <Form.Control name={ name || 'cat' } as='select' value={ parentId || -1 } onChange={ props.onInputChange }>
+            <Form.Field name={ name || 'cat' } as='select' value={ parentId || -1 } onChange={ props.onInputChange }>
                 <option key='-1' value=''>{ labelParent }</option>
                 { categoryList && categoryList.map((item) => {
                     return <option key={ item.id } value={ item.id }>{ item.name }</option>
                 }) }
-            </Form.Control>
+            </Form.Field>
         </Fragment>
     )
 }

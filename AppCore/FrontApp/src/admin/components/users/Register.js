@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button } from 'semantic-ui-react'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'

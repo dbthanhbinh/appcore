@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 // import eventEmitter from '../../../utils/eventEmitter'
-import { Form, Button, Modal, Container, Row, Col } from 'react-bootstrap'
+import { Form, Button, Modal, Container,  Grid, ModalHeader, ModalContent } from 'semantic-ui-react'
 import AlertCP from '../commons/AlertCP'
 import { withFormBehaviors } from '../form/form'
 import CustomDropdown from '../form/CustomDropdown'
@@ -13,8 +13,7 @@ import TagsOptions from '../tags'
 import SeoForm from '../seos/SeoForm'
 import PostModel from '../models/addPost.model'
 import SeoModel from '../models/seo.model'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { getInputData, setFieldValue } from '../../../utils/FormUtils'
+import { getInputData, getEditorData, setFieldValue } from '../../../utils/FormUtils'
 import CKEditor from 'ckeditor4-react'
 
 class postForm extends Component {
@@ -43,7 +42,7 @@ class postForm extends Component {
     }
 
     handleOnInputChange(e, data){
-        let { name, value } = getInputData(e, data)
+        let { name, value } = getEditorData(e)
         this.setState((prevState)=>{
             return { model: setFieldValue(name, value, prevState) }
         })
@@ -82,62 +81,64 @@ class postForm extends Component {
 
     render(){
         let { isShowAlert, isShowModal, model } = this.state
-        let post_name = _.get(model, `${PostDefined.NAME}.label`)
-        let post_content = _.get(model, `${PostDefined.CONTENT}.label`)
-        let post_categoryid = _.get(model, `${PostDefined.CATEGORYID}.label`)
+        let nameLabel = _.get(model, `${PostDefined.NAME}.label`)
+        let contentLabel = _.get(model, `${PostDefined.CONTENT}.label`)
+        let categoryidLabel = _.get(model, `${PostDefined.CATEGORYID}.label`)
+
+        let nameValue = _.get(model, `${PostDefined.NAME}.value`)
+        let contentValue = _.get(model, `${PostDefined.CONTENT}.value`)
+        let categoryidValue = _.get(model, `${PostDefined.CATEGORYID}.value`)
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
 
                 <Button onClick={this.handleOpenModal} variant="primary">Add new</Button>
                 <Modal
-                    show={isShowModal}
-                    size="xs"
+                    open={isShowModal}
                     >
-                    <Modal.Header>
-                        <Modal.Title>Add new</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
+                    <ModalHeader>
+                        <h4>Add new</h4>
+                    </ModalHeader>
+                    <ModalContent>
                         <Container>
-                            <Row className="show-grid">
-                                <Col xs={12} md={8}>
-                                    <Form.Group>
-                                        <Form.Control type='text' name={PostDefined.NAME} onChange={this.handleOnInputChange} defaultValue='' placeholder={ post_name } />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        {/* <Form.Control as="textarea" rows="3" name={PostDefined.CONTENT} defaultValue='' placeholder={ post_content } onChange={this.handleOnInputChange}></Form.Control> */}
-                                        <CKEditor
-                                            name='cke_editor3'
-                                            id='cke_editor3'
-                                            data=""
-                                        />
-                                    </Form.Group>
-                                </Col>
-                                <Col xs={6} md={4}>
-                                    <Form.Group>
-                                        <CustomDropdown defaultValue='' name={PostDefined.CATEGORYID} placeholder={ post_categoryid } onInputChange = {this.handleOnInputChange} />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <CustomFile defaultValue='' onInputChange = {this.handleOnInputChange} />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <TagsOptions />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <SeoForm onInputChange = {this.handleOnInputChange} model={ model } />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
-                                    </Form.Group>
-                                </Col>
-                            </Row>
+                            <Grid>
+                                <Grid.Row columns={2} className="show-grid">
+                                    <Grid.Column width={10}>
+                                        <Form.Field>
+                                            <input type='text' name={PostDefined.NAME} onChange={this.handleOnInputChange} defaultValue={nameValue||null} placeholder={ nameLabel } />
+                                        </Form.Field>
+                                        <Form.Field>
+                                            <CKEditor
+                                                onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
+                                                onChange={this.handleOnInputChange}
+                                                data={contentValue || null}
+                                            />
+                                        </Form.Field>
+                                    </Grid.Column>
+                                    <Grid.Column width={6}>
+                                        <Form.Field>
+                                            <CustomDropdown defaultValue={categoryidValue || null} name={PostDefined.CATEGORYID} placeholder={ categoryidLabel } onInputChange = {this.handleOnInputChange} />
+                                        </Form.Field>
+                                        <Form.Field>
+                                            <CustomFile defaultValue='' onInputChange = {this.handleOnInputChange} />
+                                        </Form.Field>
+                                        <Form.Field>
+                                            <TagsOptions />
+                                        </Form.Field>
+                                        <Form.Field>
+                                            {/* <SeoForm onInputChange = {this.handleOnInputChange} model={ model } /> */}
+                                        </Form.Field>
+                                        <Form.Field>
+                                            <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
+                                        </Form.Field>
+                                        <Button variant="secondary" onClick={this.handleCloseModal}>
+                                            Close
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
                         </Container>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleCloseModal}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
+                    </ModalContent>
                 </Modal>
             </React.Fragment>
         )

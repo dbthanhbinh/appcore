@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import { Form } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 class customFile extends Component {
@@ -20,7 +19,7 @@ class customFile extends Component {
         let { name, id, type } = this.props        
         return(
             <Fragment>
-                <Form.Control type={ type || 'file' } name={ name || 'file' } id={ id || 'file' } onChange={ this.handleChange }></Form.Control>
+                <input type={ type || 'file' } name={ name || 'file' } id={ id || 'file' } onChange={ this.handleChange } />
             </Fragment>
         )
     }
