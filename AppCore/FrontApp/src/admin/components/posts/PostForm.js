@@ -104,36 +104,38 @@ class postForm extends Component {
                             <Grid>
                                 <Grid.Row columns={2} className="show-grid">
                                     <Grid.Column width={10}>
-                                        <Form.Field>
-                                            <input type='text' name={PostDefined.NAME} onChange={this.handleOnInputChange} defaultValue={nameValue||null} placeholder={ nameLabel } />
-                                        </Form.Field>
-                                        <Form.Field>
-                                            <CKEditor
-                                                onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
-                                                onChange={this.handleOnInputChange}
-                                                data={contentValue || null}
-                                            />
-                                        </Form.Field>
+                                        <Form>
+                                            <Form.Field>
+                                                <input type='text' name={PostDefined.NAME} onChange={this.handleOnInputChange} defaultValue={nameValue||null} placeholder={ nameLabel } />
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <CKEditor
+                                                    onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
+                                                    onChange={this.handleOnInputChange}
+                                                    data={contentValue || null}
+                                                />
+                                            </Form.Field>
+                                        </Form>
                                     </Grid.Column>
                                     <Grid.Column width={6}>
-                                        <Form.Field>
-                                            <CustomDropdown defaultValue={categoryidValue || null} name={PostDefined.CATEGORYID} placeholder={ categoryidLabel } onInputChange = {this.handleOnInputChange} />
-                                        </Form.Field>
-                                        <Form.Field>
-                                            <CustomFile defaultValue='' onInputChange = {this.handleOnInputChange} />
-                                        </Form.Field>
-                                        <Form.Field>
-                                            <TagsOptions />
-                                        </Form.Field>
-                                        <Form.Field>
-                                            {/* <SeoForm onInputChange = {this.handleOnInputChange} model={ model } /> */}
-                                        </Form.Field>
-                                        <Form.Field>
-                                            <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
-                                        </Form.Field>
-                                        <Button variant="secondary" onClick={this.handleCloseModal}>
-                                            Close
-                                        </Button>
+                                        <Form>
+                                            <Form.Field>
+                                                <CustomDropdown defaultValue={categoryidValue || null} name={PostDefined.CATEGORYID} placeholder={ categoryidLabel } onInputChange = {this.handleOnInputChange} />
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <CustomFile defaultValue='' onInputChange = {this.handleOnInputChange} />
+                                            </Form.Field>
+                                            <Form.Field>
+                                                {/* <TagsOptions /> */}
+                                            </Form.Field>
+
+                                            <SeoForm onInputChange = {this.handleOnInputChange} model={ model } />
+                                            
+                                            <Form.Field>
+                                                <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
+                                                <Button variant="secondary" onClick={this.handleCloseModal}> Close</Button>
+                                            </Form.Field>
+                                        </Form>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>

@@ -34,7 +34,7 @@ namespace FileService
                         throw new Exception(Configs.NOT_FOUND_FILE);
                     if (!common.CheckFileSize(file.Length))
                         throw new Exception(Configs.FILE_SIZE_TOO_BIG);
-
+                    string SubName = Path.GetFileNameWithoutExtension(file.FileName);
                     string FileName = common.CreateFileName(SubPathDirectory, file.FileName);                    
                     //4 set the path where file will be copied
                     string filePath = Path.GetFullPath(Path.Combine(common.GetCurrentDirectoryForUpload(SubPathDirectory)));
@@ -43,8 +43,9 @@ namespace FileService
                     {
                         file.CopyTo(fileStream);
                     }
-                    SubPathFileUrl = SubPathFileUrl + FileName;
-                    Uploaded uploaded = new Uploaded(file.ContentType, FileName, file.Length, SubPathFileUrl);
+                    SubPathFileUrl += FileName;
+                    
+                    Uploaded uploaded = new Uploaded(file.ContentType, FileName, SubName, file.Length, SubPathFileUrl);
                     return uploaded;
                 }
                 else

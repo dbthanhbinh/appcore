@@ -9,6 +9,8 @@ import MediaItem from './mediaItem'
 import Utils from '../../../apis/utils'
 import Pagination from '../../../helpers/Pagination'
 import './media.scss'
+import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, pickKeysFromModel }
+from '../../../utils/FormUtils'
 
 class Media extends Component {
     constructor(props){
@@ -20,6 +22,8 @@ class Media extends Component {
         this.pagination = this.resetPagination()  // Current process pagination
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
         this.handleOnChangeFile = this.handleOnChangeFile.bind(this)
+        this.handleUpdateMedia = this.handleUpdateMedia.bind(this)
+        this.handleOnInputChange = this.handleOnInputChange.bind(this)
     }
 
     resetPagination(){
@@ -93,22 +97,53 @@ class Media extends Component {
         }
     }
 
+    handleOnInputChange = (e, data) => {
+        let { name, value } = getInputData(e, data)
+        this.setState((prevState)=>{
+            return { model: setFieldValue(name, value, prevState) }
+        })
+    }
+
+    handleUpdateMedia(id, subName){
+        if(!id || !subName) return
+        let payload = {
+            url: 'Media/updateMedia',
+            body: {
+                SubName: subName,
+                Id: id
+            }
+        }
+        if(!_.isNil(payload) && !_.isEmpty(payload)){
+            this.MediaActions.updateItem(payload, (err, result)=> {
+                if(err) return
+                if(result) this.props.updateMedia(Utils.getResApi(result))
+            })
+        }
+    }
+
     render(){
         let mediaList = _.get(this.props, 'mediaData.mediaList')
         return(
             <Fragment>
                 <h5>Media</h5>
                 <div className='media-header'>
-                    <Form.Control type='file' name='file' id='file' onChange={ this.handleOnChangeFile } />
-                    <Form.Group>
-                        <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
-                    </Form.Group>
+                    <Form>
+                        <Form.Field>
+                            <input type='file' name='file' id='file' onChange={ this.handleOnChangeFile } />
+                        </Form.Field>
+                        <Form.Field>
+                            <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
+                        </Form.Field>
+                    </Form>
                 </div>
-                <div className='media-list'>
-                    <Grid.Row>
+                <Grid className='media-list'>
+                    <Grid.Row columns={6}>
                     { mediaList && mediaList.map((item) => {
-                    return <Grid.Column md={2} className='media-item' key={ item.id }>
-                            <MediaItem item={item} />
+                    return <Grid.Column className='media-item' key={ item.id }>
+                            <MediaItem item={item}
+                                onHandleUpdateMedia={this.handleUpdateMedia}
+                                onInputChange = { this.handleOnInputChange }
+                            />
                         </Grid.Column>
                     }) }
                     </Grid.Row>
@@ -124,7 +159,7 @@ class Media extends Component {
                         /> : null
 
                     }
-                </div>
+                </Grid>
             </Fragment>
         )
     }

@@ -24,7 +24,7 @@ class RestConnection{
     }
 
     postForm(payload, cb){
-        let url = this.getPublicUrlFromPayload(payload)
+        let url = this.getApiResourcesFromPayload(payload)
         let body = this.getBodyFromFormPayload(payload)
         let formData = new FormData()
         formData = appendFormData(body)
