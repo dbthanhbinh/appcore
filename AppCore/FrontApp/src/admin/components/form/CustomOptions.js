@@ -8,11 +8,12 @@ const CustomOptions = (props) => {
         categoryList = categoryList.filter((f) => f.id !== currentCatId)
     }
     let labelParent = 'Select parent'
+    let deGuidId = getDefaultEmptyGuid()
     return(
         <Fragment>
             <h5>{ labelParent }</h5>
-            <Form.Field name={ name || 'cat' } as='select' value={ parentId || -1 } onChange={ props.onInputChange }>
-                <option key={getDefaultEmptyGuid()} value={getDefaultEmptyGuid()}>{ labelParent }</option>
+            <Form.Field name={ name || 'cat' } as='select' value={ parentId || deGuidId } onChange={ props.onInputChange }>
+                <option key={ deGuidId } value={ deGuidId }>{ labelParent }</option>
                 { categoryList && categoryList.map((item) => {
                     return <option key={ item.id } value={ item.id }>{ item.name }</option>
                 }) }

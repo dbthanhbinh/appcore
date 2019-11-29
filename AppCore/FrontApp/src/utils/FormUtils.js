@@ -47,6 +47,11 @@ export function mappingModelDefaultData(rawModel, defaultObjValue){
     return models
 }
 
+export function resetModelDefaultData(rawModel){
+    let models = rawModel
+    return models
+}
+
 export function initValidatorModel(rawModel){
     let models = rawModel ? rawModel.model.bind(this)() : {}
     if(models){

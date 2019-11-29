@@ -22,9 +22,9 @@ class CategoryForm extends React.Component{
     render(){
         let { detailData, isEdit, items, currentEditId } = this.props
         let { model } = this.state
-        let nameValue = _.get(model, `${CategoryDefined.NAME}.value`)
-        let slugValue = _.get(model, `${CategoryDefined.SLUG}.value`)
-        let parentIdValue = _.get(model, `${CategoryDefined.PARENTID}.value`)
+        let nameValue = _.get(model, `${CategoryDefined.NAME}.value`) || ''
+        let slugValue = _.get(model, `${CategoryDefined.SLUG}.value`) || ''
+        let parentIdValue = _.get(model, `${CategoryDefined.PARENTID}.value`) || ''
 
         let nameLabel = _.get(model, `${CategoryDefined.NAME}.label`)
         let slugLabel = _.get(model, `${CategoryDefined.SLUG}.label`)
@@ -39,7 +39,7 @@ class CategoryForm extends React.Component{
                             placeholder={nameLabel}
                             name='name'
                             onChange={this.props.onInputChange}
-                            defaultValue={ nameValue }
+                            value={ nameValue }
                         />
                     </Form.Field>
                     <Form.Field>
@@ -47,7 +47,7 @@ class CategoryForm extends React.Component{
                             placeholder={slugLabel}
                             name='slug'
                             onChange={this.props.onInputChange}
-                            defaultValue={ slugValue }
+                            value={ slugValue }
                         />
                     </Form.Field>
                     <Form.Field>

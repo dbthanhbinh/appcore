@@ -164,7 +164,7 @@ class Category extends Component{
                 <Grid>
                     <Grid.Row columns={2}>
                         <Grid.Column width={6}>
-                            <CategoryForm
+                            {/* <CategoryForm
                                 isEdit={ this.isEdit }
                                 currentEditId={catId}
                                 model={ model }
@@ -173,7 +173,7 @@ class Category extends Component{
                                 onCreateCategory={ this.handleOnCreateCategory }
                                 onInputChange = { this.handleOnInputChange }
                                 OnUpdateCategory = { this.handleOnUpdateCategory }
-                            />
+                            /> */}
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <CategoryList

@@ -9,7 +9,7 @@ import {  Grid } from 'semantic-ui-react'
 import TagList from './ItemList'
 import TagForm from './form'
 import Utils from '../../../apis/utils'
-import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel }
+import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, resetModelDefaultData }
 from '../../../utils/FormUtils'
 import TagModel from '../models/addTag.model'
 import { TagDefined } from '../commons/Defined'
@@ -115,6 +115,11 @@ class Tag extends Component{
                     if(err) return
                     let tagData = Utils.getResApi(result)
                     if(result) this.props.addTag(tagData)
+                    
+                    this.setState((prevState)=>{
+                        let { models, isFormValid } = validatorModel(resetModelDefaultData(TagModel.model()))
+                        return { model: models, isFormValid }
+                    })
                 })
             }
         }

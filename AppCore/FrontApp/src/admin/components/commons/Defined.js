@@ -2,6 +2,7 @@ export const PostDefined = {
     NAME: 'name',
     CONTENT: 'editor1',
     CATEGORYID: 'categoryId',
+    TAGLIST: 'tagList',
     FILE: 'file'
 }
 

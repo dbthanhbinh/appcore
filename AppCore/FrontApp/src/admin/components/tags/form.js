@@ -8,21 +8,18 @@ import { TagDefined } from "../commons/Defined";
 class TagForm extends React.Component{
     constructor(props){
         super(props)
-        const Model = TagModel.model()
         this.state = {
-            isLoading: false,
-            model: Model
+            isLoading: false
         }
     }
 
     render(){
-        let { isEdit, currentEditId } = this.props
-        let { model } = this.state
+        let { isEdit, currentEditId, model } = this.props
         let nameLabel = _.get(model, `${TagDefined.NAME}.label`)
         let slugLabel = _.get(model, `${TagDefined.SLUG}.label`)
         
-        let nameValue = _.get(model, `${TagDefined.NAME}.value`)
-        let slugValue = _.get(model, `${TagDefined.NAME}.value`)
+        let nameValue = _.get(model, `${TagDefined.NAME}.value`) || ''
+        let slugValue = _.get(model, `${TagDefined.NAME}.value`) || ''
         return(
             <Fragment>
                 <a href='admin/tags'>Add new</a>
@@ -32,7 +29,7 @@ class TagForm extends React.Component{
                             placeholder={nameLabel}
                             name='name'
                             onChange={this.props.onInputChange}
-                            defaultValue={ nameValue }
+                            value={ nameValue }
                         />
                     </Form.Field>
                     <Form.Field>
@@ -40,7 +37,7 @@ class TagForm extends React.Component{
                             placeholder={slugLabel}
                             name='slug'
                             onChange={this.props.onInputChange}
-                            defaultValue={ slugValue }
+                            value={ slugValue }
                         />
                     </Form.Field>
                     <Form.Field>

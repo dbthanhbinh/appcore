@@ -29,7 +29,18 @@ class ItemList extends React.Component{
         </Fragment>
     }
 
+    renderItem(listItem, parentId){
+        listItem && listItem.map((item) => {
+            if(item.parentId === parentId){
+                return 'fdasfsa'
+            } else {
+                return null
+            }
+        })
+    }
+
     render(){
+        // {this.renderItemActions(currentRoute, item, currentEditId, isEdit)}
         let { items, currentRoute, currentEditId, isEdit } = this.props
         let { isLoading } = this.state
         return(
@@ -45,18 +56,7 @@ class ItemList extends React.Component{
                         </tr>
                     </thead>
                     <tbody>                    
-                        {
-                            items.map((item) => {
-                                return (
-                                    <tr key={ item.id }>
-                                        <td>00</td>
-                                        <td>{ item.name }</td>
-                                        <td>{ item.slug }</td>
-                                        <td>{this.renderItemActions(currentRoute, item, currentEditId, isEdit)}</td>
-                                    </tr>
-                                )
-                            })
-                        }
+                        { this.renderItem(items, '00000000-0000-0000-0000-000000000000') }
                     </tbody>
                 </Table>
             </Fragment>

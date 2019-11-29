@@ -9,7 +9,8 @@ import CustomFile from '../form/CustomFile'
 import PostActions from '../../../store/PostActions'
 import Utils from '../../../apis/utils'
 import { PostDefined, SeoDefined } from "../commons/Defined"
-import TagsOptions from '../tags'
+import MultipleSelection from '../form/MultipleSelection'
+import SearchSelection from '../form/SearchSelection'
 import SeoForm from '../seos/SeoForm'
 import PostModel from '../models/addPost.model'
 import SeoModel from '../models/seo.model'
@@ -120,13 +121,22 @@ class postForm extends Component {
                                     <Grid.Column width={6}>
                                         <Form>
                                             <Form.Field>
-                                                <CustomDropdown defaultValue={categoryidValue || null} name={PostDefined.CATEGORYID} placeholder={ categoryidLabel } onInputChange = {this.handleOnInputChange} />
+                                                <SearchSelection
+                                                    options={[]}
+                                                    defaultValue={categoryidValue || null}
+                                                    name={PostDefined.CATEGORYID}
+                                                    placeholder={ categoryidLabel }
+                                                    onInputChange = {this.handleOnInputChange}
+                                                />
+                                                {/* <CustomDropdown defaultValue={categoryidValue || null} name={PostDefined.CATEGORYID} placeholder={ categoryidLabel } onInputChange = {this.handleOnInputChange} /> */}
                                             </Form.Field>
                                             <Form.Field>
                                                 <CustomFile defaultValue='' onInputChange = {this.handleOnInputChange} />
                                             </Form.Field>
                                             <Form.Field>
-                                                {/* <TagsOptions /> */}
+                                                <MultipleSelection
+                                                    name={PostDefined.TAGLIST}
+                                                />
                                             </Form.Field>
 
                                             <SeoForm onInputChange = {this.handleOnInputChange} model={ model } />

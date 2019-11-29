@@ -24,7 +24,7 @@ class ItemList extends React.Component{
             title = 'Can not Del'
         }
         return <Fragment>
-            <span as='a' title={title} className={ disableItem ? 'disabled' : '' } onClick={!disableItem ? ()=>this.props.onDeleteCategory(item.id) : null }>Del</span> |
+            <span as='a' title={title} className={ disableItem ? 'disabled' : '' } onClick={!disableItem ? ()=>this.props.onDeleteTag(item.id) : null }>Del</span> |
             <a className={ disableItem ? 'disabled' : '' } href={`admin/${currentRoute}/edit/${item.id}`}>Edit</a>
         </Fragment>
     }
