@@ -17,7 +17,7 @@ const withFormBehaviors = (WrappedComponent, rawModel) => {
         handleInputChange = (e, data) => {
             let { name, value } = getInputData(e, data)
             this.setState((prevState)=>{
-                let { models, isFormValid } = validatorModel(setFieldValue(name, value, prevState))
+                let { models, isFormValid } = setFieldValue(name, value, prevState)
                 return { model: models, isFormValid }
             })
         }

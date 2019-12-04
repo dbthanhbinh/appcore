@@ -28,11 +28,6 @@ class login extends Component{
         this.props.onInputChange(e, data)
     }
 
-    componentDidMount(){
-        // const { cookies } = this.props
-        // cookies.set('name', 'binh22', { path: '/' });
-    }
-
     handleSubmitForm(e, data){
         let {isFormValid, formData, cookies } = this.props
         let payload = {}

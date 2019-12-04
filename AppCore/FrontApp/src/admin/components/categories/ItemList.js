@@ -2,36 +2,68 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 import LoadingItem from '../commons/LoadingItem'
+import { getDefaultEmptyGuid } from '../../../utils/commons'
 
 /**
  * Input: items: [] => array of list item
  * @param {*} props 
  * Output: render list of Item as listgroup item
  */
-function renderListItem(listItem, parentId, char){
-    if(_.isEmpty(listItem)) return
+const RenderListItem = (props) => {
+    let { listItems, parentId, char, currentRoute, currentEditId, isEdit, onDeleteItem} = props
+    if(_.isEmpty(listItems)) return
     let menuObject = []
-    listItem.forEach((element, i) => {
+    listItems.forEach((element, i) => {
         if(element.parentId === parentId){
             menuObject.push(element)
-            //delete listItem[i]
-            listItem = listItem.filter((x) => x.id !== element.id)
+            listItems = listItems.filter((x) => x.id !== element.id)
         }
     })
 
     return menuObject && menuObject.map((item, i) => {
-        return item.parentId === parentId && (<React.Fragment key={item.id}>
-            {
-                <tr>
-                    <td>no</td>
-                    <td>{char}  {item.name}</td>
-                    <td>Slug</td>
-                    <td>{item.parentId}</td>
-                </tr> 
-            }
-            { renderListItem(listItem, item.id, '|--') }
-        </React.Fragment>)
+        return item.parentId === parentId && (
+            <React.Fragment key={item.id}>
+                {
+                    <tr>
+                        <td>no</td>
+                        <td>{char}  {item.name}</td>
+                        <td>Slug</td>
+                        <td>
+                            <RenderItemActions
+                                currentRoute={currentRoute}
+                                currentEditId={currentEditId}
+                                isEdit={isEdit}
+                                item={item}
+                                onDeleteItem={onDeleteItem}
+                            />
+                        </td>
+                    </tr> 
+                }
+                <RenderListItem
+                    listItems={listItems}
+                    parentId={item.id}
+                    char='|--'
+                    currentRoute={currentRoute}
+                    currentEditId={currentEditId}
+                    isEdit={isEdit}
+                    onDeleteItem={onDeleteItem}
+                />
+            </React.Fragment>)
     })
+}
+
+const RenderItemActions = (props) => {
+    let { currentRoute, item, currentEditId, isEdit, onDeleteItem } = props
+    let disableItem = false
+    let title = '';
+    if(item.id === currentEditId && isEdit){
+        disableItem = true
+        title = 'Can not Del'
+    }
+    return <Fragment>
+        <span as='a' title={title} className={ disableItem ? 'disabled' : '' } onClick={!disableItem ? ()=>onDeleteItem(item.id) : null }>Del</span> |
+        <a className={ disableItem ? 'disabled' : '' } href={`admin/${currentRoute}/edit/${item.id}`}>Edit</a>
+    </Fragment>
 }
 
 class ItemList extends React.Component{
@@ -42,21 +74,8 @@ class ItemList extends React.Component{
         }
     }
 
-    renderItemActions(currentRoute, item, currentEditId, isEdit){
-        let disableItem = false
-        let title = '';
-        if(item.id === currentEditId && isEdit){
-            disableItem = true
-            title = 'Can not Del'
-        }
-        return <Fragment>
-            <span as='a' title={title} className={ disableItem ? 'disabled' : '' } onClick={!disableItem ? ()=>this.props.onDeleteCategory(item.id) : null }>Del</span> |
-            <a className={ disableItem ? 'disabled' : '' } href={`admin/${currentRoute}/edit/${item.id}`}>Edit</a>
-        </Fragment>
-    }
-
     render(){
-        let { listItems, currentRoute, currentEditId, isEdit } = this.props
+        let { listItems, currentRoute, currentEditId, isEdit, onDeleteItem } = this.props
         let { isLoading } = this.state
         return(
             isLoading ? <LoadingItem />
@@ -70,9 +89,17 @@ class ItemList extends React.Component{
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>                    
+                    <tbody>
                         {
-                            renderListItem(listItems, '00000000-0000-0000-0000-000000000000', '')
+                            <RenderListItem
+                                listItems={listItems}
+                                parentId={getDefaultEmptyGuid()}
+                                char=''
+                                currentRoute={currentRoute}
+                                currentEditId={currentEditId}
+                                isEdit={isEdit}
+                                onDeleteItem={onDeleteItem}
+                            />
                         }
                     </tbody>
                 </Table>

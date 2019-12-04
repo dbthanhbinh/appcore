@@ -57,13 +57,13 @@ export function initValidatorModel(rawModel){
     let models = rawModel ? rawModel.model.bind(this)() : {}
     if(models){
         Object.keys(models).forEach((key) => {
+            models[key].isValid = true
+            models[key].message = null
+
             models[key].validators.forEach((item) => {
                 if(item.compare === 'required' && _.isEmpty(models[key].value)){
                     models[key].isValid = false
                     models[key].message = item.message
-                } else {
-                    models[key].isValid = true
-                    models[key].message = null
                 }
             })
         })

@@ -2,96 +2,34 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 
 import { Form, Button } from 'semantic-ui-react'
-import { withFormBehaviors } from '../form/form'
-
-import SeoModel from '../models/seo.model'
-import CategoryModel from '../models/addCategory.model'
 import CustomOptions from '../form/CustomOptions'
 import SeoForm from '../seos/SeoForm'
-import {CategoryDefined, SeoDefined} from "../commons/Defined"
+import { CategoryDefined } from "../commons/Defined"
 
 import BuildTextField from '../form/BuildTextField'
-import {getInputData, setFieldValue, validatorModel} from '../../../utils/FormUtils'
 import { getDefaultEmptyGuid } from '../../../utils/commons'
-import Utils from '../../../apis/utils'
-import CategoryActions from '../../../store/CategoryActions'
 
 class CategoryForm extends React.Component{
     constructor(props){
         super(props)
-        this.CategoryActions = new CategoryActions()
-        let { models, isFormValid } = validatorModel(_.merge(CategoryModel.model(), SeoModel.model()))
         this.state = {
-            isFormValid: isFormValid,
-            isLoading: false,
-            model: models
-        }
-        this.handleOnInputChange = this.handleOnInputChange.bind(this)
-        this.handleOnCreateCategory = this.handleOnCreateCategory.bind(this)
-        this.handleOnUpdateCategory = this.handleOnUpdateCategory.bind(this)
-    }
-
-    handleOnInputChange = (e, data) => {
-        let { name, value } = getInputData(e, data)
-        this.setState((prevState)=>{
-            let { models, isFormValid } = setFieldValue(name, value, prevState)
-            return { model: models, isFormValid }
-        })
-    }
-
-    handleOnCreateCategory(e, data){
-        let { model, isFormValid } = this.state
-        let payload = {}
-        if(isFormValid){
-            payload = {
-                url: 'Category/createCategory',
-                body: { 
-                    Name: model[CategoryDefined.NAME].value,
-                    Slug: model[CategoryDefined.SLUG].value,
-                    ParentId: model[CategoryDefined.PARENTID].value,
-
-                    SeoTitle: model[SeoDefined.SEOTITLE].value,
-                    SeoKeys: model[SeoDefined.SEOKEYS].value,
-                    SeoDescription: model[SeoDefined.SEODESCRIPTION].value,
-                }
-            }
-            if(!_.isNil(payload) && !_.isEmpty(payload)){
-                this.CategoryActions.addItem(payload, (err, result)=> {
-                    if(err) return
-                    let categoryData = _.get(Utils.getResApi(result), 'categoryData')
-                    if(result) this.props.onAddCategory(categoryData)
-                })
-            }
-        }
-    }
-
-    handleOnUpdateCategory(id){
-        if(!id) return
-        let { model } = this.state
-        let payload = {
-            url: 'Category/updateCategory',
-            body: {
-                Name: model.name.value,
-                Slug: model.slug.value,
-                ParentId: model.parentId.value,
-                Id: id,
-                
-                SeoTitle: model[SeoDefined.SEOTITLE].value,
-                SeoKeys: model[SeoDefined.SEOKEYS].value,
-                SeoDescription: model[SeoDefined.SEODESCRIPTION].value,
-            }
-        }
-        if(!_.isNil(payload) && !_.isEmpty(payload)){
-            this.CategoryActions.updateItem(payload, (err, result)=> {
-                if(err) return
-                if(result) this.props.onUpdateCategory(Utils.getResApi(result))
-            })
+            isLoading: false
         }
     }
 
     render(){
-        let { detailData, isEdit, listItems, currentEditId } = this.props
-        let { model, isFormValid } = this.state
+        let {
+            detailData,
+            isEdit,
+            listItems,
+            currentEditId,
+            model,
+            isFormValid,
+            onInputChange,
+            onUpdateCategory,
+            onCreateCategory
+        } = this.props
+
         let parentIdValue = _.get(model, `${CategoryDefined.PARENTID}.value`) || getDefaultEmptyGuid()
         return(
             <Fragment>
@@ -100,14 +38,14 @@ class CategoryForm extends React.Component{
                     <Form.Field>
                         <BuildTextField
                             name={CategoryDefined.NAME}
-                            onChange={this.handleOnInputChange}
+                            onChange={onInputChange}
                             modelField={model[CategoryDefined.NAME]}
                         />
                     </Form.Field>
                     <Form.Field>
                         <BuildTextField
                             name={CategoryDefined.SLUG}
-                            onChange={this.handleOnInputChange}
+                            onChange={onInputChange}
                             modelField={model[CategoryDefined.SLUG]}
                         />
                     </Form.Field>
@@ -118,19 +56,19 @@ class CategoryForm extends React.Component{
                             categoryList={listItems}
                             name='parentId'
                             parentId={parentIdValue}
-                            onInputChange={this.handleOnInputChange}
+                            onInputChange={onInputChange}
                         />
                     </Form.Field>
                     <Form.Field>
                         <SeoForm
                             model={model}
                             seoData={ _.get(detailData, 'seo') }
-                            onInputChange = { this.handleOnInputChange } />
+                            onInputChange = {onInputChange} />
                     </Form.Field>
                     <Form.Field>
                         <Button variant="primary"
                             disabled={!isFormValid}
-                            onClick={isEdit ? () => this.handleOnUpdateCategory(currentEditId) : this.handleOnCreateCategory} >
+                            onClick={isEdit ? () => onUpdateCategory(currentEditId) : onCreateCategory} >
                             Save Changes
                         </Button>
                     </Form.Field>
@@ -140,4 +78,4 @@ class CategoryForm extends React.Component{
     }
 }
 
-export default withFormBehaviors(CategoryForm, null)
+export default CategoryForm
