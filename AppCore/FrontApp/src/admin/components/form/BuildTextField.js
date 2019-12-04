@@ -1,17 +1,20 @@
 import React from 'react'
 
 const BuildTextField = (props) => {
-    let {placeholder, name, onChange, defaultValue} = props
+    let {name, onChange, modelField} = props
+    let { value, isValid, message, label } = modelField
+    const className = isValid ? 'field-valid' : 'field-invalid'
     return (
         <React.Fragment>
             <input type='text'
-                className='field-invalid'
-                placeholder={placeholder}
+                className={className}
+                placeholder={label}
                 name={name}
                 onChange={onChange}
-                defaultValue={defaultValue}
+                defaultValue={value}
             />
-            <span className='field-invalid-message'>message</span>
+            { !isValid && <span className='field-invalid-message'>{message}</span> }
+
         </React.Fragment>
     )
 }

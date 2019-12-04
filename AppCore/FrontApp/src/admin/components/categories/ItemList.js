@@ -14,7 +14,8 @@ function renderListItem(listItem, parentId, char){
     listItem.forEach((element, i) => {
         if(element.parentId === parentId){
             menuObject.push(element)
-            delete listItem[i]
+            //delete listItem[i]
+            listItem = listItem.filter((x) => x.id !== element.id)
         }
     })
 
@@ -55,15 +56,11 @@ class ItemList extends React.Component{
     }
 
     render(){
-        // {this.renderItemActions(currentRoute, item, currentEditId, isEdit)}
-        let { items, currentRoute, currentEditId, isEdit } = this.props
+        let { listItems, currentRoute, currentEditId, isEdit } = this.props
         let { isLoading } = this.state
-
-        
-
         return(
             isLoading ? <LoadingItem />
-            : (items && !_.isEmpty(items)) && <Fragment>
+            : (listItems && !_.isEmpty(listItems)) && <Fragment>
                 <Table>
                     <thead>
                         <tr>
@@ -75,7 +72,7 @@ class ItemList extends React.Component{
                     </thead>
                     <tbody>                    
                         {
-                            renderListItem(items, '00000000-0000-0000-0000-000000000000', '')
+                            renderListItem(listItems, '00000000-0000-0000-0000-000000000000', '')
                         }
                     </tbody>
                 </Table>

@@ -22,7 +22,8 @@ export function getEditorData(e){
 
 export function setFieldValue(name, value, obj){
     obj.model[name].value = value
-    return obj.model
+    // let { models, isFormValid } = validatorModel(obj.model)
+    return validatorModel(obj.model)
 }
 
 export function pickKeysFromModel(rawModel){
@@ -75,21 +76,41 @@ export function validatorModel(rawModel){
     let models = rawModel ? rawModel : {}
     if(models){
         Object.keys(models).forEach((key) => {
+            models[key].isValid = true
+            models[key].message = null
+
             models[key].validators.forEach((item) => {
                 if(item.compare === 'required'){
                     if(_.isEmpty(models[key].value)) {
                         models[key].isValid = false
                         models[key].message = item.message
-                    } else {
-                        models[key].isValid = true
-                        models[key].message = null
-                    }                        
+                    }                     
                 }
             })
         })
     }
     let _valid = _.some(models, { 'isValid': false });
     return { models, isFormValid: !_valid }
+}
+
+export function validatorModelAfterChangeField(rawModel){
+    let models = rawModel ? rawModel : {}
+    if(models){
+        Object.keys(models).forEach((key) => {
+            models[key].isValid = true
+            models[key].message = null
+
+            models[key].validators.forEach((item) => {
+                if(item.compare === 'required'){
+                    if(_.isEmpty(models[key].value)) {
+                        models[key].isValid = false
+                        models[key].message = item.message
+                    }                     
+                }
+            })
+        })
+    }
+    return models
 }
 
 export function appendFormData(body) {

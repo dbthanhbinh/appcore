@@ -27,13 +27,9 @@ class Category extends Component{
             model: Model
         }
         this.isEdit = false
-        this.handleOnCreateCategory = this.handleOnCreateCategory.bind(this)
+        
         this.handleOnDeleteCategory = this.handleOnDeleteCategory.bind(this)
-        this.handleOnInputChange = this.handleOnInputChange.bind(this)
-        this.handleOnUpdateCategory = this.handleOnUpdateCategory.bind(this)
     }
-
-    
 
     componentDidMount(){
         // // For Edit case
@@ -80,13 +76,6 @@ class Category extends Component{
         }
     }
 
-    handleOnInputChange = (e, data) => {
-        let { name, value } = getInputData(e, data)
-        this.setState((prevState)=>{
-            return { model: setFieldValue(name, value, prevState) }
-        })
-    }
-
     handleOnDeleteCategory(id){
         if(!id) return
         let payload = {
@@ -101,65 +90,11 @@ class Category extends Component{
         }
     }
 
-    handleOnCreateCategory(e, data){
-        let { model } = this.state
-        let {isFormValid} = this.props
-        isFormValid = true
-        let payload = {}
-        if(isFormValid){
-            payload = {
-                url: 'Category/createCategory',
-                body: { 
-                    Name: model[CategoryDefined.NAME].value,
-                    Slug: model[CategoryDefined.SLUG].value,
-                    ParentId: model[CategoryDefined.PARENTID].value,
-
-                    SeoTitle: model[SeoDefined.SEOTITLE].value,
-                    SeoKeys: model[SeoDefined.SEOKEYS].value,
-                    SeoDescription: model[SeoDefined.SEODESCRIPTION].value,
-                }
-            }
-            if(!_.isNil(payload) && !_.isEmpty(payload)){
-                this.CategoryActions.addItem(payload, (err, result)=> {
-                    if(err) return
-                    let categoryData = _.get(Utils.getResApi(result), 'categoryData')
-                    if(result) this.props.addCategory(categoryData)
-                })
-            }
-        }
-    }
-
-    handleOnUpdateCategory(id){
-        if(!id) return
-        let { model } = this.state
-        let payload = {
-            url: 'Category/updateCategory',
-            body: {
-                Name: model.name.value,
-                Slug: model.slug.value,
-                ParentId: model.parentId.value,
-                Id: id,
-                
-                SeoTitle: model[SeoDefined.SEOTITLE].value,
-                SeoKeys: model[SeoDefined.SEOKEYS].value,
-                SeoDescription: model[SeoDefined.SEODESCRIPTION].value,
-            }
-        }
-        if(!_.isNil(payload) && !_.isEmpty(payload)){
-            this.CategoryActions.updateItem(payload, (err, result)=> {
-                if(err) return
-                if(result) this.props.updateCategory(Utils.getResApi(result))
-            })
-        }
-    }
-
     render(){
         let { categoryData } = this.props
         let { currentRoute, model } = this.state
-        let categoryList = _.get(categoryData, 'categoryData.categoryList')
-        let detailData = _.get(categoryData, 'categoryData.detailData')
+        let {categoryList, detailData} = categoryData
         let catId = _.get(detailData, 'category.id')
-        
         return (
             <Fragment>
                 <Grid>
@@ -169,20 +104,19 @@ class Category extends Component{
                                 isEdit={ this.isEdit }
                                 currentEditId={catId}
                                 model={ model }
-                                items={ categoryList }
+                                listItems={ categoryList }
                                 detailData={ detailData }
-                                onCreateCategory={ this.handleOnCreateCategory }
-                                onInputChange = { this.handleOnInputChange }
-                                OnUpdateCategory = { this.handleOnUpdateCategory }
+                                onAddCategory={this.props.addCategory}
+                                onUpdateCategory = { this.props.updateCategory }
                             />
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <CategoryList
-                                isEdit={ this.isEdit }
+                                isEdit={this.isEdit}
                                 currentEditId={catId}
-                                currentRoute={ currentRoute }
-                                items={ categoryList }
-                                onDeleteCategory = { this.handleOnDeleteCategory }
+                                currentRoute={currentRoute}
+                                listItems={categoryList}
+                                onDeleteCategory = {this.handleOnDeleteCategory}
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -193,12 +127,12 @@ class Category extends Component{
 }
 
 function mapStateToProps(state){
-    let { categoryData } = state
+    let { categoryData } = state.categoryData
     return { categoryData }
 }
 
 export default connect(
     mapStateToProps,
     dispatch => bindActionCreators(actionCreators, dispatch)
-)(withFormBehaviors(Category, null))
+)(Category)
 
