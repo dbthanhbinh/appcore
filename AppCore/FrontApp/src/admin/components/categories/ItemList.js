@@ -8,6 +8,31 @@ import LoadingItem from '../commons/LoadingItem'
  * @param {*} props 
  * Output: render list of Item as listgroup item
  */
+function renderListItem(listItem, parentId, char){
+    if(_.isEmpty(listItem)) return
+    let menuObject = []
+    listItem.forEach((element, i) => {
+        if(element.parentId === parentId){
+            menuObject.push(element)
+            delete listItem[i]
+        }
+    })
+
+    return menuObject && menuObject.map((item, i) => {
+        return item.parentId === parentId && (<React.Fragment key={item.id}>
+            {
+                <tr>
+                    <td>no</td>
+                    <td>{char}  {item.name}</td>
+                    <td>Slug</td>
+                    <td>{item.parentId}</td>
+                </tr> 
+            }
+            { renderListItem(listItem, item.id, '|--') }
+        </React.Fragment>)
+    })
+}
+
 class ItemList extends React.Component{
     constructor(props){
         super(props)
@@ -29,20 +54,13 @@ class ItemList extends React.Component{
         </Fragment>
     }
 
-    renderItem(listItem, parentId){
-        listItem && listItem.map((item) => {
-            if(item.parentId === parentId){
-                return 'fdasfsa'
-            } else {
-                return null
-            }
-        })
-    }
-
     render(){
         // {this.renderItemActions(currentRoute, item, currentEditId, isEdit)}
         let { items, currentRoute, currentEditId, isEdit } = this.props
         let { isLoading } = this.state
+
+        
+
         return(
             isLoading ? <LoadingItem />
             : (items && !_.isEmpty(items)) && <Fragment>
@@ -56,7 +74,9 @@ class ItemList extends React.Component{
                         </tr>
                     </thead>
                     <tbody>                    
-                        { this.renderItem(items, '00000000-0000-0000-0000-000000000000') }
+                        {
+                            renderListItem(items, '00000000-0000-0000-0000-000000000000', '')
+                        }
                     </tbody>
                 </Table>
             </Fragment>

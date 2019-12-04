@@ -28,17 +28,17 @@ class SeoForm extends Component {
                 <h5>Config SEO</h5>
                 <Form.Field>
                     <input type='text' name={ SeoDefined.SEOTITLE }
-                        onChange={this.handleOnInputChange} value={ seoTitle } placeholder={ seoTitleLabel }
+                        onChange={this.handleOnInputChange} defaultValue={ seoTitle } placeholder={ seoTitleLabel }
                     />
                 </Form.Field>
                 <Form.Field>
                     <input type='text' name={ SeoDefined.SEOKEYS }
-                        onChange={this.handleOnInputChange} value={ seoKeys } placeholder={ seoKeysLabel }
+                        onChange={this.handleOnInputChange} defaultValue={ seoKeys } placeholder={ seoKeysLabel }
                     />
                 </Form.Field>
                 <Form.Field>
                     <input as="textarea" rows="4" name={ SeoDefined.SEODESCRIPTION }
-                        placeholder={ seoDescriptionLabel } onChange={this.handleOnInputChange} value={ seoDescription } />
+                        placeholder={ seoDescriptionLabel } onChange={this.handleOnInputChange} defaultValue={ seoDescription } />
                 </Form.Field>
             </React.Fragment>
         )

@@ -7,7 +7,7 @@ import { actionCreators } from '../../../store/Category'
 
 import { Grid } from 'semantic-ui-react'
 import CategoryList from './ItemList'
-import CategoryForm from './form'
+import CategoryForm from './CategoryForm'
 import Utils from '../../../apis/utils'
 import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, pickKeysFromModel }
 from '../../../utils/FormUtils'
@@ -159,12 +159,13 @@ class Category extends Component{
         let categoryList = _.get(categoryData, 'categoryData.categoryList')
         let detailData = _.get(categoryData, 'categoryData.detailData')
         let catId = _.get(detailData, 'category.id')
+        
         return (
             <Fragment>
                 <Grid>
                     <Grid.Row columns={2}>
                         <Grid.Column width={6}>
-                            {/* <CategoryForm
+                            <CategoryForm
                                 isEdit={ this.isEdit }
                                 currentEditId={catId}
                                 model={ model }
@@ -173,7 +174,7 @@ class Category extends Component{
                                 onCreateCategory={ this.handleOnCreateCategory }
                                 onInputChange = { this.handleOnInputChange }
                                 OnUpdateCategory = { this.handleOnUpdateCategory }
-                            /> */}
+                            />
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <CategoryList

@@ -60,6 +60,9 @@ export function initValidatorModel(rawModel){
                 if(item.compare === 'required' && _.isEmpty(models[key].value)){
                     models[key].isValid = false
                     models[key].message = item.message
+                } else {
+                    models[key].isValid = true
+                    models[key].message = null
                 }
             })
         })
@@ -97,4 +100,8 @@ export function appendFormData(body) {
         })
     }
     return formData
+}
+
+export function getFormFieldLabel(){
+
 }
