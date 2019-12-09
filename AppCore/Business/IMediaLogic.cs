@@ -11,7 +11,6 @@ namespace AppCore.Business
     {
         Uploaded UploadFile(IFormFile file);
         Task<Media> CreateMediaAsync(IFormFile file);
-        // List<Media> GetAll();
-        Task<PagingResponse> GetAll();
+        Task<PagingResponse> GetAllMedia();
     }
 }

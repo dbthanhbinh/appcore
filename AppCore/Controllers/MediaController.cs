@@ -43,12 +43,12 @@ namespace AppCore.Controllers
         /*
          * Get all media
          */
-        [HttpGet("getAll", Name = "GetAllMedia")]
+        [HttpGet("getAllMedia", Name = "GetAllMedia")]
         public async Task<ActionResult> GetAllMedia()
         {
             // My test open excel
             PagingResponse result = null;
-            result = await _mediaLogic.GetAll();
+            result = await _mediaLogic.GetAllMedia();
             return Ok(new BaseResponse(result.Data, result.Paging));
         }
     }

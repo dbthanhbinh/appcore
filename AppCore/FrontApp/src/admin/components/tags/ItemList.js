@@ -46,10 +46,10 @@ class ItemList extends React.Component{
                     </thead>
                     <tbody>                    
                         {
-                            (items && !_.isEmpty(items)) && items.map((item) => {
+                            (items && !_.isEmpty(items)) && items.map((item, i) => {
                                 return (
                                     <tr key={ item.id }>
-                                        <td>00</td>
+                                        <td>{i + 1}</td>
                                         <td>{ item.name }</td>
                                         <td>{ item.slug }</td>
                                         <td>{this.renderItemActions(currentRoute, item, currentEditId, isEdit)}</td>

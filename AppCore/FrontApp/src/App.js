@@ -57,6 +57,7 @@ function App() {
         <AppRoute exact path='/admin/categories/edit/:id' component={ Category } layout={ ALayout } />
 
         <AppRoute exact path='/admin/tags' component={Tags } layout={ ALayout } />
+        <AppRoute exact path='/admin/tags/edit/:id' component={Tags } layout={ ALayout } />
         <AppRoute exact path='/admin/medias' component={ Media } layout={ ALayout }/>
 
         <AppRoute exact path='/' component={ Home } layout={ appLayout }/>

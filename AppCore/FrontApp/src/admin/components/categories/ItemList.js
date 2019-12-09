@@ -11,7 +11,7 @@ import { getDefaultEmptyGuid } from '../../../utils/commons'
  */
 const RenderListItem = (props) => {
     let { listItems, parentId, char, currentRoute, currentEditId, isEdit, onDeleteItem} = props
-    if(_.isEmpty(listItems)) return
+    if(_.isEmpty(listItems)) return null
     let menuObject = []
     listItems.forEach((element, i) => {
         if(element.parentId === parentId){
@@ -24,25 +24,26 @@ const RenderListItem = (props) => {
         return item.parentId === parentId && (
             <React.Fragment key={item.id}>
                 {
-                    <tr>
-                        <td>no</td>
-                        <td>{char}  {item.name}</td>
-                        <td>Slug</td>
-                        <td>
+                    <Table.Row>
+                        <Table.Cell>no</Table.Cell>
+                        <Table.Cell>{char}  {item.name}</Table.Cell>
+                        <Table.Cell>{item.slug}</Table.Cell>
+                        <Table.Cell>
                             <RenderItemActions
                                 currentRoute={currentRoute}
                                 currentEditId={currentEditId}
                                 isEdit={isEdit}
+                                isDelete
                                 item={item}
                                 onDeleteItem={onDeleteItem}
                             />
-                        </td>
-                    </tr> 
+                        </Table.Cell>
+                    </Table.Row>
                 }
                 <RenderListItem
                     listItems={listItems}
                     parentId={item.id}
-                    char='|--'
+                    char={char + '|--'}
                     currentRoute={currentRoute}
                     currentEditId={currentEditId}
                     isEdit={isEdit}
@@ -53,10 +54,11 @@ const RenderListItem = (props) => {
 }
 
 const RenderItemActions = (props) => {
-    let { currentRoute, item, currentEditId, isEdit, onDeleteItem } = props
+    let { currentRoute, item, currentEditId, isEdit, isDelete, onDeleteItem } = props
     let disableItem = false
     let title = '';
-    if(item.id === currentEditId && isEdit){
+    if(item.id === currentEditId){
+        if (isEdit && isDelete)
         disableItem = true
         title = 'Can not Del'
     }
@@ -80,16 +82,16 @@ class ItemList extends React.Component{
         return(
             isLoading ? <LoadingItem />
             : (listItems && !_.isEmpty(listItems)) && <Fragment>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <Table striped>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>No</Table.HeaderCell>
+                            <Table.HeaderCell>Name</Table.HeaderCell>
+                            <Table.HeaderCell>Slug</Table.HeaderCell>
+                            <Table.HeaderCell>Action</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
                         {
                             <RenderListItem
                                 listItems={listItems}
@@ -101,7 +103,7 @@ class ItemList extends React.Component{
                                 onDeleteItem={onDeleteItem}
                             />
                         }
-                    </tbody>
+                    </Table.Body>
                 </Table>
             </Fragment>
         )

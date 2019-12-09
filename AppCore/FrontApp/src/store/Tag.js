@@ -47,15 +47,15 @@ export const reducer = (state, action) => {
         case UPDATE_TAG:
                 let updateTagList = _.get(state, 'tagData.tagList')
                 updateTagList && updateTagList.forEach((e, i) => {
-                    if(e.id === action.payload.Tag.id) {
-                        updateTagList[i] = action.payload.Tag
+                    if(e.id === action.payload.tag.id) {
+                        updateTagList[i] = action.payload.tag
                     }
                 })
                 return {
                     ...state,
                     tagData: {
                         ...state.tagData,
-                        TagList: updateTagList
+                        tagList: updateTagList
                     }
                 }
         case DEL_TAG:   // Delete item
@@ -77,9 +77,9 @@ export const reducer = (state, action) => {
                 ...state,
                 tagData: {
                     ...state.tagData,
-                    tagList: _.get(action.payload, 'detailData.TagList'),
+                    tagList: _.get(action.payload, 'detailData.tagList'),
                     detailData: {
-                        tag: _.get(action.payload, 'detailData.Tag')
+                        tag: _.get(action.payload, 'detailData.tag')
                     }         
                 }
             }

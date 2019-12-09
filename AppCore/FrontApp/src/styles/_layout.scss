@@ -12,3 +12,23 @@
   .modal-dialog {
     max-width: 90vw !important;
   }
+
+.pagination-section {
+  .pagination {
+    padding: 0;
+    margin: 0;
+    .page-item {
+      list-style: none;
+      display: inline-block;
+
+      a {
+        padding: 5px 10px;
+      }
+      &.active {
+        a {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

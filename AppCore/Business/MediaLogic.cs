@@ -81,12 +81,20 @@ namespace AppCore.Business
         }
 
         // Get all media
-        public async Task<PagingResponse> GetAll()
+        public async Task<PagingResponse> GetAllMedia()
         {
-            List<Media> result = _uow.GetRepository<Media>().GetAll();
-            PagingResponse resultPg = PagingHelper<Media>.GetPagingList(result, 1, 5);
-            await Task.FromResult(resultPg);
-            return resultPg;
+            try
+            {
+                List<Media> result = _uow.GetRepository<Media>().GetAll();
+                PagingResponse resultPg = PagingHelper<Media>.GetPagingList(result, 1, 5);
+                await Task.FromResult(resultPg);
+                return resultPg;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
         }
     }
 }

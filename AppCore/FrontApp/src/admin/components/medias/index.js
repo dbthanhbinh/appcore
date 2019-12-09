@@ -9,13 +9,14 @@ import MediaItem from './mediaItem'
 import Utils from '../../../apis/utils'
 import Pagination from '../../../helpers/Pagination'
 import './media.scss'
-import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, pickKeysFromModel }
+import { getInputData, setFieldValue }
 from '../../../utils/FormUtils'
 
 class Media extends Component {
     constructor(props){
         super(props)
         this.MediaActions = new MediaActions()
+
         this.state = {
             file: null
         }
@@ -58,7 +59,7 @@ class Media extends Component {
 
     componentDidMount(){
         let payload = {
-            url: 'Media/getAll',
+            url: 'Media/getAllMedia',
             body: {}
         }
         this.MediaActions.getListItems(payload, (err, result)=> {
@@ -114,10 +115,10 @@ class Media extends Component {
             }
         }
         if(!_.isNil(payload) && !_.isEmpty(payload)){
-            this.MediaActions.updateItem(payload, (err, result)=> {
-                if(err) return
-                if(result) this.props.updateMedia(Utils.getResApi(result))
-            })
+            // this.MediaActions.updateItem(payload, (err, result)=> {
+            //     if(err) return
+            //     if(result) this.props.updateMedia(Utils.getResApi(result))
+            // })
         }
     }
 

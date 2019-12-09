@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
 
-class customFile extends Component {
+class FieldFile extends Component {
     constructor(props){
         super(props)
         this.state = {}
@@ -24,8 +23,4 @@ class customFile extends Component {
         )
     }
 }
-const CustomFile = customFile
-export default connect(
-    null,
-    null
-)(CustomFile)
+export default FieldFile

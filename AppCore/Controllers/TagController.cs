@@ -33,6 +33,17 @@ namespace AppCore.Controllers
             return Ok(new BaseResponse(result));
         }
 
+        /**
+         * Update tag
+         * Params: payload = { "Name": "Text name", "Slug": "Slug name" }
+         */
+        [HttpPost("updateTag", Name = "UpdateTag")]
+        public async Task<ActionResult> UpdateTagAsync([FromBody] UpdateTagReq tag)
+        {
+            var result = await _tagLogic.UpdateTagAsync(tag);
+            return Ok(new BaseResponse(result));
+        }
+
         /*
          * Delete Category
          */
@@ -40,6 +51,16 @@ namespace AppCore.Controllers
         public async Task<ActionResult> DeleteTagAsync(ReqDeleteTag reqDelete)
         {
             var result = await _tagLogic.DeleteTagAsync(reqDelete);
+            return Ok(new BaseResponse(result));
+        }
+
+        /**
+         * 
+         */
+        [HttpGet("getTagWithEdit/{id}", Name = "GetTagWithEdit")]
+        public ActionResult GetTagWithEdit(Guid id)
+        {
+            var result = _tagLogic.GetTagWithEditAsync(id);
             return Ok(new BaseResponse(result));
         }
     }

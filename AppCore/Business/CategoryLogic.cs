@@ -89,6 +89,14 @@ namespace AppCore.Business
                 Category category = _uow.GetRepository<Category>().Get(categoryData.Id);
                 category.Name = categoryData.Name;
                 category.ParentId = categoryData.ParentId ?? Guid.Empty;
+
+                string SlugName = StringHelper.GenerateSlug(categoryData.Name);
+                if (!string.IsNullOrEmpty(categoryData.Slug))
+                {
+                    SlugName = StringHelper.GenerateSlug(categoryData.Slug);
+                }
+                category.Slug = SlugName;
+
                 _uow.GetRepository<Category>().Update(category);
                 
 
@@ -124,6 +132,30 @@ namespace AppCore.Business
             try
             {
                 return _uow.GetRepository<Category>().GetAll();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
+        /*
+         * Get FilterCategoryWithPagingAsync all category
+         */
+        public async Task<PagingResponse> FilterCategoryWithPagingAsync(ReqFilterCategory reqFilterCategory)
+        {
+            try
+            {
+                int currentPage = reqFilterCategory.CurrentPage;
+                int pageSize = reqFilterCategory.PageSize;
+
+                List<Category> result = null;
+                result = _uow.GetRepository<Category>().GetAll();
+
+                var resultPg = PagingHelper<Category>.GetPagingList(result, currentPage, pageSize);
+                await Task.FromResult(resultPg);
+                return resultPg;
             }
             catch (Exception ex)
             {

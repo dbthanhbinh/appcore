@@ -68,10 +68,10 @@ class PostList extends React.Component{
                     </thead>
                     <tbody>                    
                         {
-                            postList && !_.isEmpty(postList) && postList.map((item) => {
+                            postList && !_.isEmpty(postList) && postList.map((item, i) => {
                                 return (
                                     <tr key={ item.id }>
-                                        <td>aa</td>
+                                        <td>{i + 1}</td>
                                         <td>{ item.name }</td>
                                         <td>{ item.name }</td>
                                         <td>Otto</td>

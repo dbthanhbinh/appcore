@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppCore.Controllers.commons;
+using AppCore.Models.VMModel;
 
 namespace AppCore.Business
 {
@@ -59,6 +60,36 @@ namespace AppCore.Business
         }
 
         /*
+         * Update Tag
+         */
+        public async Task<Tag> UpdateTagAsync(UpdateTagReq tagData)
+        {
+            try
+            {
+                // Update Tag
+                Logger.LogInformation("Update tag");
+                Tag tag = _uow.GetRepository<Tag>().Get(tagData.Id);
+                tag.Name = tagData.Name;
+
+                string SlugName = StringHelper.GenerateSlug(tagData.Name);
+                if (!string.IsNullOrEmpty(tagData.Slug))
+                {
+                    SlugName = StringHelper.GenerateSlug(tagData.Slug);
+                }
+                tag.Slug = SlugName;
+
+                _uow.GetRepository<Tag>().Update(tag);
+                _uow.SaveChanges();
+                return await Task.FromResult(tag);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
+        /*
         // * Delete Tag
         // */
         public async Task<Tag> DeleteTagAsync(ReqDeleteTag reqDelete)
@@ -80,5 +111,23 @@ namespace AppCore.Business
             }
         }
 
+        /*
+         * Get list all category with edit data
+         */
+        public async Task<TagWithEditVM> GetTagWithEditAsync(Guid id)
+        {
+            TagWithEditVM tagWithEditVM = new TagWithEditVM();
+            try
+            {
+                tagWithEditVM.TagList = _uow.GetRepository<Tag>().GetAll();
+                tagWithEditVM.Tag = _uow.GetRepository<Tag>().Get(id);
+                return await Task.FromResult(tagWithEditVM);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
     }
 }

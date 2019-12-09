@@ -1,33 +1,41 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-// import eventEmitter from '../../../utils/eventEmitter'
 import { Form, Button, Modal, Container,  Grid, ModalHeader, ModalContent } from 'semantic-ui-react'
 import AlertCP from '../commons/AlertCP'
 import { withFormBehaviors } from '../form/form'
-import CustomDropdown from '../form/CustomDropdown'
-import CustomFile from '../form/CustomFile'
+import DropdownAsParentId from '../form/DropdownAsParentId'
+import FieldFile from '../form/FieldFile'
 import PostActions from '../../../store/PostActions'
+import CategoryActions from '../../../store/CategoryActions'
 import Utils from '../../../apis/utils'
 import { PostDefined, SeoDefined } from "../commons/Defined"
-import MultipleSelection from '../form/MultipleSelection'
-import SearchSelection from '../form/SearchSelection'
+import TagOptions from '../tags/TagOptions'
+import CategoryOptions from '../categories/CategoryOptions'
 import SeoForm from '../seos/SeoForm'
 import PostModel from '../models/addPost.model'
 import SeoModel from '../models/seo.model'
-import { getInputData, getEditorData, setFieldValue } from '../../../utils/FormUtils'
+import {
+    getInputData,
+    getEditorData,
+    setFieldValue,
+    validatorModel
+} from '../../../utils/FormUtils'
 import CKEditor from 'ckeditor4-react'
-
+import BuildTextField from '../form/BuildTextField'
 class postForm extends Component {
     constructor(props){
         super(props)
         this.PostActions = new PostActions()
-        const Model = _.merge(PostModel.model(), SeoModel.model())
+        this.CategoryActions = new CategoryActions()
+        let { models, isFormValid } = validatorModel(_.merge(PostModel.model(), SeoModel.model()))
         this.state = {
             isShowModal: false,
             isShowAlert: false,
             isLoading: false,
-            model: Model
+            isFormValid: isFormValid,
+            model: models
         }
+        this.handleOnEditorChange = this.handleOnEditorChange.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
         this.handleOpenModal = this.handleOpenModal.bind(this)
@@ -42,10 +50,19 @@ class postForm extends Component {
         this.setState({isShowModal: false})
     }
 
-    handleOnInputChange(e, data){
-        let { name, value } = getEditorData(e)
+    handleOnEditorChange(e, data){        
+        let { name, value } = getEditorData(e, data)
         this.setState((prevState)=>{
-            return { model: setFieldValue(name, value, prevState) }
+            let { models, isFormValid } = setFieldValue(name, value, prevState)
+            return { model: models, isFormValid: isFormValid }
+        })
+    }
+
+    handleOnInputChange(e, data){        
+        let { name, value } = getInputData(e, data)
+        this.setState((prevState)=>{
+            let { models, isFormValid } = setFieldValue(name, value, prevState)
+            return { model: models, isFormValid: isFormValid }
         })
     }
 
@@ -60,10 +77,11 @@ class postForm extends Component {
                     Name: model[PostDefined.NAME].value,
                     Content: model[PostDefined.CONTENT].value,
                     CategoryId: model[PostDefined.CATEGORYID].value,
+                    TagList: model[PostDefined.TAGLIST].value,
                     File: model[PostDefined.FILE].value,
                     SeoTitle: model[SeoDefined.SEOTITLE].value,
                     SeoKeys: model[SeoDefined.SEOKEYS].value,
-                    SeoDescription: model[SeoDefined.SEODESCRIPTION].value,
+                    SeoDescription: model[SeoDefined.SEODESCRIPTION].value
                 }
             }
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
@@ -82,13 +100,14 @@ class postForm extends Component {
 
     render(){
         let { isShowAlert, isShowModal, model } = this.state
-        let nameLabel = _.get(model, `${PostDefined.NAME}.label`)
-        let contentLabel = _.get(model, `${PostDefined.CONTENT}.label`)
-        let categoryidLabel = _.get(model, `${PostDefined.CATEGORYID}.label`)
-
-        let nameValue = _.get(model, `${PostDefined.NAME}.value`)
+        let {
+            detailData,
+            isEdit,
+            listItems,
+            currentEditId
+        } = this.props
         let contentValue = _.get(model, `${PostDefined.CONTENT}.value`)
-        let categoryidValue = _.get(model, `${PostDefined.CATEGORYID}.value`)
+        console.log('======', model)
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
@@ -107,12 +126,16 @@ class postForm extends Component {
                                     <Grid.Column width={10}>
                                         <Form>
                                             <Form.Field>
-                                                <input type='text' name={PostDefined.NAME} onChange={this.handleOnInputChange} defaultValue={nameValue||null} placeholder={ nameLabel } />
+                                                <BuildTextField
+                                                    name={PostDefined.NAME}
+                                                    onChange={this.handleOnInputChange}
+                                                    modelField={model[PostDefined.NAME]}
+                                                />
                                             </Form.Field>
                                             <Form.Field>
                                                 <CKEditor
                                                     onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
-                                                    onChange={this.handleOnInputChange}
+                                                    onChange={this.handleOnEditorChange}
                                                     data={contentValue || null}
                                                 />
                                             </Form.Field>
@@ -121,26 +144,34 @@ class postForm extends Component {
                                     <Grid.Column width={6}>
                                         <Form>
                                             <Form.Field>
-                                                <SearchSelection
-                                                    options={[]}
-                                                    defaultValue={categoryidValue || null}
+                                                <CategoryOptions
+                                                    isEdit={isEdit}
+                                                    currentCatId={currentEditId}
+                                                    categoryList={listItems}
                                                     name={PostDefined.CATEGORYID}
-                                                    placeholder={ categoryidLabel }
-                                                    onInputChange = {this.handleOnInputChange}
+                                                    parentId={null}
+                                                    onInputChange={this.handleOnInputChange}
                                                 />
-                                                {/* <CustomDropdown defaultValue={categoryidValue || null} name={PostDefined.CATEGORYID} placeholder={ categoryidLabel } onInputChange = {this.handleOnInputChange} /> */}
                                             </Form.Field>
                                             <Form.Field>
-                                                <CustomFile defaultValue='' onInputChange = {this.handleOnInputChange} />
+                                                <FieldFile defaultValue='' onInputChange = {this.handleOnInputChange} />
                                             </Form.Field>
                                             <Form.Field>
-                                                <MultipleSelection
+                                                <TagOptions
+                                                    isEdit={isEdit}
+                                                    currentCatId={currentEditId}
+                                                    categoryList={listItems}
                                                     name={PostDefined.TAGLIST}
+                                                    parentId={null}
+                                                    onInputChange={this.handleOnInputChange}
                                                 />
                                             </Form.Field>
-
-                                            <SeoForm onInputChange = {this.handleOnInputChange} model={ model } />
-                                            
+                                            <Form.Field>
+                                                <SeoForm
+                                                    model={model}
+                                                    seoData={ _.get(detailData, 'seo') }
+                                                    onInputChange = {this.handleOnInputChange} />
+                                            </Form.Field>
                                             <Form.Field>
                                                 <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
                                                 <Button variant="secondary" onClick={this.handleCloseModal}> Close</Button>

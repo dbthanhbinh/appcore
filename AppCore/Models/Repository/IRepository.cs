@@ -13,7 +13,8 @@ namespace AppCore.Models.Repository
         void Add(params T[] entities);
         void Add(IEnumerable<T> entities);
         Task<bool> AddAsync(T entity);
-
+        void AddAsync(params T[] entities);
+        void AddAsync(IEnumerable<T> entities);
 
         void Delete(T entity);
         void Delete(object id);
@@ -29,6 +30,8 @@ namespace AppCore.Models.Repository
         T Get(object id);
         IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
         List<T> GetAll();
-        List<T> GetByFilter(Expression<Func<T, bool>> predicate);        
+        List<T> GetByFilter(Expression<Func<T, bool>> predicate);
+
+        Int32 CountTotalAll();
     }
 }

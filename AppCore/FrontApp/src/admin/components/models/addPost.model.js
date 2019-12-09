@@ -20,6 +20,11 @@ var ItemAppModel = {
           { compare: 'required', message: 'Please select category!' }
         ]
       },
+      tagList: {
+        label: 'Select tags',
+        value: null,
+        validators: []
+      },
       file: {
         value: null,
         validators: []

@@ -15,8 +15,7 @@ import {
     setFieldValue,
     validatorModel,
     pickKeysFromModel,
-    mappingModelDefaultData,
-    validatorModelAfterChangeField
+    mappingModelDefaultData
 } from '../../../utils/FormUtils'
 
 import CategoryActions from '../../../store/CategoryActions'
@@ -31,6 +30,7 @@ class Category extends Component{
         this.CategoryActions = new CategoryActions()
         let { models, isFormValid } = validatorModel(_.merge(CategoryModel.model(), SeoModel.model()))
         this.state = {
+            isBtnLoading: false,
             currentRoute: 'categories',
             isFormValid: isFormValid,
             model: models
@@ -164,7 +164,6 @@ class Category extends Component{
         let { currentRoute, model, isFormValid } = this.state
         let { categoryData } = this.props
         let { categoryList, detailData } = categoryData
-        console.log('======003333', model)
         return (
             <Fragment>
                 <Grid>

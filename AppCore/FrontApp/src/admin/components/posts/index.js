@@ -10,6 +10,7 @@ import HeaderSection from '../commons/HeaderSection'
 class PostApp extends Component{
     render() {
         let { postData } = this.props
+        
         return(
             <Fragment>
                 <Grid>
@@ -27,7 +28,9 @@ class PostApp extends Component{
 
 function mapStateToProps(state) {
     let { postData } = state.postData
-    return { postData }
+    let { categoryData } = state.categoryData
+    let { tagData } = state.tagData
+    return { postData, categoryData, tagData }
 }
 
 export default connect(

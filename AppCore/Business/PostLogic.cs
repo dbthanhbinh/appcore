@@ -17,14 +17,23 @@ namespace AppCore.Business
         private readonly IMediaLogic _mediaLogic;
         private readonly ISeoLogic _seoLogic;
         private readonly IObjectMediaLogic _objectMediaLogic;
+        private readonly IObjectTagLogic _objectTagLogic;
         public ILogger<PostLogic> _logger { get; }
 
-        public PostLogic(IUnitOfWork unit, IMediaLogic mediaLogic, IObjectMediaLogic objectMediaLogic, ISeoLogic seoLogic, ILogger<PostLogic> logger)
+        public PostLogic(
+            IUnitOfWork unit,
+            IMediaLogic mediaLogic,
+            IObjectMediaLogic objectMediaLogic,
+            IObjectTagLogic objectTagLogic,
+            ISeoLogic seoLogic,
+            ILogger<PostLogic> logger
+        )
         {
             _uow = unit;
             _logger = logger;
             _mediaLogic = mediaLogic;
             _objectMediaLogic = objectMediaLogic;
+            _objectTagLogic = objectTagLogic;
             _seoLogic = seoLogic;
         }
 
@@ -43,7 +52,6 @@ namespace AppCore.Business
                 postData.Name = reqData.Name;
                 postData.CategoryId = reqData.CategoryId;
                 postData.Content = reqData.Content;
-                
                 Task<bool> postCreated = _uow.GetRepository<Post>().AddAsync(postData);
                 await Task.WhenAll(mediaCreated, postCreated);
 
@@ -65,6 +73,14 @@ namespace AppCore.Business
                 Task<ObjectMedia> objectMediaCreate = _objectMediaLogic.CreateObjectMediaAsync(mediaCreated.Result.Id, postData.Id, reqData.PostType);
                 _uow.SaveChanges();
                 await Task.WhenAll(objectMediaCreate);
+
+                // Create tag object
+                if(!string.IsNullOrEmpty(reqData.TagList.ToString()))
+                {
+                    List<Guid> tagListIds = new List<Guid>();
+                    tagListIds = reqData.TagList.ToString().Split(",").Select(x => Guid.Parse(x)).ToList();
+                    await _objectTagLogic.CreateObjectTagsAsync(tagListIds, postData.Id, reqData.PostType);
+                }
 
                 postVM.postData = postData;
                 postVM.mediaData = mediaCreated.Result;
