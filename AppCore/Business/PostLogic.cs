@@ -75,7 +75,7 @@ namespace AppCore.Business
                 await Task.WhenAll(objectMediaCreate);
 
                 // Create tag object
-                if(!string.IsNullOrEmpty(reqData.TagList.ToString()))
+                if(!string.IsNullOrEmpty(reqData.TagList))
                 {
                     List<Guid> tagListIds = new List<Guid>();
                     tagListIds = reqData.TagList.ToString().Split(",").Select(x => Guid.Parse(x)).ToList();

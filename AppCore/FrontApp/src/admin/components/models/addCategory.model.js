@@ -3,18 +3,18 @@ var ItemAppModel = {
     let modelFields = {
       name: {
         label: 'Category name',
-        value: null,
+        value: '',
         validators: [
             { compare: 'required', message: 'Require message' }
         ]
       },
       slug: {
         label: 'Category slug',
-        value: null,
+        value: '',
         validators: []
       },
       parentId: {
-        value: null,
+        value: '',
         validators: []
       }
     }

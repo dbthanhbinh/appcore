@@ -3,30 +3,30 @@ var ItemAppModel = {
     let modelFields = {
       name: {
         label: 'Post name',
-        value: null,
+        value: '',
         validators: [
             { compare: 'required', message: 'The name is not empty!' }
         ]
       },
       editor1: {
         label: 'Post content',
-        value: null,
+        value: '',
         validators: []
       },
       categoryId: {
         label: 'Select category',
-        value: null,
+        value: '',
         validators: [
           { compare: 'required', message: 'Please select category!' }
         ]
       },
       tagList: {
         label: 'Select tags',
-        value: null,
+        value: '',
         validators: []
       },
       file: {
-        value: null,
+        value: '',
         validators: []
       }
     }

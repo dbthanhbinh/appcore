@@ -3,17 +3,17 @@ var ItemAppModel = {
     let modelFields = {
       seoTitle: {
         label: 'Seo title',
-        value: null,
+        value: '',
         validators: []
       },
       seoKeys: {
         label: 'Seo key words',
-        value: null,
+        value: '',
         validators: []
       },
       seoDescription: {
         label: 'Seo description',
-        value: null,
+        value: '',
         validators: []
       }
     }

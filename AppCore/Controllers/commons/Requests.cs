@@ -30,7 +30,7 @@ namespace AppCore.Controllers.commons
     public class ReqCreatePost {
         public string Name { get; set; }
         public string Content { get; set; }
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         public virtual string TagList { get; set; }
         // For Seo
         public virtual string SeoTitle { get; set; }
