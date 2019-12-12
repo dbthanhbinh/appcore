@@ -8,6 +8,7 @@ import * as Tag from './Tag'
 import * as User from './User'
 import * as Media from './Media'
 import * as SimCard from './SimCard'
+import * as MenuApp from './Menu'
 
 export default function configureStore(history, initialState) {
   const reducers = {
@@ -16,7 +17,8 @@ export default function configureStore(history, initialState) {
     categoryData: Category.reducer,
     tagData: Tag.reducer,
     mediaData: Media.reducer,
-    simCardData: SimCard.reducer
+    simCardData: SimCard.reducer,
+    menuData: MenuApp.reducer
   }
 
   const middleware = [

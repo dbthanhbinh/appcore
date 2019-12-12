@@ -4,6 +4,7 @@ import { Table } from 'semantic-ui-react'
 import LoadingItem from '../commons/LoadingItem'
 import PostActions from '../../../store/PostActions'
 import Utils from '../../../apis/utils'
+import ItemActions from './ItemAction'
 
 /**
  * Input: items: [] => array of list item
@@ -15,7 +16,8 @@ class PostList extends React.Component{
         super(props)
         this.PostActions = new PostActions()
         this.state = {
-            isLoading: true
+            isLoading: true,
+            currentRoute: 'posts'
         }
     }
 
@@ -51,7 +53,7 @@ class PostList extends React.Component{
 
     render(){
         let { postList } = this.props.postData 
-        let { isLoading } = this.state
+        let { isLoading, currentRoute } = this.state
         return(
             isLoading ? <LoadingItem />
             : <Fragment>
@@ -75,8 +77,17 @@ class PostList extends React.Component{
                                         <td>{ item.name }</td>
                                         <td>{ item.name }</td>
                                         <td>Otto</td>
-                                        <th>fff</th>
-                                        <td><span onClick={()=>this.onHandleClick(item.id)}>Close</span></td>
+                                        <td>fff</td>
+                                        <td>
+                                        <ItemActions
+                                            currentRoute={currentRoute}
+                                            currentEditId={null}
+                                            isEdit={null}
+                                            isDelete={null}
+                                            item={item}
+                                            onDeleteItem={null}
+                                        />
+                                        </td>
                                     </tr>
                                 )
                             })

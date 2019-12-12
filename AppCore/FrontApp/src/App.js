@@ -18,6 +18,8 @@ import Login from './admin/components/users/Login'
 // import NotFound from './admin/components/Notfound/404'
 import Media from './admin/components/medias'
 
+import MenuApp from './admin/components/menus'
+
 // For Frontend
 import FLayout from './frontend/layouts/Layout'
 import Home from './frontend/home'
@@ -59,6 +61,7 @@ function App() {
         <AppRoute exact path='/admin/tags' component={Tags } layout={ ALayout } />
         <AppRoute exact path='/admin/tags/edit/:id' component={Tags } layout={ ALayout } />
         <AppRoute exact path='/admin/medias' component={ Media } layout={ ALayout }/>
+        <AppRoute exact path='/admin/menus' component={ MenuApp } layout={ ALayout }/>
 
         <AppRoute exact path='/' component={ Home } layout={ appLayout }/>
         <AppRoute exact path='/about' component={ About } layout={ appLayout }/>

@@ -23,3 +23,9 @@ export const SeoDefined = {
     SEOKEYS: 'seoKeys',
     SEODESCRIPTION: 'seoDescription'
 }
+
+export const MenuDefined = {
+    NAME: 'name',
+    SLUG: 'slug',
+    PARENTID: 'parentId'
+}
