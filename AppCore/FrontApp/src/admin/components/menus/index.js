@@ -34,8 +34,7 @@ class Menu extends Component{
             isFormValid: isFormValid,
             model: models
         }
-        this.isEdit = false
-        this.currentEditId = null        
+        this.isEditId = false
         this.handleOnDeleteMenu = this.handleOnDeleteMenu.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleOnCreateMenu = this.handleOnCreateMenu.bind(this)
@@ -46,17 +45,15 @@ class Menu extends Component{
         // For Edit case
         let payload = {}
         let { model } = this.state
-        let id = _.get(this.props, 'match.params.id')
-        if(id) {
-            this.isEdit = true
-            this.currentEditId = id
+        let editId = _.get(this.props, 'match.params.id')
+        if(editId) {
+            this.isEditId = editId
             payload = {
-                url: `Menu/getMenuWithEdit/${id}`
+                url: `Menu/getMenuWithEdit/${this.isEditId}`
             }
             this.MenuActions.detailItemWithEdit(payload, (err, result)=> {
                 if(err) return
                 let resultData = Utils.getResApi(result)
-                
                 // Mapping data
                 this.setState((prevState)=>{
                     let data = _.get(resultData, 'result')
@@ -67,10 +64,8 @@ class Menu extends Component{
                     return { model: models, isFormValid }
                 })
             })
-        }
-        
-        // For get all case
-        if(!this.isEdit) {
+        } else if(!this.isEditId) {
+            // For get all case
             payload = {
                 url: 'Menu/getAllMenu',
                 body: {}
@@ -100,7 +95,9 @@ class Menu extends Component{
                 url: 'Menu/createMenu',
                 body: { 
                     Name: model[MenuDefined.NAME].value,
+                    SubName: model[MenuDefined.SUBNAME].value,
                     Slug: model[MenuDefined.SLUG].value,
+                    GroupMenu: model[MenuDefined.GROUPMENU].value,
                     ParentId: model[MenuDefined.PARENTID].value
                 }
             }
@@ -159,21 +156,19 @@ class Menu extends Component{
                         <Grid.Column width={6}>
                             <MenuForm
                                 isFormValid={isFormValid}
-                                isEdit={ this.isEdit }
-                                currentEditId={this.currentEditId}
                                 model={ model }
                                 listItems={ menuList }
                                 detailData={ detailData }
                                 onCreateMenu={this.handleOnCreateMenu}
                                 onUpdateMenu = { this.handleOnUpdateMenu }
                                 onInputChange={this.handleOnInputChange}
+                                isEditId={ this.isEditId }
                             />
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <MenuList
-                                isEdit={this.isEdit}
+                                isEditId={ this.isEditId }
                                 isFormValid={isFormValid}
-                                currentEditId={this.currentEditId}
                                 currentRoute={currentRoute}
                                 listItems={menuList}
                                 onDeleteItem={this.handleOnDeleteMenu}

@@ -3,11 +3,13 @@ import _ from 'lodash'
 
 import { Form, Button } from 'semantic-ui-react'
 import DropdownAsParentId from '../form/DropdownAsParentId'
-import SeoForm from '../seos/SeoForm'
-import { CategoryDefined } from "../commons/Defined"
+import DropdownSelection from '../form/DropdownSelection'
+import { MenuDefined } from "../commons/Defined"
+import { GroupMenuDefined } from "./commons"
 
 import BuildTextField from '../form/BuildTextField'
 import { getDefaultEmptyGuid } from '../../../utils/commons'
+import { format } from 'path'
 
 class CategoryForm extends React.Component{
     constructor(props){
@@ -20,55 +22,107 @@ class CategoryForm extends React.Component{
     render(){
         let {
             detailData,
-            isEdit,
+            isEditId,
             listItems,
-            currentEditId,
-            model,
             isFormValid,
+            model,
             onInputChange,
-            onUpdateCategory,
-            onCreateCategory
+            onUpdateMenu,
+            onCreateMenu
         } = this.props
 
-        let parentIdValue = _.get(model, `${CategoryDefined.PARENTID}.value`) || getDefaultEmptyGuid()
+        let parentIdValue = _.get(model, `${MenuDefined.PARENTID}.value`) || getDefaultEmptyGuid()
+        let groupMenuValue = _.get(model, `${MenuDefined.GROUPMENU}.value`) || ''
         return(
             <Fragment>
                 <a href='admin/categories'>Add new</a>
                 <Form>
                     <Form.Field>
                         <BuildTextField
-                            name={CategoryDefined.NAME}
+                            name={MenuDefined.NAME}
                             onChange={onInputChange}
-                            modelField={model[CategoryDefined.NAME]}
+                            modelField={model[MenuDefined.NAME]}
                         />
                     </Form.Field>
                     <Form.Field>
                         <BuildTextField
-                            name={CategoryDefined.SLUG}
+                            name={MenuDefined.SUBNAME}
                             onChange={onInputChange}
-                            modelField={model[CategoryDefined.SLUG]}
+                            modelField={model[MenuDefined.SUBNAME]}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <BuildTextField
+                            name={MenuDefined.SLUG}
+                            onChange={onInputChange}
+                            modelField={model[MenuDefined.SLUG]}
+                        />
+                    </Form.Field>
+                    {/* <Form.Field>
+                        <BuildTextField
+                            name={MenuDefined.ICONCLASS}
+                            onChange={onInputChange}
+                            modelField={model[MenuDefined.ICONCLASS]}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <BuildTextField
+                            name={MenuDefined.ICONPATH}
+                            onChange={onInputChange}
+                            modelField={model[MenuDefined.ICONPATH]}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <BuildTextField
+                            name={MenuDefined.TARGET}
+                            onChange={onInputChange}
+                            modelField={model[MenuDefined.TARGET]}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <BuildTextField
+                            name={MenuDefined.STANDARURL}
+                            onChange={onInputChange}
+                            modelField={model[MenuDefined.STANDARURL]}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <BuildTextField
+                            name={MenuDefined.CUSTOMURL}
+                            onChange={onInputChange}
+                            modelField={model[MenuDefined.CUSTOMURL]}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <BuildTextField
+                            name={MenuDefined.OBJECTTYPE}
+                            onChange={onInputChange}
+                            modelField={model[MenuDefined.OBJECTTYPE]}
+                        />
+                    </Form.Field> */}
+                    <Form.Field>
+                        <DropdownSelection
+                            placeholder={'Select group menu '}
+                            name={MenuDefined.GROUPMENU}
+                            onChange={onInputChange}
+                            options={GroupMenuDefined}
                         />
                     </Form.Field>
                     <Form.Field>
                         <DropdownAsParentId
-                            isEdit={isEdit}
-                            currentCatId={currentEditId}
-                            categoryList={listItems}
-                            name='parentId'
+                            isEditId={isEditId}
+                            options={listItems}
+                            name={MenuDefined.PARENTID}
                             parentId={parentIdValue}
-                            onInputChange={onInputChange}
+                            onChange={onInputChange}
                         />
                     </Form.Field>
-                    <Form.Field>
-                        <SeoForm
-                            model={model}
-                            seoData={ _.get(detailData, 'seo') }
-                            onInputChange = {onInputChange} />
-                    </Form.Field>
+                    
+
                     <Form.Field>
                         <Button variant="primary"
                             disabled={!isFormValid}
-                            onClick={isEdit ? () => onUpdateCategory(currentEditId) : onCreateCategory} >
+                            onClick={isEditId ? () => onUpdateMenu(isEditId) : onCreateMenu} >
                             Save Changes
                         </Button>
                     </Form.Field>

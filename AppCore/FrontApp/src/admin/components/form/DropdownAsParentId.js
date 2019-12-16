@@ -28,36 +28,36 @@ const findChildIds = (listItems, parentId, childIds) => {
 }
 
 const DropdownAsParentId = (props) => {
-    let { categoryList, isEdit, currentCatId, parentId } = props
-    // reset default parent value
-    if(parentId === getDefaultEmptyGuid()){
-        parentId = null
-    }
-    
-    let labelParent = 'Select parent'
-    let childIds = []  // When isEdit, disable all child elements, that will can not make parentId
-    if(isEdit) findChildIds(categoryList, currentCatId, childIds)
+    let { options, name, isEditId, currentCatId, parentId, onChange, placeholder } = props
+
     let mapOptions = []
-    categoryList && categoryList.forEach(item => {
-        mapOptions.push({
-            key: item.id,
-            text: `${item.name}`,
-            value: item.id,
-            disabled: (isEdit && ((currentCatId && item.id === currentCatId) || _.includes(childIds, item.id))) ? true : false
+    if(isEditId) {
+        let childIds = []  // When isEdit, disable all child elements, that will can not make parentId
+        findChildIds(options, currentCatId, childIds)
+        options && options.forEach(item => {
+            mapOptions.push({
+                key: item.id, text: `${item.name}`, value: item.id,
+                disabled: (isEditId && ((currentCatId && item.id === currentCatId) || _.includes(childIds, item.id))) ? true : false
+            })
         })
-    })
+    } else {
+        Object.assign(mapOptions, options)
+    }
 
     return(
         <Fragment>
-            <h5>{ labelParent }</h5>
+            <h5>{ placeholder }</h5>
             <Form.Field>
                 <Dropdown
-                    placeholder={ labelParent }
+                    clearable
                     fluid
                     search
                     selection
+                    name={name}
                     value={parentId || ''}
                     options={mapOptions}
+                    onChange={onChange}
+                    placeholder={ placeholder }
                 />
             </Form.Field>
         </Fragment>

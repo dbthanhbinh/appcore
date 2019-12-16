@@ -15,7 +15,7 @@ const DropdownSelection = (props) => {
             <h5>{ placeholder }</h5>
             <Form.Field>
                 <Dropdown
-                    placeholder={ placeholder }
+                    clearable
                     name={name}
                     fluid
                     search
@@ -23,6 +23,7 @@ const DropdownSelection = (props) => {
                     multiple={multiple}
                     options={options}
                     onChange={onChange}
+                    placeholder={ placeholder }
                 />
             </Form.Field>
         </Fragment>

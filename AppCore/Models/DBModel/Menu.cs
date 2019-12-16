@@ -20,5 +20,6 @@ namespace AppCore.Models.DBModel
         public string StandardUrl { get; set; }
         public string CustomUrl { get; set; }
         public string ObjectType { get; set; }
+        public string GroupMenu { get; set; }
     }
 }

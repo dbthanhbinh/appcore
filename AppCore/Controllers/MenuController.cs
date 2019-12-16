@@ -75,10 +75,10 @@ namespace AppCore.Controllers
         /**
          * 
          */
-        [HttpGet("getCategoriesWithEdit/{id}", Name = "GetCategoriesWithEdit")]
-        public ActionResult GetCategoriesWithEdit(Guid id)
+        [HttpGet("getMenuWithEdit/{id}", Name = "GetMenuWithEdit")]
+        public ActionResult GetMenuWithEdit(Guid id)
         {
-            var result = _menuLogic.GetCategoriesWithEditAsync(id);
+            var result = _menuLogic.GetMenuWithEditAsync(id);
             return Ok(new BaseResponse(result));
         }
     }

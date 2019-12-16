@@ -42,8 +42,10 @@ namespace AppCore.Business
                 Menu menuData = new Menu
                 {
                     Name = reqData.Name,
+                    SubName = reqData.SubName,
                     ParentId = reqData.ParentId,
-                    Slug = reqData.Slug
+                    Slug = reqData.Slug,
+                    GroupMenu = reqData.GroupMenu
                 };
                 Task<bool> menuCreated = _uow.GetRepository<Menu>().AddAsync(menuData);
 
@@ -111,7 +113,7 @@ namespace AppCore.Business
         /*
          * Get list all menu with edit data
          */
-        public async Task<MenuWithEditVM> GetCategoriesWithEditAsync(Guid id)
+        public async Task<MenuWithEditVM> GetMenuWithEditAsync(Guid id)
         {
             MenuWithEditVM menuWithEditVM = new MenuWithEditVM();
             try

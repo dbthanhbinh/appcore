@@ -15,6 +15,6 @@ namespace AppCore.Business
         List<Menu> GetAllMenuAsync();
         Task<Menu> GetMenuAsync(Guid id);
         Task<Menu> DeleteMenuAsync(ReqDeleteMenu reqDeleteMenu);
-        Task<MenuWithEditVM> GetCategoriesWithEditAsync(Guid id);
+        Task<MenuWithEditVM> GetMenuWithEditAsync(Guid id);
     }
 }

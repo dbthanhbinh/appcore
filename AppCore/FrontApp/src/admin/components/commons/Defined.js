@@ -26,6 +26,14 @@ export const SeoDefined = {
 
 export const MenuDefined = {
     NAME: 'name',
+    SUBNAME: 'subName',
     SLUG: 'slug',
-    PARENTID: 'parentId'
+    PARENTID: 'parentId',
+    ICONCLASS: 'iconClass',
+    ICONPATH: 'iconPath',
+    TARGET: 'target',
+    STANDARURL: 'standarUrl',
+    CUSTOMURL: 'customUrl',
+    OBJECTTYPE: 'objectType',
+    GROUPMENU: 'groupMenu'
 }

@@ -3,52 +3,59 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppCore.Migrations
 {
-    public partial class Tag : Migration
+    public partial class Menu : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ObjectTag",
+                name: "Menu",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
-                    ObjectId = table.Column<Guid>(nullable: false),
-                    TagId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    SubName = table.Column<string>(nullable: true),
+                    Slug = table.Column<string>(nullable: true),
+                    ParentId = table.Column<Guid>(nullable: true),
+                    IconClass = table.Column<string>(nullable: true),
+                    IconPath = table.Column<string>(nullable: true),
+                    Target = table.Column<string>(nullable: true),
+                    StandardUrl = table.Column<string>(nullable: true),
+                    CustomUrl = table.Column<string>(nullable: true),
                     ObjectType = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ObjectTag", x => x.Id);
+                    table.PrimaryKey("PK_Menu", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tag",
+                name: "Page",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Slug = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tag", x => x.Id);
+                    table.PrimaryKey("PK_Page", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ObjectTag");
+                name: "Menu");
 
             migrationBuilder.DropTable(
-                name: "Tag");
+                name: "Page");
         }
     }
 }
