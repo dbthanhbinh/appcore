@@ -2,8 +2,7 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 
 import { Form, Button } from 'semantic-ui-react'
-import DropdownAsParentId from '../form/DropdownAsParentId'
-import DropdownSelection from '../form/DropdownSelection'
+import DropdownWrapper from '../form/DropdownWrapper'
 import { MenuDefined } from "../commons/Defined"
 import { GroupMenuDefined } from "./commons"
 
@@ -101,20 +100,22 @@ class CategoryForm extends React.Component{
                         />
                     </Form.Field> */}
                     <Form.Field>
-                        <DropdownSelection
-                            placeholder={'Select group menu '}
+                        <DropdownWrapper
+                            isEditId={isEditId}
+                            options={GroupMenuDefined}
                             name={MenuDefined.GROUPMENU}
                             onChange={onInputChange}
-                            options={GroupMenuDefined}
+                            placeholder={'Select group menu '}
                         />
                     </Form.Field>
                     <Form.Field>
-                        <DropdownAsParentId
+                        <DropdownWrapper
                             isEditId={isEditId}
                             options={listItems}
                             name={MenuDefined.PARENTID}
                             parentId={parentIdValue}
                             onChange={onInputChange}
+                            placeholder={'Select parent '}
                         />
                     </Form.Field>
                     

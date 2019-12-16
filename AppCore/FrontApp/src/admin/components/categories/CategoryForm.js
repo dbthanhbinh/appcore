@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 
 import { Form, Button } from 'semantic-ui-react'
-import DropdownAsParentId from '../form/DropdownAsParentId'
+import DropdownAsEdit from '../form/DropdownAsEdit'
 import SeoForm from '../seos/SeoForm'
 import { CategoryDefined } from "../commons/Defined"
 
@@ -50,7 +50,7 @@ class CategoryForm extends React.Component{
                         />
                     </Form.Field>
                     <Form.Field>
-                        <DropdownAsParentId
+                        <DropdownAsEdit
                             isEdit={isEdit}
                             currentCatId={currentEditId}
                             categoryList={listItems}

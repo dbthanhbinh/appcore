@@ -27,22 +27,20 @@ const findChildIds = (listItems, parentId, childIds) => {
     }
 }
 
-const DropdownAsParentId = (props) => {
+const DropdownAsEdit = (props) => {
     let { options, name, isEditId, currentCatId, parentId, onChange, placeholder } = props
 
     let mapOptions = []
+    let childIds = []  // When isEdit, disable all child elements, that will can not make parentId
     if(isEditId) {
-        let childIds = []  // When isEdit, disable all child elements, that will can not make parentId
         findChildIds(options, currentCatId, childIds)
-        options && options.forEach(item => {
-            mapOptions.push({
-                key: item.id, text: `${item.name}`, value: item.id,
-                disabled: (isEditId && ((currentCatId && item.id === currentCatId) || _.includes(childIds, item.id))) ? true : false
-            })
-        })
-    } else {
-        Object.assign(mapOptions, options)
     }
+    options && options.forEach(item => {
+        mapOptions.push({
+            key: item.id, text: `${item.name}`, value: item.id,
+            disabled: (isEditId && ((currentCatId && item.id === currentCatId) || _.includes(childIds, item.id))) ? true : false
+        })
+    })
 
     return(
         <Fragment>
@@ -54,7 +52,6 @@ const DropdownAsParentId = (props) => {
                     search
                     selection
                     name={name}
-                    value={parentId || ''}
                     options={mapOptions}
                     onChange={onChange}
                     placeholder={ placeholder }
@@ -64,4 +61,4 @@ const DropdownAsParentId = (props) => {
     )
 }
 
-export default DropdownAsParentId
+export default DropdownAsEdit

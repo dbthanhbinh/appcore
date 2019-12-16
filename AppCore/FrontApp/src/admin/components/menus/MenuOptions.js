@@ -8,7 +8,7 @@ import { actionCreators } from '../../../store/Category'
 
 import Utils from '../../../apis/utils'
 import CategoryActions from '../../../store/CategoryActions'
-import DropdownSelection from '../form/DropdownSelection'
+import DropdownWrapper from '../form/DropdownWrapper'
 
 class CategoryOptions extends Component {
     constructor(props){
@@ -45,7 +45,7 @@ class CategoryOptions extends Component {
         })
         
         return(
-            <DropdownSelection
+            <DropdownWrapper
                 placeholder={placeholder}
                 name={name}
                 multiple={false}
