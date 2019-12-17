@@ -179,6 +179,7 @@ class Category extends Component{
                                 onCreateCategory={this.handleOnCreateCategory}
                                 onUpdateCategory = { this.handleOnUpdateCategory }
                                 onInputChange={this.handleOnInputChange}
+                                currentRoute={currentRoute}
                             />
                         </Grid.Column>
                         <Grid.Column width={10}>
@@ -186,9 +187,9 @@ class Category extends Component{
                                 isEdit={this.isEdit}
                                 isFormValid={isFormValid}
                                 currentEditId={this.currentEditId}
-                                currentRoute={currentRoute}
                                 listItems={categoryList}
                                 onDeleteItem={this.handleOnDeleteCategory}
+                                currentRoute={currentRoute}
                             />
                         </Grid.Column>
                     </Grid.Row>

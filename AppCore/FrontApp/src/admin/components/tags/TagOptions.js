@@ -33,24 +33,13 @@ class TagOptions extends Component {
     render(){
         let { tagData, onInputChange, name } = this.props
         let tagList = _.get(tagData, 'tagList')
-        let placeholder = 'Select tags'
-
-        let mapOptions = []
-        tagList && tagList.forEach(item => {
-            mapOptions.push({
-                key: item.id,
-                text: `${item.name}`,
-                value: item.id
-            })
-        })
-        
         return(
             <DropdownWrapper
-                placeholder={placeholder}
+                placeholder={'Select tags'}
                 name={name}
                 multiple={true}
                 onChange={onInputChange}
-                options={mapOptions}
+                options={tagList}
             />
         )
     }

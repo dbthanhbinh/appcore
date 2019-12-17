@@ -11,6 +11,7 @@ import AppRoute from './routes/AppRoute'
 import ALayout from './admin/components/layouts/Layout'
 import UnLayout from './admin/components/layouts/UnLayout'
 import PostApp from './admin/components/posts'
+import PostEditApp from './admin/components/posts/PostForm1'
 import Category from './admin/components/categories'
 import Tags from './admin/components/tags'
 // import Register from './admin/components/users/Register'
@@ -55,6 +56,8 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <AppRoute exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
+        <AppRoute exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout } />
+        
         <AppRoute exact path='/admin/categories' component={Category } layout={ ALayout } />
         <AppRoute exact path='/admin/categories/edit/:id' component={ Category } layout={ ALayout } />
 

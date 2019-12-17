@@ -33,24 +33,13 @@ class CategoryOptions extends Component {
     render(){
         let { categoryData, onInputChange, name } = this.props
         let categoryList = _.get(categoryData, 'categoryList')
-        let placeholder = 'Select categories'
-
-        let mapOptions = []
-        categoryList && categoryList.forEach(item => {
-            mapOptions.push({
-                key: item.id,
-                text: `${item.name}`,
-                value: item.id
-            })
-        })
-        
         return(
             <DropdownWrapper
-                placeholder={placeholder}
+                placeholder={'Select categories'}
                 name={name}
                 multiple={false}
                 onChange={onInputChange}
-                options={mapOptions}
+                options={categoryList}
             />
         )
     }

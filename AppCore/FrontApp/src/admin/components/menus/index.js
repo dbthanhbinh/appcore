@@ -163,15 +163,16 @@ class Menu extends Component{
                                 onUpdateMenu = { this.handleOnUpdateMenu }
                                 onInputChange={this.handleOnInputChange}
                                 isEditId={ this.isEditId }
+                                currentRoute={currentRoute}
                             />
                         </Grid.Column>
                         <Grid.Column width={10}>
                             <MenuList
                                 isEditId={ this.isEditId }
                                 isFormValid={isFormValid}
-                                currentRoute={currentRoute}
                                 listItems={menuList}
                                 onDeleteItem={this.handleOnDeleteMenu}
+                                currentRoute={currentRoute}
                             />
                         </Grid.Column>
                     </Grid.Row>

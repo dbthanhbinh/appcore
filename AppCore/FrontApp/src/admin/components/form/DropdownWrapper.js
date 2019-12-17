@@ -24,17 +24,7 @@ const findChildIds = (listItems, parentId, childIds) => {
     }
 }
 
-const DropdownWrapper = (props) => {
-    let {
-        isEditId,
-        parentId,
-        placeholder,
-        multiple,
-        options,
-        onChange,
-        name
-    } = props
-    
+const adapterMapingDropdownOption = (options, isEditId) => {
     let mapOptions = []
     let childIds = []  // When isEdit, disable all child elements, that will can not make parentId
     if(isEditId) {
@@ -46,7 +36,22 @@ const DropdownWrapper = (props) => {
             disabled: (isEditId && ((isEditId && item.id === isEditId) || _.includes(childIds, item.id))) ? true : false
         })
     })
+    return mapOptions
+}
 
+const DropdownWrapper = (props) => {
+    let {
+        isEditId,
+        defaultValue,
+        placeholder,
+        multiple,
+        options,
+        onChange,
+        name,
+        value
+    } = props
+    let mapOptions = adapterMapingDropdownOption(options, isEditId)
+    
     return(
         <Fragment>
             <h5>{ placeholder }</h5>
@@ -54,7 +59,6 @@ const DropdownWrapper = (props) => {
                 {
                     isEditId
                     ? <Dropdown
-                        isEditId
                         clearable
                         fluid
                         search
@@ -64,6 +68,7 @@ const DropdownWrapper = (props) => {
                         options={mapOptions}
                         onChange={onChange}
                         placeholder={ placeholder }
+                        value={value}
                     />
                     : <Dropdown
                         clearable

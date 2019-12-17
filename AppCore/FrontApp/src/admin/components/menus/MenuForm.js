@@ -7,8 +7,7 @@ import { MenuDefined } from "../commons/Defined"
 import { GroupMenuDefined } from "./commons"
 
 import BuildTextField from '../form/BuildTextField'
-import { getDefaultEmptyGuid } from '../../../utils/commons'
-import { format } from 'path'
+import {BtnAddNew} from '../form/BtnDefined'
 
 class CategoryForm extends React.Component{
     constructor(props){
@@ -20,6 +19,7 @@ class CategoryForm extends React.Component{
 
     render(){
         let {
+            currentRoute,
             detailData,
             isEditId,
             listItems,
@@ -29,12 +29,16 @@ class CategoryForm extends React.Component{
             onUpdateMenu,
             onCreateMenu
         } = this.props
-
-        let parentIdValue = _.get(model, `${MenuDefined.PARENTID}.value`) || getDefaultEmptyGuid()
-        let groupMenuValue = _.get(model, `${MenuDefined.GROUPMENU}.value`) || ''
+        
+        let defaultGroupMenu = null
+        let defaultParentId = null
+        if(detailData){
+            defaultGroupMenu = _.get(model, `${MenuDefined.GROUPMENU}.value`)
+            defaultParentId = _.get(model, `${MenuDefined.PARENTID}.value`)
+        }
         return(
             <Fragment>
-                <a href='admin/categories'>Add new</a>
+                <BtnAddNew currentRoute={currentRoute}/>
                 <Form>
                     <Form.Field>
                         <BuildTextField
@@ -105,6 +109,7 @@ class CategoryForm extends React.Component{
                             options={GroupMenuDefined}
                             name={MenuDefined.GROUPMENU}
                             onChange={onInputChange}
+                            value={defaultGroupMenu} // current value of dropdown
                             placeholder={'Select group menu '}
                         />
                     </Form.Field>
@@ -113,8 +118,8 @@ class CategoryForm extends React.Component{
                             isEditId={isEditId}
                             options={listItems}
                             name={MenuDefined.PARENTID}
-                            parentId={parentIdValue}
                             onChange={onInputChange}
+                            value={defaultParentId} // current value of dropdown
                             placeholder={'Select parent '}
                         />
                     </Form.Field>

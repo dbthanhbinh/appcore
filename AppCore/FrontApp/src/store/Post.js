@@ -30,20 +30,25 @@ export const reducer = (state, action) => {
                   postList         
                 }
             }
-        case ADD_ITEM:  // Add new item
-            let { post } = action.payload
+        case ADD_ITEM:
+            let tep = {
+                ...state,
+                postData: {
+                    ...state.postData,
+                    postList: [...state.postData.postList, action.payload.post]
+                }
+            }
+            return tep
+        case DEL_ITEM:   // Delete item
+            let deletePostList = _.get(state, 'postData.postList')
+            let filterList = deletePostList.filter((f) => f.id !== action.payload.id)
             return {
                 ...state,
                 postData: {
                     ...state.postData,
-                    postList: [...state.postData.postList, post]
+                    postList: filterList
                 }
-            }
-        case DEL_ITEM:   // Delete item
-            return { 
-                ...state,
-                items: state.items.filter((f) => f.id !== action.payload.id)
-            }
+            }    
         default: // Return default state
             return state
     }

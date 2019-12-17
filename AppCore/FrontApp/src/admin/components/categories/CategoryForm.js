@@ -2,12 +2,13 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 
 import { Form, Button } from 'semantic-ui-react'
-import DropdownAsEdit from '../form/DropdownAsEdit'
+import DropdownWrapper from '../form/DropdownWrapper'
 import SeoForm from '../seos/SeoForm'
 import { CategoryDefined } from "../commons/Defined"
 
 import BuildTextField from '../form/BuildTextField'
 import { getDefaultEmptyGuid } from '../../../utils/commons'
+import {BtnAddNew} from '../form/BtnDefined'
 
 class CategoryForm extends React.Component{
     constructor(props){
@@ -19,6 +20,7 @@ class CategoryForm extends React.Component{
 
     render(){
         let {
+            currentRoute,
             detailData,
             isEdit,
             listItems,
@@ -33,7 +35,7 @@ class CategoryForm extends React.Component{
         let parentIdValue = _.get(model, `${CategoryDefined.PARENTID}.value`) || getDefaultEmptyGuid()
         return(
             <Fragment>
-                <a href='admin/categories'>Add new</a>
+                <BtnAddNew currentRoute={currentRoute}/>
                 <Form>
                     <Form.Field>
                         <BuildTextField
@@ -50,7 +52,7 @@ class CategoryForm extends React.Component{
                         />
                     </Form.Field>
                     <Form.Field>
-                        <DropdownAsEdit
+                        <DropdownWrapper
                             isEdit={isEdit}
                             currentCatId={currentEditId}
                             categoryList={listItems}

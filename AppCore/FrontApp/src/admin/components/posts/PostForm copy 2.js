@@ -5,6 +5,7 @@ import AlertCP from '../commons/AlertCP'
 import { withFormBehaviors } from '../form/form'
 import FieldFile from '../form/FieldFile'
 import PostActions from '../../../store/PostActions'
+import CategoryActions from '../../../store/CategoryActions'
 import Utils from '../../../apis/utils'
 import { PostDefined, SeoDefined } from "../commons/Defined"
 import TagOptions from '../tags/TagOptions'
@@ -26,6 +27,7 @@ class postForm extends Component {
     constructor(props){
         super(props)
         this.PostActions = new PostActions()
+        this.CategoryActions = new CategoryActions()
         let { models, isFormValid } = validatorModel(_.merge(PostModel.model(), SeoModel.model()))
         this.state = {
             isShowModal: false,
@@ -88,7 +90,7 @@ class postForm extends Component {
                 this.setState(()=>({ isLoading: false, isShowModal: false }), ()=>{
                     this.PostActions.addItemWithForm(payload, (err, result)=> {
                         if(err) return
-                        let postData = _.get(Utils.getResApi(result), 'postData')
+                        let postData = Utils.getResListApi(result)
                         if(result) this.props.addItem(postData)
                     })
                     // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
