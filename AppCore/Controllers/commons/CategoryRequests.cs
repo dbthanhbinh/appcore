@@ -38,4 +38,11 @@ namespace AppCore.Controllers.commons
 
         public virtual IFormFile File { get; set; }
     }
+
+    public class ReqFilterCategory
+    {
+        public virtual int CurrentPage { get; set; } = 1;
+        public virtual int PageSize { get; set; } = 50;
+        public virtual Guid? CategoryId { get; set; }
+    }
 }

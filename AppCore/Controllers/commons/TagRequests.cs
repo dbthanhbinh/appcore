@@ -16,8 +16,16 @@ namespace AppCore.Controllers.commons
         public string Slug { get; set; }
         public virtual string Type { get; set; }
     }
+
     public class ReqDeleteTag
     {
         public Guid Id { get; set; }
+    }
+
+    public class UpdateTagReq
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Slug { get; set; }
     }
 }

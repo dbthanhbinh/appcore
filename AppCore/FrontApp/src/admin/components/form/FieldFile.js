@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Form } from 'react-bootstrap'
-import { connect } from 'react-redux'
 
-class customFile extends Component {
+class FieldFile extends Component {
     constructor(props){
         super(props)
         this.state = {}
@@ -20,13 +18,9 @@ class customFile extends Component {
         let { name, id, type } = this.props        
         return(
             <Fragment>
-                <Form.Control type={ type || 'file' } name={ name || 'file' } id={ id || 'file' } onChange={ this.handleChange }></Form.Control>
+                <input type={ type || 'file' } name={ name || 'file' } id={ id || 'file' } onChange={ this.handleChange } />
             </Fragment>
         )
     }
 }
-const CustomFile = customFile
-export default connect(
-    null,
-    null
-)(CustomFile)
+export default FieldFile

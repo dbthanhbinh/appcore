@@ -1,18 +1,14 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Grid } from 'semantic-ui-react'
 import SimCard from '../components/simcards/fe/index'
 
-class Home extends React.Component{
-    constructor(props){
-        super(props)
-    }
-
+class Home extends React.Component {
     render(){
         return(
             <React.Fragment>
-                <Row>
+                <Grid.Row>
                     <SimCard />
-                </Row>
+                </Grid.Row>
             </React.Fragment>
         )
     }

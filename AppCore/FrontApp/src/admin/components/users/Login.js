@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Button } from 'react-bootstrap'
-import { Route, Redirect } from "react-router-dom"
+import { Form, Button, Grid } from 'semantic-ui-react'
+import { Redirect } from "react-router-dom"
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -26,11 +26,6 @@ class login extends Component{
 
     handleOnInputChange(e, data){
         this.props.onInputChange(e, data)
-    }
-
-    componentDidMount(){
-        // const { cookies } = this.props
-        // cookies.set('name', 'binh22', { path: '/' });
     }
 
     handleSubmitForm(e, data){
@@ -64,16 +59,22 @@ class login extends Component{
         return redirectToReferrer
         ? <Redirect to={afterLogin}/>
         : <Fragment>
-            <h1>Login</h1>
-            <Form.Group>
-                <Form.Control type='text' name={ Defined.PHONE } placeholder={ phone } onChange={this.handleOnInputChange} />
-            </Form.Group>
-            <Form.Group>
-                <Form.Control type='password' name={ Defined.PASSWORD } placeholder={ password } onChange={this.handleOnInputChange} />
-            </Form.Group>
-            <Form.Group>
-                <Button variant="primary" type="button" onClick={this.handleSubmitForm} > Đăng Nhập </Button>
-            </Form.Group>
+            <Grid columns={1}>
+                <Grid.Column verticalAlign='middle' width={5}>
+                    <h1>Login</h1>
+                    <Form>
+                        <Form.Field>
+                                <input name={ Defined.PHONE } placeholder={ phone } onChange={this.handleOnInputChange} />
+                            </Form.Field>
+                        <Form.Field>
+                            <input type='password' name={ Defined.PASSWORD } placeholder={ password } onChange={this.handleOnInputChange} />
+                        </Form.Field>
+                        <Form.Field>
+                            <Button variant="primary" type="button" onClick={this.handleSubmitForm} > Đăng Nhập </Button>
+                        </Form.Field>
+                    </Form>
+                </Grid.Column>
+            </Grid>  
         </Fragment>
     }
 }

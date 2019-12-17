@@ -4,48 +4,56 @@ import _ from 'lodash'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../../store/Category'
-
-import { Row, Col } from 'react-bootstrap'
-import CategoryList from './ItemList'
-import CategoryForm from './form'
-import Utils from '../../../apis/utils'
-import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, pickKeysFromModel }
-from '../../../utils/FormUtils'
-import CatModel from '../models/addCategory.model'
-import SeoModel from '../models/seo.model'
-import { CategoryDefined, SeoDefined } from '../commons/Defined'
 import { withFormBehaviors } from '../form/form'
+
+import { Grid } from 'semantic-ui-react'
+import CategoryList from './ItemList'
+import CategoryForm from './CategoryForm'
+import Utils from '../../../apis/utils'
+import {
+    getInputData,
+    setFieldValue,
+    validatorModel,
+    pickKeysFromModel,
+    mappingModelDefaultData
+} from '../../../utils/FormUtils'
+
 import CategoryActions from '../../../store/CategoryActions'
+import SeoModel from '../models/seo.model'
+import CategoryModel from '../models/addCategory.model'
+import {CategoryDefined, SeoDefined} from "../commons/Defined"
+
 
 class Category extends Component{
     constructor(props){
         super(props)
         this.CategoryActions = new CategoryActions()
-        let Model = _.merge(CatModel.model(), SeoModel.model())
+        let { models, isFormValid } = validatorModel(_.merge(CategoryModel.model(), SeoModel.model()))
         this.state = {
+            isBtnLoading: false,
             currentRoute: 'categories',
-            model: Model
+            isFormValid: isFormValid,
+            model: models
         }
         this.isEdit = false
-        this.handleOnCreateCategory = this.handleOnCreateCategory.bind(this)
+        this.currentEditId = null        
         this.handleOnDeleteCategory = this.handleOnDeleteCategory.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
+        this.handleOnCreateCategory = this.handleOnCreateCategory.bind(this)
         this.handleOnUpdateCategory = this.handleOnUpdateCategory.bind(this)
     }
 
-    
-
     componentDidMount(){
-        // // For Edit case
+        // For Edit case
         let payload = {}
+        let { model } = this.state
         let id = _.get(this.props, 'match.params.id')
         if(id) {
             this.isEdit = true
-            let { model } = this.state
+            this.currentEditId = id
             payload = {
                 url: `Category/getCategoriesWithEdit/${id}`
             }
-
             this.CategoryActions.detailItemWithEdit(payload, (err, result)=> {
                 if(err) return
                 let resultData = Utils.getResApi(result)
@@ -54,7 +62,7 @@ class Category extends Component{
                 this.setState((prevState)=>{
                     let data = _.get(resultData, 'result')
                     let keysFromSeoModel = pickKeysFromModel(SeoModel.model())
-                    let keysFromCatModel = pickKeysFromModel(CatModel.model())
+                    let keysFromCatModel = pickKeysFromModel(CategoryModel.model())
                     let categoryData = _.pick(_.get(data, 'category'), keysFromCatModel)
                     let seoData = _.pick(_.get(data, 'seo'), keysFromSeoModel)
                     let result = _.merge(categoryData, seoData)
@@ -65,7 +73,7 @@ class Category extends Component{
             })
         }
         
-        // // For get all case
+        // For get all case
         if(!this.isEdit) {
             payload = {
                 url: 'Category/getAllCategory',
@@ -83,28 +91,13 @@ class Category extends Component{
     handleOnInputChange = (e, data) => {
         let { name, value } = getInputData(e, data)
         this.setState((prevState)=>{
-            return { model: setFieldValue(name, value, prevState) }
+            let { models, isFormValid } = setFieldValue(name, value, prevState)
+            return { model: models, isFormValid: isFormValid }
         })
     }
 
-    handleOnDeleteCategory(id){
-        if(!id) return
-        let payload = {
-            url: 'Category/deleteCategory',
-            body: { Id: id }
-        }
-        if(!_.isNil(payload) && !_.isEmpty(payload)){
-            this.CategoryActions.deleteItem(payload, (err, result)=> {
-                if(err) return
-                if(!err && result) this.props.deleteCategory(id)
-            })
-        }
-    }
-
     handleOnCreateCategory(e, data){
-        let { model } = this.state
-        let {isFormValid} = this.props
-        isFormValid = true
+        let { model, isFormValid } = this.state
         let payload = {}
         if(isFormValid){
             payload = {
@@ -153,44 +146,60 @@ class Category extends Component{
         }
     }
 
+    handleOnDeleteCategory(id){
+        if(!id) return
+        let payload = {
+            url: 'Category/deleteCategory',
+            body: { Id: id }
+        }
+        if(!_.isNil(payload) && !_.isEmpty(payload)){
+            this.CategoryActions.deleteItem(payload, (err, result)=> {
+                if(err) return
+                if(!err && result) this.props.deleteCategory(id)
+            })
+        }
+    }
+
     render(){
+        let { currentRoute, model, isFormValid } = this.state
         let { categoryData } = this.props
-        let { currentRoute, model } = this.state
-        let categoryList = _.get(categoryData, 'categoryData.categoryList')
-        let detailData = _.get(categoryData, 'categoryData.detailData')
-        let catId = _.get(detailData, 'category.id')
+        let { categoryList, detailData } = categoryData
         return (
             <Fragment>
-                <Row>
-                    <Col md={5}>
-                        <CategoryForm
-                            isEdit={ this.isEdit }
-                            currentEditId={catId}
-                            model={ model }
-                            items={ categoryList }
-                            detailData={ detailData }
-                            onCreateCategory={ this.handleOnCreateCategory }
-                            onInputChange = { this.handleOnInputChange }
-                            OnUpdateCategory = { this.handleOnUpdateCategory }
-                        />
-                    </Col>
-                    <Col md={7}>
-                        <CategoryList
-                            isEdit={ this.isEdit }
-                            currentEditId={catId}
-                            currentRoute={ currentRoute }
-                            items={ categoryList }
-                            onDeleteCategory = { this.handleOnDeleteCategory }
-                        />
-                    </Col>
-                </Row>
+                <Grid>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={6}>
+                            <CategoryForm
+                                isFormValid={isFormValid}
+                                isEdit={ this.isEdit }
+                                currentEditId={this.currentEditId}
+                                model={ model }
+                                listItems={ categoryList }
+                                detailData={ detailData }
+                                onCreateCategory={this.handleOnCreateCategory}
+                                onUpdateCategory = { this.handleOnUpdateCategory }
+                                onInputChange={this.handleOnInputChange}
+                            />
+                        </Grid.Column>
+                        <Grid.Column width={10}>
+                            <CategoryList
+                                isEdit={this.isEdit}
+                                isFormValid={isFormValid}
+                                currentEditId={this.currentEditId}
+                                currentRoute={currentRoute}
+                                listItems={categoryList}
+                                onDeleteItem={this.handleOnDeleteCategory}
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Fragment>
         )
     }
 }
 
 function mapStateToProps(state){
-    let { categoryData } = state
+    let { categoryData } = state.categoryData
     return { categoryData }
 }
 

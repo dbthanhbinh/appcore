@@ -15,5 +15,7 @@ namespace AppCore.Models
         DbSet<SimCard> SimCard { get; set; }
         DbSet<Tag> Tag { get; set; }
         DbSet<ObjectTag> ObjectTag { get; set; }
+        DbSet<Menu> Menu { get; set; }
+        DbSet<Page> Page { get; set; }
     }
 }

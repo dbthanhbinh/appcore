@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import _ from 'lodash'
-import { Row, Col } from 'react-bootstrap'
+import {  Grid } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../../store/Post'
@@ -11,14 +10,17 @@ import HeaderSection from '../commons/HeaderSection'
 class PostApp extends Component{
     render() {
         let { postData } = this.props
+        
         return(
             <Fragment>
-                <Row>
-                    <Col md={12}>
-                        <HeaderSection {...this.props} />
-                        <PostList postData={ postData } {...this.props} />
-                    </Col>
-                </Row>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <HeaderSection {...this.props} />
+                            <PostList postData={ postData } {...this.props} />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Fragment>
         )
     }
@@ -26,7 +28,9 @@ class PostApp extends Component{
 
 function mapStateToProps(state) {
     let { postData } = state.postData
-    return { postData }
+    let { categoryData } = state.categoryData
+    let { tagData } = state.tagData
+    return { postData, categoryData, tagData }
 }
 
 export default connect(

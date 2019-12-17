@@ -20,6 +20,11 @@ namespace AppCore.Models.Repository
             return _dbSet.ToList();
         }
 
+        public Int32 CountTotalAll()
+        {
+            return _dbSet.ToList().Count();
+        }
+
         public T Get(object id)
         {
             return _dbSet.Find(id);
@@ -56,6 +61,17 @@ namespace AppCore.Models.Repository
         {
             await _dbSet.AddAsync(entity);
             return true;
+        }
+
+        public void AddAsync(params T[] entities)
+        {
+            _dbSet.AddRange(entities);
+        }
+
+
+        public void AddAsync(IEnumerable<T> entities)
+        {
+            _dbSet.AddRange(entities);
         }
 
         // For Delete

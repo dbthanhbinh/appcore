@@ -45,27 +45,27 @@ export const reducer = (state, action) => {
                 }
             }
         case UPDATE_TAG:
-                let updateTagList = _.get(state, 'TagData.TagList')
+                let updateTagList = _.get(state, 'tagData.tagList')
                 updateTagList && updateTagList.forEach((e, i) => {
-                    if(e.id === action.payload.Tag.id) {
-                        updateTagList[i] = action.payload.Tag
+                    if(e.id === action.payload.tag.id) {
+                        updateTagList[i] = action.payload.tag
                     }
                 })
                 return {
                     ...state,
-                    TagData: {
-                        ...state.TagData,
-                        TagList: updateTagList
+                    tagData: {
+                        ...state.tagData,
+                        tagList: updateTagList
                     }
                 }
         case DEL_TAG:   // Delete item
-            let deleteTagList = _.get(state, 'TagData.TagList')
+            let deleteTagList = _.get(state, 'tagData.tagList')
             let filterList = deleteTagList.filter((f) => f.id !== action.payload.id)
             return {
                 ...state,
-                TagData: {
-                    ...state.TagData,
-                    TagList: filterList
+                tagData: {
+                    ...state.tagData,
+                    tagList: filterList
                 }
             }
         case DETAIL_TAG:            
@@ -75,11 +75,11 @@ export const reducer = (state, action) => {
         case DETAIL_TAG_WITH_EDIT:
             return {
                 ...state,
-                TagData: {
-                    ...state.TagData,
-                    TagList: _.get(action.payload, 'detailData.TagList'),
+                tagData: {
+                    ...state.tagData,
+                    tagList: _.get(action.payload, 'detailData.tagList'),
                     detailData: {
-                        tag: _.get(action.payload, 'detailData.Tag')
+                        tag: _.get(action.payload, 'detailData.tag')
                     }         
                 }
             }

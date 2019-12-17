@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Grid } from 'semantic-ui-react'
 import Loading from '../commons/Loading'
 
 class Layout extends Component {
@@ -7,13 +7,13 @@ class Layout extends Component {
         return(
             <Fragment>
                 <Container>
-                    <Row className="justify-content-md-center">
-                        <Col md={4}>
+                    <Grid.Row className="justify-content-md-center">
+                        <Grid.Column md={4}>
                             <div className='main-contents'>
                                 {this.props.children}
                             </div>
-                        </Col>
-                    </Row>
+                        </Grid.Column>
+                    </Grid.Row>
                 </Container>
                 <Loading />
             </Fragment>

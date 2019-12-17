@@ -1,15 +1,15 @@
 import React, { Fragment } from 'react'
-import { Nav } from 'react-bootstrap'
+// import { Menu } from 'semantic-ui-react'
 
 const Navitem = (props) => {
-    let { navigation } = props
+    // let { navigation } = props
     return(
         <Fragment>
-            <Nav>
+            {/* <Nav>
                 { navigation && navigation.map((nav) => {
                         return <Nav.Item key={nav.id}> <Nav.Link href={nav.href}>{nav.name}</Nav.Link></Nav.Item>
                     }) }
-            </Nav>
+            </Nav> */}
         </Fragment>
     )
 }

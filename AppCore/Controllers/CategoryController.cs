@@ -54,6 +54,21 @@ namespace AppCore.Controllers
         }
 
         /**
+         * Get FilterCategoryWithPagingAsync list all category from data base
+         */
+        [HttpGet("filterCategoryWithPaging/{pageSize}/{currentPage}", Name = "FilterCategoryWithPagingAsync")]
+        public ActionResult FilterCategoryWithPagingAsync(Int32 pageSize, Int32 currentPage)
+        {
+            ReqFilterCategory reqFilterCategory = new ReqFilterCategory
+            {
+                PageSize = pageSize,
+                CurrentPage = currentPage
+            };
+            var result = _categoryLogic.FilterCategoryWithPagingAsync(reqFilterCategory);
+            return Ok(new BaseResponse(result));
+        }
+
+        /**
          * Get Detail category by id
          */
         [HttpGet("getCategory/{id}", Name = "GetCategory")]

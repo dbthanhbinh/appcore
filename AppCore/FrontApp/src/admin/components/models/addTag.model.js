@@ -3,14 +3,14 @@ var ItemAppModel = {
     let modelFields = {
       name: {
         label: 'Tag name',
-        value: null,
+        value: '',
         validators: [
             { compare: 'required', message: 'The name is not empty!' }
         ]
       },
       slug: {
         label: 'Tag slug',
-        value: null,
+        value: '',
         validators: []
       }
     }

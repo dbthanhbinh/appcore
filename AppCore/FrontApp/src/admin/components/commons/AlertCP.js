@@ -1,8 +1,8 @@
 import React from 'react'
-import { Alert } from 'react-bootstrap'
+import { Message } from 'semantic-ui-react'
 
 const AlertCP = props => {
     let { variant, content } = props
-    return content ? <Alert key={variant} variant={variant}>{content}</Alert> : null
+    return content ? <Message key={variant} variant={variant}>{content}</Message> : null
 }
 export default AlertCP

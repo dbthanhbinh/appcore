@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppCore.Business.Commons;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppCore.Models.DBModel
@@ -8,11 +9,9 @@ namespace AppCore.Models.DBModel
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }
-
         public string Content { get; set; }
-
-        [Required]
-        public Guid CategoryId { get; set; }
+        public string Status { get; set; } = PostStatus.Publish;
+        public Guid? CategoryId { get; set; }
         public string CreatedBy { get; set; }
     }
 }

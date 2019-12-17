@@ -14,20 +14,19 @@ namespace AppCore.Business
     public class MediaLogic : IMediaLogic
     {
         private readonly IUnitOfWork _uow;
-        public ILogger<MediaLogic> _logger { get; }
+        public ILogger<MediaLogic> Logger { get; }
 
         public MediaLogic(IUnitOfWork uow, ILogger<MediaLogic> logger)
         {
             _uow = uow;
-            _logger = logger;
+            Logger = logger;
         }
 
         public Uploaded UploadFile(IFormFile file)
         {
-            _logger.LogWarning("Begin upload file");
-            Uploaded uploaded = null;
+            Logger.LogWarning("Begin upload file");
             FileLogic fileLogic = new FileLogic();
-            uploaded = fileLogic.UploadFile(file);
+            Uploaded uploaded = fileLogic.UploadFile(file);
             return uploaded;
         }
 
@@ -39,10 +38,11 @@ namespace AppCore.Business
                 if (file != null)
                 {
                     Uploaded uploaded = this.UploadFile(file);
-                    _logger.LogWarning("Begin create media");
+                    Logger.LogWarning("Begin create media");
                     if (uploaded != null)
                     {
                         media.Name = uploaded.FileName;
+                        media.SubName = uploaded.FileName;
                         media.Path = uploaded.UrlPath;
                         media.Size = uploaded.Length;
                         media.Type = uploaded.ContentType;
@@ -55,7 +55,7 @@ namespace AppCore.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }
@@ -64,27 +64,37 @@ namespace AppCore.Business
         {
             try
             {
-                Media mediaData = new Media();
-                mediaData.Name = "Name 11";
-                _logger.LogWarning("Create Media");
+                Media mediaData = new Media
+                {
+                    Name = "Name 11"
+                };
+                Logger.LogWarning("Create Media");
                 _uow.GetRepository<Media>().AddAsync(mediaData);
                 _uow.SaveChanges();
                 return Task.FromResult(mediaData);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
         }
 
         // Get all media
-        public async Task<PagingResponse> GetAll()
+        public async Task<PagingResponse> GetAllMedia()
         {
-            List<Media> result = _uow.GetRepository<Media>().GetAll();
-            PagingResponse resultPg = PagingHelper<Media>.GetPagingList(result, 1, 5);
-            await Task.FromResult(resultPg);
-            return resultPg;
+            try
+            {
+                List<Media> result = _uow.GetRepository<Media>().GetAll();
+                PagingResponse resultPg = PagingHelper<Media>.GetPagingList(result, 1, 5);
+                await Task.FromResult(resultPg);
+                return resultPg;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
         }
     }
 }

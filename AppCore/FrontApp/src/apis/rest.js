@@ -1,13 +1,13 @@
 import { appendFormData } from '../utils/FormUtils'
 import { Cookies } from 'react-cookie'
 import _ from 'lodash'
-//let cookies = new Cookies()
-// console.log('=====', cookies.get('MAP_cookies'))
 
-const publicUrl = 'http://localhost:49512/api/'
+const apiName = 'api/'
+const apiResources = `http://localhost:50453/${apiName}`
+// const publicUrl = 'http://localhost:50453/api/'
 class RestConnection{
     constructor (conf) {
-        this.publicUrl = publicUrl
+        this.apiResources = apiResources
         let cookies = new Cookies()
         this.cookies = cookies.get('MAP_cookies')
         this.headers = { "Content-type": "application/json" }
@@ -24,7 +24,7 @@ class RestConnection{
     }
 
     postForm(payload, cb){
-        let url = this.getPublicUrlFromPayload(payload)
+        let url = this.getApiResourcesFromPayload(payload)
         let body = this.getBodyFromFormPayload(payload)
         let formData = new FormData()
         formData = appendFormData(body)
@@ -40,7 +40,7 @@ class RestConnection{
     }
 
     post(payload, cb){
-        let url = this.getPublicUrlFromPayload(payload)
+        let url = this.getApiResourcesFromPayload(payload)
         let body = this.getBodyFromPayload(payload)
         let options = this._conf
             options.method = 'POST'
@@ -49,7 +49,7 @@ class RestConnection{
     }
 
     postNoToken(payload, cb){
-        let url = this.getPublicUrlFromPayload(payload)
+        let url = this.getApiResourcesFromPayload(payload)
         let body = this.getBodyFromPayload(payload)
         let options = this._conf
             options.headers = new Headers({
@@ -63,7 +63,7 @@ class RestConnection{
     }
 
     delete(payload, cb){
-        let url = this.getPublicUrlFromPayload(payload)
+        let url = this.getApiResourcesFromPayload(payload)
         let body = this.getBodyFromPayload(payload)
         let options = this._conf
             options.method = 'DELETE'
@@ -72,7 +72,7 @@ class RestConnection{
     }
 
     put(payload, cb){
-        let url = this.getPublicUrlFromPayload(payload)
+        let url = this.getApiResourcesFromPayload(payload)
         let body = this.getBodyFromPayload(payload)
 
         let options = this._conf
@@ -82,7 +82,7 @@ class RestConnection{
     }
 
     get(payload, cb){
-        let url = this.getPublicUrlFromPayload(payload)
+        let url = this.getApiResourcesFromPayload(payload)
         let options = this._conf
         this._fetch(url, options, cb)
     }
@@ -99,7 +99,7 @@ class RestConnection{
                 return this.handleErrorCatched(error, cb)
             })
         } else {
-            return this.handleErrorPublicUrlIsNull(cb)
+            return this.handleErrorApiResourcesIsNull(cb)
         } 
     }
 
@@ -111,11 +111,11 @@ class RestConnection{
         body: { Id: id }
      }
     */
-    getPublicUrlFromPayload(payload) {
-        let publicUrl = null
+    getApiResourcesFromPayload(payload) {
+        let apiResources = null
         let payloadUrl = _.get(payload, 'url')
-        if(payloadUrl){ publicUrl = this.publicUrl + payloadUrl }
-        return publicUrl
+        if(payloadUrl){ apiResources = this.apiResources + payloadUrl }
+        return apiResources
     }
 
     getBodyFromPayload(payload) {
@@ -133,8 +133,8 @@ class RestConnection{
     }
 
     // Handle cb whern the public url is invalid
-    handleErrorPublicUrlIsNull(cb) {
-        let error = 'Error: Rest publicUrl is null!'
+    handleErrorApiResourcesIsNull(cb) {
+        let error = 'Error: Rest apiResources is null!'
         console.log(error)
         return cb(error, null)
     }

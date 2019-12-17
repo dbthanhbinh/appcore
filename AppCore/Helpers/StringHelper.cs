@@ -25,13 +25,6 @@ namespace AppCore.Helpers
 
         public static string RemoveDiacritics(this string text)
         {
-            //var s = new string(text.Normalize(NormalizationForm.FormD)
-            //    .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
-            //    .ToArray());
-
-            //return s.Normalize(NormalizationForm.FormC);
-
-
             string stFormD = text.Normalize(NormalizationForm.FormD).ToString().ToLowerInvariant();
             StringBuilder sb = new StringBuilder();
             for (int ich = 0; ich < stFormD.Length; ich++)

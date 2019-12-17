@@ -5,8 +5,6 @@ import "react-app-polyfill/stable";
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { CookiesProvider } from 'react-cookie'
-// For using bootstrap
-import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/index.scss'
 import App from './App'
 import * as serviceWorker from './serviceWorker'

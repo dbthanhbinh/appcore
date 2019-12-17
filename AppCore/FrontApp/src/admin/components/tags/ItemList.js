@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
-import { Table } from 'react-bootstrap'
+import { Table } from 'semantic-ui-react'
 import LoadingItem from '../commons/LoadingItem'
 
 /**
@@ -24,7 +24,7 @@ class ItemList extends React.Component{
             title = 'Can not Del'
         }
         return <Fragment>
-            <span as='a' title={title} className={ disableItem ? 'disabled' : '' } onClick={!disableItem ? ()=>this.props.onDeleteCategory(item.id) : null }>Del</span> |
+            <span as='a' title={title} className={ disableItem ? 'disabled' : '' } onClick={!disableItem ? ()=>this.props.onDeleteTag(item.id) : null }>Del</span> |
             <a className={ disableItem ? 'disabled' : '' } href={`admin/${currentRoute}/edit/${item.id}`}>Edit</a>
         </Fragment>
     }
@@ -35,7 +35,7 @@ class ItemList extends React.Component{
         return(
             isLoading ? <LoadingItem />
             : <Fragment>
-                <Table striped bordered hover size="sm">
+                <Table>
                     <thead>
                         <tr>
                             <th>No</th>
@@ -46,10 +46,10 @@ class ItemList extends React.Component{
                     </thead>
                     <tbody>                    
                         {
-                            (items && !_.isEmpty(items)) && items.map((item) => {
+                            (items && !_.isEmpty(items)) && items.map((item, i) => {
                                 return (
                                     <tr key={ item.id }>
-                                        <td>00</td>
+                                        <td>{i + 1}</td>
                                         <td>{ item.name }</td>
                                         <td>{ item.slug }</td>
                                         <td>{this.renderItemActions(currentRoute, item, currentEditId, isEdit)}</td>

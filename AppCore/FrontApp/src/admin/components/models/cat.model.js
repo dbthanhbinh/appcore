@@ -2,7 +2,7 @@ var ItemAppModel = {
   model: function () {
     let modelFields = {
       name: {
-        value: null,
+        value: '',
         validators: [
             { compare: 'required', message: 'Require message' }
         ]

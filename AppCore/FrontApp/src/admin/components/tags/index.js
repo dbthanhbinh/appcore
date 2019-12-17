@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { actionCreators } from '../../../store/Tag'
 
-import { Row, Col } from 'react-bootstrap'
+import {  Grid } from 'semantic-ui-react'
 import TagList from './ItemList'
-import TagForm from './form'
+import TagForm from './TagForm'
 import Utils from '../../../apis/utils'
-import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel }
+import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, resetModelDefaultData, pickKeysFromModel }
 from '../../../utils/FormUtils'
 import TagModel from '../models/addTag.model'
 import { TagDefined } from '../commons/Defined'
@@ -20,10 +20,11 @@ class Tag extends Component{
     constructor(props){
         super(props)
         this.TagActions = new TagActions()
-        let Model = TagModel.model()
+        let { models, isFormValid } = validatorModel(TagModel.model())
         this.state = {
             currentRoute: 'tags',
-            model: Model
+            isFormValid: isFormValid,
+            model: models
         }
         this.isEdit = false
         this.handleOnCreateTag = this.handleOnCreateTag.bind(this)
@@ -35,7 +36,7 @@ class Tag extends Component{
     
 
     componentDidMount(){
-        // // For Edit case
+        // For Edit case
         let payload = {}
         let id = _.get(this.props, 'match.params.id')
         if(id) {
@@ -48,12 +49,13 @@ class Tag extends Component{
             this.TagActions.detailItemWithEdit(payload, (err, result)=> {
                 if(err) return
                 let resultData = Utils.getResApi(result)
-                
+
                 // Mapping data
                 this.setState((prevState)=>{
                     let data = _.get(resultData, 'result')
-                    let TagData = _.get(data, 'Tag')
-                    let result = TagData
+                    let keysFromTagModel = pickKeysFromModel(TagModel.model())
+                    let categoryData = _.pick(_.get(data, 'tag'), keysFromTagModel)
+                    let result = categoryData
                     let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
                     this.props.detailTagWithEdit(data)
                     return { model: models, isFormValid }
@@ -61,7 +63,7 @@ class Tag extends Component{
             })
         }
         
-        // // For get all case
+        // For get all case
         if(!this.isEdit) {
             payload = {
                 url: 'Tag/getAllTag',
@@ -79,7 +81,8 @@ class Tag extends Component{
     handleOnInputChange = (e, data) => {
         let { name, value } = getInputData(e, data)
         this.setState((prevState)=>{
-            return { model: setFieldValue(name, value, prevState) }
+            let { models, isFormValid } = setFieldValue(name, value, prevState)
+            return { model: models, isFormValid: isFormValid }
         })
     }
 
@@ -115,6 +118,11 @@ class Tag extends Component{
                     if(err) return
                     let tagData = Utils.getResApi(result)
                     if(result) this.props.addTag(tagData)
+                    
+                    this.setState((prevState)=>{
+                        let { models, isFormValid } = validatorModel(resetModelDefaultData(TagModel.model()))
+                        return { model: models, isFormValid }
+                    })
                 })
             }
         }
@@ -147,29 +155,31 @@ class Tag extends Component{
         let catId = _.get(detailData, 'tag.id')
         return (
             <Fragment>
-                <Row>
-                    <Col md={5}>
-                        <TagForm
-                            isEdit={ this.isEdit }
-                            currentEditId={catId}
-                            model={ model }
-                            items={ tagList }
-                            detailData={ detailData }
-                            onCreateTag={ this.handleOnCreateTag }
-                            onInputChange = { this.handleOnInputChange }
-                            OnUpdateTag = { this.handleOnUpdateTag }
-                        />
-                    </Col>
-                    <Col md={7}>
-                        <TagList
-                            isEdit={ this.isEdit }
-                            currentEditId={catId}
-                            currentRoute={ currentRoute }
-                            items={ tagList }
-                            onDeleteTag = { this.handleOnDeleteTag }
-                        />
-                    </Col>
-                </Row>
+                <Grid>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={6}>
+                            <TagForm
+                                isEdit={ this.isEdit }
+                                currentEditId={catId}
+                                model={ model }
+                                items={ tagList }
+                                detailData={ detailData }
+                                onInputChange = { this.handleOnInputChange }
+                                onCreateTag={ this.handleOnCreateTag }                                
+                                onUpdateTag = { this.handleOnUpdateTag }
+                            />
+                        </Grid.Column>
+                        <Grid.Column width={10}>
+                            <TagList
+                                isEdit={ this.isEdit }
+                                currentEditId={catId}
+                                currentRoute={ currentRoute }
+                                items={ tagList }
+                                onDeleteTag = { this.handleOnDeleteTag }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Fragment>
         )
     }

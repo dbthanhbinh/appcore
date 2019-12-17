@@ -1,8 +1,3 @@
-const SortTypes = {
-    ASC: 'asc',
-    DESC: 'desc'
-}
-
 var Utils = {
     getDefaultConfigRequestFilter: () => {
         return {

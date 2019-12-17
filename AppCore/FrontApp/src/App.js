@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history'
 import configureStore from './store/configureStore'
 import { BrowserRouter } from "react-router-dom"
 import './styles/App.scss'
-import { Route } from "react-router-dom"
+// import { Route } from "react-router-dom"
 import AppRoute from './routes/AppRoute'
 
 // For admin
@@ -13,10 +13,12 @@ import UnLayout from './admin/components/layouts/UnLayout'
 import PostApp from './admin/components/posts'
 import Category from './admin/components/categories'
 import Tags from './admin/components/tags'
-import Register from './admin/components/users/Register'
+// import Register from './admin/components/users/Register'
 import Login from './admin/components/users/Login'
-import NotFound from './admin/components/Notfound/404'
+// import NotFound from './admin/components/Notfound/404'
 import Media from './admin/components/medias'
+
+import MenuApp from './admin/components/menus'
 
 // For Frontend
 import FLayout from './frontend/layouts/Layout'
@@ -57,7 +59,11 @@ function App() {
         <AppRoute exact path='/admin/categories/edit/:id' component={ Category } layout={ ALayout } />
 
         <AppRoute exact path='/admin/tags' component={Tags } layout={ ALayout } />
+        <AppRoute exact path='/admin/tags/edit/:id' component={Tags } layout={ ALayout } />
         <AppRoute exact path='/admin/medias' component={ Media } layout={ ALayout }/>
+
+        <AppRoute exact path='/admin/menus' component={ MenuApp } layout={ ALayout }/>
+        <AppRoute exact path='/admin/menus/edit/:id' component={MenuApp } layout={ ALayout } />
 
         <AppRoute exact path='/' component={ Home } layout={ appLayout }/>
         <AppRoute exact path='/about' component={ About } layout={ appLayout }/>

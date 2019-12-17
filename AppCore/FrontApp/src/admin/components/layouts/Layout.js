@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Grid } from 'semantic-ui-react'
 import Navitem from '../Nav'
 // import Sidebar from './Sidebar'
 import Loading from '../commons/Loading'
@@ -9,19 +9,19 @@ class Layout extends Component {
         return(
             <Fragment>
                 <Container>
-                    <Row>
+                    <Grid.Row>
                         
-                    </Row>
-                    <Row>
-                        <Col md={3}>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column md={3}>
                             <Navitem />
-                        </Col>
-                        <Col md={9}>
+                        </Grid.Column>
+                        <Grid.Column md={9}>
                             <div className='main-contents'>
                                 {this.props.children}
                             </div>
-                        </Col>
-                    </Row>
+                        </Grid.Column>
+                    </Grid.Row>
                 </Container>
                 <Loading />
             </Fragment>

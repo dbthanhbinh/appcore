@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Spinner } from 'react-bootstrap'
+import { Loader } from 'semantic-ui-react'
 import eventEmitter from '../../utils/eventEmitter'
 import './loading.scss'
 
@@ -27,7 +27,7 @@ class Loading extends Component {
     render(){
         let { isShow } = this.state
         return(
-            isShow && <div className='page-loading-overlay'><Spinner animation="border" variant="primary" /></div>
+            isShow && <div className='page-loading-overlay'><Loader animation="border" variant="primary" /></div>
         )
     }
 }    
