@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AppCore.Business;
 using AppCore.Controllers.commons;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,16 @@ namespace AppCore.Controllers
         /**
          * Create new Post 
          */
+        [HttpPost("updatePost", Name = "UpdatePostAsync")]
+        public async Task<ActionResult> UpdatePostAsync([FromForm] ReqUpdatePost reqData)
+        {
+            var result = await _postLogic.UpdatePostAsync(reqData);
+            return Ok(new BaseResponse(result));
+        }
+
+        /**
+         * Update Post 
+         */
         [HttpPost("createPost", Name = "CreatePostAsync")]
         public async Task<ActionResult> CreatePostAsync([FromForm] ReqCreatePost reqData)
         {
@@ -50,6 +61,16 @@ namespace AppCore.Controllers
         {
             object a = _postLogic.GetAll();
             return Ok(new BaseResponse(a));
+        }
+
+        /**
+         * 
+         */
+        [HttpGet("getPostWithEdit/{id}", Name = "GetPostWithEdit")]
+        public ActionResult getPostWithEdit(Guid id)
+        {
+            var result = _postLogic.GetPostWithEditAsync(id);
+            return Ok(new BaseResponse(result.Result));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AppCore.Controllers.commons;
+using AppCore.Helpers;
 using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
 using AppCore.Models.VMModel;
@@ -94,6 +95,53 @@ namespace AppCore.Business
             }
         }
 
+        /*
+         * Update post
+         */
+        public async Task<Post> UpdatePostAsync(ReqUpdatePost reqUpdatePost)
+        {
+            try
+            {
+                // Update post
+                _logger.LogInformation("Update post");
+                Category category = _uow.GetRepository<Category>().Get(categoryData.Id);
+                category.Name = categoryData.Name;
+                category.ParentId = categoryData.ParentId ?? Guid.Empty;
+
+                string SlugName = StringHelper.GenerateSlug(categoryData.Name);
+                if (!string.IsNullOrEmpty(categoryData.Slug))
+                {
+                    SlugName = StringHelper.GenerateSlug(categoryData.Slug);
+                }
+                category.Slug = SlugName;
+
+                _uow.GetRepository<Category>().Update(category);
+
+
+                // Update seo
+                Logger.LogInformation("Update seo");
+                var qr = _uow.GetRepository<Seo>();
+                IEnumerable<Seo> enumerable = qr.Get((x) => x.ObjectId == categoryData.Id);
+
+                var seoData = enumerable.FirstOrDefault();
+                if (seoData != null)
+                {
+                    seoData.SeoTitle = categoryData.SeoTitle;
+                    seoData.SeoKeys = categoryData.SeoKeys;
+                    seoData.SeoDescription = categoryData.SeoDescription;
+                    qr.Update(seoData);
+                }
+
+                _uow.SaveChanges();
+                return await Task.FromResult(category);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
         public async Task<bool> DeletePostAsync(ReqDeletePost reqDelete)
         {
             try
@@ -132,5 +180,29 @@ namespace AppCore.Business
         {
             return _uow.GetRepository<Post>().GetAll();
         }
+
+        /*
+         * Get list all post with edit data
+         */
+        public async Task<PostWithEditVM> GetPostWithEditAsync(Guid id)
+        {
+            PostWithEditVM postWithEditVM = new PostWithEditVM();
+            try
+            {
+                postWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll();
+                postWithEditVM.TagList = _uow.GetRepository<Tag>().GetAll();
+                postWithEditVM.Post = _uow.GetRepository<Post>().Get(id);
+                IEnumerable<Seo> enumerable = _uow.GetRepository<Seo>().Get((x) => x.ObjectId == id);
+                postWithEditVM.Seo = enumerable.FirstOrDefault();
+                postWithEditVM.Media = null;
+                return await Task.FromResult(postWithEditVM);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
     }
 }

@@ -50,6 +50,7 @@ const DropdownWrapper = (props) => {
         name,
         value
     } = props
+    
     let mapOptions = adapterMapingDropdownOption(options, isEditId)
     
     return(
@@ -64,7 +65,6 @@ const DropdownWrapper = (props) => {
                         search
                         selection
                         name={name}
-                        multiple={multiple}
                         options={mapOptions}
                         onChange={onChange}
                         placeholder={ placeholder }
@@ -76,7 +76,6 @@ const DropdownWrapper = (props) => {
                         fluid
                         search
                         selection
-                        multiple={multiple}
                         options={mapOptions}
                         onChange={onChange}
                         placeholder={ placeholder }

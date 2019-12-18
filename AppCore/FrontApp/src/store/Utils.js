@@ -2,7 +2,8 @@ export const StoreDefided = {
     POST_DEFINED: {
         ADD_ITEM: 'ADD_ITEM',
         FETCH_ITEMS: 'FETCH_ITEMS',
-        DEL_ITEM: 'DEL_ITEM'
+        DEL_ITEM: 'DEL_ITEM',
+        DETAIL_POST_WITH_EDIT: 'DETAIL_POST_WITH_EDIT'
     },
     TAG_DEFINED: {
         ADD_TAG: 'ADD_TAG',
