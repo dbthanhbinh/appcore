@@ -59,8 +59,8 @@ class login extends Component{
         return redirectToReferrer
         ? <Redirect to={afterLogin}/>
         : <Fragment>
-            <Grid columns={1}>
-                <Grid.Column verticalAlign='middle' width={5}>
+            <Grid textAlign='center' verticalAlign='middle' columns={1}>
+                <Grid.Column width={5}>
                     <h1>Login</h1>
                     <Form>
                         <Form.Field>

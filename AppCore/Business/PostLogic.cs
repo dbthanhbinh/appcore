@@ -1,4 +1,5 @@
 ﻿using AppCore.Controllers.commons;
+using AppCore.Helpers;
 using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
 using AppCore.Models.VMModel;
@@ -126,11 +127,34 @@ namespace AppCore.Business
             }
         }
 
-
-
         public List<Post> GetAll()
         {
             return _uow.GetRepository<Post>().GetAll();
         }
+
+        /*
+         * Get FilterPostsWithPagingAsync all category
+         */
+        public async Task<PagingResponse> FilterPostsWithPagingAsync(ReqFilterPost reqFilterPost)
+        {
+            try
+            {
+                int currentPage = reqFilterPost.CurrentPage;
+                int pageSize = reqFilterPost.PageSize;
+
+                List<Post> result = null;
+                result = _uow.GetRepository<Post>().GetAll();
+
+                var resultPg = PagingHelper<Post>.GetPagingList(result, currentPage, pageSize);
+                await Task.FromResult(resultPg);
+                return resultPg;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
     }
 }

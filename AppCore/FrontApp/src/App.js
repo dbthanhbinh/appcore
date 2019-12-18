@@ -56,6 +56,7 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <AppRoute exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
+        <AppRoute exact path='/admin/posts/:paging/:page' component={ PostApp } layout={ ALayout }/>
         <AppRoute exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout } />
         
         <AppRoute exact path='/admin/categories' component={Category } layout={ ALayout } />

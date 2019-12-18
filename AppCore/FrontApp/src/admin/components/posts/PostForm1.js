@@ -44,12 +44,7 @@ class postForm extends Component {
     }
 
     componentDidMount(){
-        // For Edit case
-        let payload = null
-        let id = _.get(this.props, 'match.params.id')        
-        if(id) {
-            this.isEditId = id
-        }
+        
     }
 
     handleOpenModal(){

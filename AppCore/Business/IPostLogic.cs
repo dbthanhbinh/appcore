@@ -11,6 +11,6 @@ namespace AppCore.Business
     {
         Task<CreatedPostVM> CreatePostAsync(ReqCreatePost postData);
         Task<bool> DeletePostAsync(ReqDeletePost reqDelete);
-        
+        Task<PagingResponse> FilterPostsWithPagingAsync(ReqFilterPost reqFilterPost);
     }
 }

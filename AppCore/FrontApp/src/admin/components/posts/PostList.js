@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 import LoadingItem from '../commons/LoadingItem'
 import ItemActions from './ItemAction'
+import Pagination from '../../../helpers/PaginationGet'
 
 /**
  * Input: items: [] => array of list item
@@ -10,7 +11,7 @@ import ItemActions from './ItemAction'
  * Output: render list of Item as listgroup item
  */
 const PostList = (props) => {
-    let { postList, isLoading, currentRoute, onHandleDeleteItemState } = props
+    let { postList, isLoading, currentRoute, onHandleDeleteItemState, pagination, paginationPath } = props
     return(
         isLoading ? <LoadingItem />
         : <Fragment>
@@ -51,6 +52,14 @@ const PostList = (props) => {
                     }
                 </tbody>
             </Table>
+            {
+                pagination && pagination.totalRecords > pagination.pageSize
+                ? <Pagination
+                    paginationPath={paginationPath}
+                    pagination={pagination}
+                /> : null
+
+            }
         </Fragment>
     )
 }

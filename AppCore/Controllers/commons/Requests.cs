@@ -40,4 +40,10 @@ namespace AppCore.Controllers.commons
         public virtual IFormFile File { get; set; }
         public virtual string PostType { get; set; } = "Post";
     }
+
+    public class ReqFilterPost
+    {
+        public virtual int CurrentPage { get; set; } = 1;
+        public virtual int PageSize { get; set; } = 10;
+    }
 }

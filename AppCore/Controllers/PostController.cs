@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AppCore.Business;
 using AppCore.Controllers.commons;
 using Microsoft.AspNetCore.Authorization;
@@ -51,5 +52,21 @@ namespace AppCore.Controllers
             object a = _postLogic.GetAll();
             return Ok(new BaseResponse(a));
         }
+
+        /**
+         * Get FilterPostsWithPagingAsync list all category from data base
+         */
+        [HttpGet("filterPosts/{pageSize}/{currentPage}", Name = "FilterPosts")]
+        public ActionResult FilterPostsWithPagingAsync(Int32 pageSize, Int32 currentPage)
+        {
+            ReqFilterPost reqFilterPost = new ReqFilterPost
+            {
+                PageSize = pageSize,
+                CurrentPage = currentPage
+            };
+            var result = _postLogic.FilterPostsWithPagingAsync(reqFilterPost);
+            return Ok(new BaseResponse(result.Result.Data, result.Result.Paging));
+        }
+
     }
 }
