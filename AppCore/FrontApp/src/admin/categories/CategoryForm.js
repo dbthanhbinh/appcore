@@ -2,13 +2,13 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 
 import { Form, Button } from 'semantic-ui-react'
-import DropdownWrapper from '../form/DropdownWrapper'
+import DropdownWrapper from '../components/form/DropdownWrapper'
 import SeoForm from '../seos/SeoForm'
 import { CategoryDefined } from "../commons/Defined"
 
-import BuildTextField from '../form/BuildTextField'
-import { getDefaultEmptyGuid } from '../../../utils/commons'
-import {BtnAddNew} from '../form/BtnDefined'
+import BuildTextField from '../components/form/BuildTextField'
+import { getDefaultEmptyGuid } from '../../utils/commons'
+import {BtnAddNew} from '../components/form/BtnDefined'
 
 class CategoryForm extends React.Component{
     constructor(props){

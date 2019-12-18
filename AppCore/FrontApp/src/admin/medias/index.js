@@ -1,16 +1,16 @@
 import React, { Fragment, Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../../store/Media'
+import { actionCreators } from '../../store/Media'
 import { Form, Button, Grid } from 'semantic-ui-react'
 import _ from 'lodash'
-import MediaActions from '../../../store/MediaActions'
+import MediaActions from '../../store/MediaActions'
 import MediaItem from './mediaItem'
-import Utils from '../../../apis/utils'
-import Pagination from '../../../helpers/Pagination'
+import Utils from '../../apis/utils'
+import Pagination from '../../helpers/Pagination'
 import './media.scss'
 import { getInputData, setFieldValue }
-from '../../../utils/FormUtils'
+from '../../utils/FormUtils'
 
 class Media extends Component {
     constructor(props){

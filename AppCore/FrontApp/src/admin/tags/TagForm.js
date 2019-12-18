@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 import { Form, Button } from 'semantic-ui-react'
 import { TagDefined } from "../commons/Defined"
-import BuildTextField from '../form/BuildTextField'
+import BuildTextField from '../components/form/BuildTextField'
 
 class TagForm extends React.Component{
     constructor(props){

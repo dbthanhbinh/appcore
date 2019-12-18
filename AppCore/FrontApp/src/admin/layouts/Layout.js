@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react'
 import { Container, Grid } from 'semantic-ui-react'
 import Navitem from '../Nav'
 import LeftNav from '../LeftNav'
-// import Sidebar from './Sidebar'
 import Loading from '../commons/Loading'
 
 class Layout extends Component {

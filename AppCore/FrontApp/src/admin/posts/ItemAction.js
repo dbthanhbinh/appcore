@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
-import { Table } from 'semantic-ui-react'
-import PostActions from '../../../store/PostActions'
+import PostActions from '../../store/PostActions'
 
 class ItemActions extends React.Component {
     constructor(props){

@@ -4,11 +4,11 @@ import { Redirect } from "react-router-dom"
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../../store/User'
+import { actionCreators } from '../../store/User'
 
-import { withFormBehaviors } from '../form/form'
+import { withFormBehaviors } from '../components/form/form'
 import { Defined } from './Defined'
-import { loginUser } from '../../../store/UserActions'
+import { loginUser } from '../../store/UserActions'
 import Model from './Login.model'
 import _ from 'lodash'
 import { withCookies } from 'react-cookie'

@@ -3,22 +3,22 @@ import _ from 'lodash'
 // Redux process
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../../store/Menu'
-import { withFormBehaviors } from '../form/form'
+import { actionCreators } from '../../store/Menu'
+import { withFormBehaviors } from '../components/form/form'
 
 import { Grid } from 'semantic-ui-react'
 import MenuList from './ItemList'
 import MenuForm from './MenuForm'
-import Utils from '../../../apis/utils'
+import Utils from '../../apis/utils'
 import {
     getInputData,
     setFieldValue,
     validatorModel,
     pickKeysFromModel,
     mappingModelDefaultData
-} from '../../../utils/FormUtils'
+} from '../../utils/FormUtils'
 
-import MenuActions from '../../../store/MenuActions'
+import MenuActions from '../../store/MenuActions'
 import MenuModel from '../models/addMenu.model'
 import {MenuDefined} from "../commons/Defined"
 

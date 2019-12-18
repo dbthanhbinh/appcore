@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 import LoadingItem from '../commons/LoadingItem'
 import ItemActions from './ItemAction'
-import Pagination from '../../../helpers/PaginationGet'
+import Pagination from '../../helpers/PaginationGet'
 
 /**
  * Input: items: [] => array of list item

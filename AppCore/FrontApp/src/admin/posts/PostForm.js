@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Form, Button, Modal, Container,  Grid, ModalHeader, ModalContent } from 'semantic-ui-react'
+import { Form, Modal, Container,  Grid, ModalHeader, ModalContent } from 'semantic-ui-react'
 import AlertCP from '../commons/AlertCP'
-import { withFormBehaviors } from '../form/form'
-import FieldFile from '../form/FieldFile'
-import PostActions from '../../../store/PostActions'
-import Utils from '../../../apis/utils'
+import { withFormBehaviors } from '../components/form/form'
+import FieldFile from '../components/form/FieldFile'
+import PostActions from '../../store/PostActions'
+import Utils from '../../apis/utils'
 import { PostDefined, SeoDefined } from "../commons/Defined"
 import TagOptions from '../tags/TagOptions'
 import CategoryOptions from '../categories/CategoryOptions'
@@ -17,10 +17,10 @@ import {
     getEditorData,
     setFieldValue,
     validatorModel
-} from '../../../utils/FormUtils'
+} from '../../utils/FormUtils'
 import CKEditor from 'ckeditor4-react'
-import BuildTextField from '../form/BuildTextField'
-import {BtnWithModalEvent} from '../form/BtnDefined'
+import BuildTextField from '../components/form/BuildTextField'
+import {BtnWithModalEvent} from '../components/form/BtnDefined'
 
 class postForm extends Component {
     constructor(props){

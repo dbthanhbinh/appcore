@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 import LoadingItem from '../commons/LoadingItem'
-import { getDefaultEmptyGuid } from '../../../utils/commons'
+import { getDefaultEmptyGuid } from '../../utils/commons'
 
 /**
  * Input: items: [] => array of list item

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { Loader, Dimmer, Segment } from 'semantic-ui-react'
-import eventEmitter from '../../../utils/eventEmitter'
+import eventEmitter from '../../utils/eventEmitter'
 import './loading.scss'
 
 class LoadingItem extends Component {

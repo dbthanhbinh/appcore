@@ -3,12 +3,12 @@ import { Form, Button } from 'semantic-ui-react'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../../store/User'
+import { actionCreators } from '../../store/User'
 
-import { withFormBehaviors } from '../form/form'
-import Utils from '../../../apis/utils'
+import { withFormBehaviors } from '../components/form/form'
+import Utils from '../../apis/utils'
 import { Defined } from './Defined'
-import { addUser } from '../../../store/UserActions'
+import { addUser } from '../../store/UserActions'
 import Model from './Register.model'
 import _ from 'lodash'
 

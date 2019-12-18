@@ -3,22 +3,22 @@ import _ from 'lodash'
 // Redux process
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../../store/Category'
-import { withFormBehaviors } from '../form/form'
+import { actionCreators } from '../../store/Category'
+import { withFormBehaviors } from '../components/form/form'
 
 import { Grid } from 'semantic-ui-react'
 import CategoryList from './ItemList'
 import CategoryForm from './CategoryForm'
-import Utils from '../../../apis/utils'
+import Utils from '../../apis/utils'
 import {
     getInputData,
     setFieldValue,
     validatorModel,
     pickKeysFromModel,
     mappingModelDefaultData
-} from '../../../utils/FormUtils'
+} from '../../utils/FormUtils'
 
-import CategoryActions from '../../../store/CategoryActions'
+import CategoryActions from '../../store/CategoryActions'
 import SeoModel from '../models/seo.model'
 import CategoryModel from '../models/addCategory.model'
 import {CategoryDefined, SeoDefined} from "../commons/Defined"

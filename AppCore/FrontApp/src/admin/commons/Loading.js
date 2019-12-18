@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { Loader } from 'semantic-ui-react'
-import eventEmitter from '../../../utils/eventEmitter'
+import eventEmitter from '../../utils/eventEmitter'
 import './loading.scss'
 
 class Loading extends Component {

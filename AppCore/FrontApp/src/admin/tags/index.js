@@ -3,18 +3,18 @@ import _ from 'lodash'
 // Redux process
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../../store/Tag'
+import { actionCreators } from '../../store/Tag'
 
 import {  Grid } from 'semantic-ui-react'
 import TagList from './ItemList'
 import TagForm from './TagForm'
-import Utils from '../../../apis/utils'
+import Utils from '../../apis/utils'
 import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, resetModelDefaultData, pickKeysFromModel }
-from '../../../utils/FormUtils'
+from '../../utils/FormUtils'
 import TagModel from '../models/addTag.model'
 import { TagDefined } from '../commons/Defined'
-import { withFormBehaviors } from '../form/form'
-import TagActions from '../../../store/TagActions'
+import { withFormBehaviors } from '../components/form/form'
+import TagActions from '../../store/TagActions'
 
 class Tag extends Component{
     constructor(props){

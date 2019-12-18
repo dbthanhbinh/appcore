@@ -1,13 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
-import {  Grid } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../../store/Post'
-import Utils from '../../../apis/utils'
+import { actionCreators } from '../../store/Post'
+import Utils from '../../apis/utils'
 import PostList from './PostList'
 import HeaderSection from '../commons/HeaderSection'
-import PostActions from '../../../store/PostActions'
+import PostActions from '../../store/PostActions'
 
 class PostApp extends Component {
     constructor(props){
