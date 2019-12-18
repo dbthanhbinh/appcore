@@ -4,6 +4,7 @@ const POST_DEFINED = _.get(StoreDefided, 'POST_DEFINED')
 const ADD_ITEM = POST_DEFINED.ADD_ITEM
 const FETCH_ITEMS = POST_DEFINED.FETCH_ITEMS
 const DEL_ITEM = POST_DEFINED.DEL_ITEM
+const DETAIL_POST_WITH_EDIT = POST_DEFINED.DETAIL_POST_WITH_EDIT
 
 const initialState = {
     postData: {
@@ -15,7 +16,8 @@ const initialState = {
 export const actionCreators = {
     addItem: (post) => ({ type: ADD_ITEM, payload: { post } }),
     deleteItem: (id) => ({ type: DEL_ITEM, payload: { id } }),
-    fetchItem: (postList) => ({ type: FETCH_ITEMS, payload: { postList } })
+    fetchItem: (postList) => ({ type: FETCH_ITEMS, payload: { postList } }),
+    detailPostWithEdit: (detailData) => ({ type: DETAIL_POST_WITH_EDIT, payload: { detailData } }),
 }
 
 export const reducer = (state, action) => {
@@ -48,7 +50,19 @@ export const reducer = (state, action) => {
                     ...state.postData,
                     postList: filterList
                 }
-            }    
+            }
+        case DETAIL_POST_WITH_EDIT:
+            return {
+                ...state,
+                postData: {
+                    ...state.postData,
+                    postList: _.get(action.payload, 'detailData.postList'),
+                    detailData: {
+                        post: _.get(action.payload, 'detailData.post'),
+                        seoData: _.get(action.payload, 'detailData.seo')
+                    }         
+                }
+            }
         default: // Return default state
             return state
     }

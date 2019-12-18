@@ -11,6 +11,7 @@ namespace AppCore.Models.DBModel
         public string Name { get; set; }
         public string Content { get; set; }
         public string Status { get; set; } = PostStatus.Publish;
+        public string PostType { get; set; } = PostTypes.Default;
         public Guid? CategoryId { get; set; }
         public string CreatedBy { get; set; }
     }
