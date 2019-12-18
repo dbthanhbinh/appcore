@@ -102,38 +102,7 @@ namespace AppCore.Business
         {
             try
             {
-                // Update post
-                _logger.LogInformation("Update post");
-                Category category = _uow.GetRepository<Category>().Get(categoryData.Id);
-                category.Name = categoryData.Name;
-                category.ParentId = categoryData.ParentId ?? Guid.Empty;
-
-                string SlugName = StringHelper.GenerateSlug(categoryData.Name);
-                if (!string.IsNullOrEmpty(categoryData.Slug))
-                {
-                    SlugName = StringHelper.GenerateSlug(categoryData.Slug);
-                }
-                category.Slug = SlugName;
-
-                _uow.GetRepository<Category>().Update(category);
-
-
-                // Update seo
-                Logger.LogInformation("Update seo");
-                var qr = _uow.GetRepository<Seo>();
-                IEnumerable<Seo> enumerable = qr.Get((x) => x.ObjectId == categoryData.Id);
-
-                var seoData = enumerable.FirstOrDefault();
-                if (seoData != null)
-                {
-                    seoData.SeoTitle = categoryData.SeoTitle;
-                    seoData.SeoKeys = categoryData.SeoKeys;
-                    seoData.SeoDescription = categoryData.SeoDescription;
-                    qr.Update(seoData);
-                }
-
-                _uow.SaveChanges();
-                return await Task.FromResult(category);
+                return null;
             }
             catch (Exception ex)
             {
