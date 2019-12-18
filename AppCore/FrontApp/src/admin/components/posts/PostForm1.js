@@ -10,15 +10,19 @@ import Utils from '../../../apis/utils'
 import { PostDefined, SeoDefined } from "../commons/Defined"
 import TagOptions from '../tags/TagOptions'
 import CategoryOptions from '../categories/CategoryOptions'
+import DropdownWrapper from '../form/DropdownWrapper'
 import SeoForm from '../seos/SeoForm'
 import PostModel from '../models/addPost.model'
 import SeoModel from '../models/seo.model'
 import {
     getInputData,
-    getEditorData,
     setFieldValue,
-    validatorModel
+    validatorModel,
+    getEditorData,
+    pickKeysFromModel,
+    mappingModelDefaultData
 } from '../../../utils/FormUtils'
+
 import CKEditor from 'ckeditor4-react'
 import BuildTextField from '../form/BuildTextField'
 import {BtnWithModalEvent} from '../form/BtnDefined'
@@ -29,30 +33,46 @@ class postForm extends Component {
         this.PostActions = new PostActions()
         this.CategoryActions = new CategoryActions()
         let { models, isFormValid } = validatorModel(_.merge(PostModel.model(), SeoModel.model()))
+        this.isEditId = null
         this.state = {
             isShowModal: false,
             isShowAlert: false,
             isLoading: false,
             isFormValid: isFormValid,
-            model: models
+            model: models,
+            postEditData: null
         }
         this.handleOnEditorChange = this.handleOnEditorChange.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
-        this.handleOpenModal = this.handleOpenModal.bind(this)
-        this.handleCloseModal = this.handleCloseModal.bind(this)
     }
 
     componentDidMount(){
-        
-    }
-
-    handleOpenModal(){
-        this.setState({isShowModal: true})
-    }
-
-    handleCloseModal(){
-        this.setState({isShowModal: false})
+        // For Edit case
+        let payload = null
+        let id = _.get(this.props, 'match.params.id')        
+        if(id) {
+            this.isEditId = id
+            let { model } = this.state
+            payload = {
+                url: `Post/getPostWithEdit/${this.isEditId}`
+            }
+            this.PostActions.detailItemWithEdit(payload, (err, result)=> {
+                if(err) return
+                let resultData = Utils.getResApi(result)
+                
+                // Mapping data
+                this.setState((prevState)=>{
+                    let keysFromSeoModel = pickKeysFromModel(SeoModel.model())
+                    let keysFromPostModel = pickKeysFromModel(PostModel.model())
+                    let postData = _.pick(_.get(resultData, 'post'), keysFromPostModel)
+                    let seoData = _.pick(_.get(resultData, 'seo'), keysFromSeoModel)
+                    let result = _.merge(postData, seoData)
+                    let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
+                    return { model: models, isFormValid, postEditData: resultData }
+                })
+            })
+        }
     }
 
     handleOnEditorChange(e, data){        
@@ -77,7 +97,7 @@ class postForm extends Component {
         let payload = {}
         if(isFormValid){
             payload = {
-                url: 'Post/createPost',
+                url: 'Post/updatePost',
                 body: {
                     Name: model[PostDefined.NAME].value,
                     Content: model[PostDefined.CONTENT].value,
@@ -104,14 +124,9 @@ class postForm extends Component {
     }
 
     render(){
-        let { isShowAlert, model } = this.state
-        let {
-            detailData,
-            isEdit,
-            listItems,
-            currentEditId
-        } = this.props
+        let { isShowAlert, model, postEditData } = this.state
         let contentValue = _.get(model, `${PostDefined.CONTENT}.value`)
+        console.log('=====', _.get(postEditData, 'tagList'))
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
@@ -138,37 +153,35 @@ class postForm extends Component {
                         <Grid.Column width={6}>
                             <Form>
                                 <Form.Field>
-                                    <CategoryOptions
-                                        isEdit={isEdit}
-                                        currentCatId={currentEditId}
-                                        categoryList={listItems}
+                                    <DropdownWrapper
+                                        isEditId={this.isEditId}
+                                        options={_.get(postEditData, 'categoryList')}
                                         name={PostDefined.CATEGORYID}
-                                        parentId={null}
-                                        onInputChange={this.handleOnInputChange}
+                                        onChange={this.handleOnInputChange}
+                                        placeholder={'Select group menu '}
                                     />
                                 </Form.Field>
                                 <Form.Field>
                                     <FieldFile defaultValue='' onInputChange = {this.handleOnInputChange} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <TagOptions
-                                        isEdit={isEdit}
-                                        currentCatId={currentEditId}
-                                        categoryList={listItems}
+                                    <DropdownWrapper
+                                        isEditId={this.isEditId}
+                                        options={_.get(postEditData, 'tagList')}
                                         name={PostDefined.TAGLIST}
-                                        parentId={null}
-                                        onInputChange={this.handleOnInputChange}
+                                        setMultiple={true}
+                                        onChange={this.handleOnInputChange}
+                                        placeholder={'Select group menu '}
                                     />
                                 </Form.Field>
                                 <Form.Field>
                                     <SeoForm
                                         model={model}
-                                        seoData={ _.get(detailData, 'seo') }
+                                        seoData={ _.get(postEditData, 'seo') }
                                         onInputChange = {this.handleOnInputChange} />
                                 </Form.Field>
                                 <Form.Field>
                                     <BtnWithModalEvent onBtnEvent={this.handleSubmitForm} label={'Add new'} />
-                                    <BtnWithModalEvent onBtnEvent={this.handleCloseModal} label={'Close'} />
                                 </Form.Field>
                             </Form>
                         </Grid.Column>

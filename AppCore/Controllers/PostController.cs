@@ -26,6 +26,16 @@ namespace AppCore.Controllers
         /**
          * Create new Post 
          */
+        [HttpPost("updatePost", Name = "UpdatePostAsync")]
+        public async Task<ActionResult> UpdatePostAsync([FromForm] ReqUpdatePost reqData)
+        {
+            var result = await _postLogic.UpdatePostAsync(reqData);
+            return Ok(new BaseResponse(result));
+        }
+
+        /**
+         * Update Post 
+         */
         [HttpPost("createPost", Name = "CreatePostAsync")]
         public async Task<ActionResult> CreatePostAsync([FromForm] ReqCreatePost reqData)
         {
@@ -68,5 +78,11 @@ namespace AppCore.Controllers
             return Ok(new BaseResponse(result.Result.Data, result.Result.Paging));
         }
 
+        [HttpGet("getPostWithEdit/{id}", Name = "GetPostWithEdit")]
+        public ActionResult getPostWithEdit(Guid id)
+        {
+            var result = _postLogic.GetPostWithEditAsync(id);
+            return Ok(new BaseResponse(result.Result));
+        }
     }
 }

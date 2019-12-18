@@ -15,4 +15,9 @@ namespace AppCore.Business.Commons
         public static string Pedding { get { return "Pedding"; } }
         public static string Draft { get { return "Draft"; } }
     }
+
+    public static class PostTypes
+    {
+        public static string Default { get { return "post"; } }
+    }
 }
