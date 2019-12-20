@@ -41,6 +41,11 @@ namespace AppCore.Controllers.commons
         public virtual string PostType { get; set; } = "Post";
     }
 
+    public class ReqFilterPost
+    {
+        public virtual int CurrentPage { get; set; } = 1;
+        public virtual int PageSize { get; set; } = 10;
+    }
     public class ReqUpdatePost
     {
         public string Name { get; set; }

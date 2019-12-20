@@ -22,7 +22,7 @@ class Pagination extends Component {
 
   constructor(props) {
     super(props)
-    const { totalRecords, pageLimit, currentPage, pageNeighbours } = props.pagination
+    const { totalRecords, pageLimit, pageNeighbours, currentPage } = props.pagination
     this.pageLimit = typeof pageLimit === 'number' ? pageLimit : 5
     this.totalRecords = typeof totalRecords === 'number' ? totalRecords : 0
 
@@ -33,7 +33,7 @@ class Pagination extends Component {
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageLimit)
 
-    this.state = { currentPage: 1 }
+    this.state = { currentPage: currentPage }
   }
 
   componentDidMount() {
@@ -144,20 +144,19 @@ class Pagination extends Component {
   render() {
 
     // if (!this.totalRecords || this.totalPages === 1) return null
-
-    const { currentPage } = this.state
+    let { paginationPath } = this.props
+    const { currentPage } = this.props.pagination
     const pages = this.fetchPageNumbers()
-
     return (
       <Fragment>
-        <div className='pagination-section'>
+        <div className='pagination-section ui pagination menu'>
           <nav aria-label="Pagination">
             <ul className="pagination">
               { pages.map((page, index) => {
 
                 if (page === LEFT_PAGE) return (
                   <li key={index} className="page-item">
-                    <a className="page-link" href="/" aria-label="Previous" onClick={this.handleMoveLeft}>
+                    <a className="item" href="/" aria-label="Previous" onClick={this.handleMoveLeft}>
                       <span aria-hidden="true">&laquo</span>
                       <span className="sr-only">Previous</span>
                     </a>
@@ -166,7 +165,7 @@ class Pagination extends Component {
 
                 if (page === RIGHT_PAGE) return (
                   <li key={index} className="page-item">
-                    <a className="page-link" href="/" aria-label="Next" onClick={this.handleMoveRight}>
+                    <a className="item" href="/" aria-label="Next">
                       <span aria-hidden="true">raquo</span>
                       <span className="sr-only">Next</span>
                     </a>
@@ -175,7 +174,7 @@ class Pagination extends Component {
 
                 return (
                   <li key={index} className={`page-item${ currentPage === page ? ' active' : ''}`}>
-                    <a className="page-link" href="/" onClick={ this.handleClick(page) }>{ page }</a>
+                    <a className={`item ${ currentPage === page ? ' active' : ''}`} href={`${paginationPath}/${page}`}>{ page }</a>
                   </li>
                 )
 

@@ -13,8 +13,7 @@ namespace AppCore.Business
         Task<CreatedPostVM> CreatePostAsync(ReqCreatePost postData);
         Task<Post> UpdatePostAsync(ReqUpdatePost reqUpdatePost);
         Task<bool> DeletePostAsync(ReqDeletePost reqDelete);
+        Task<PagingResponse> FilterPostsWithPagingAsync(ReqFilterPost reqFilterPost);
         Task<PostWithEditVM> GetPostWithEditAsync(Guid id);
-
-
     }
 }

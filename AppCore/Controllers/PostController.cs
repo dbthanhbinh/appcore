@@ -64,8 +64,20 @@ namespace AppCore.Controllers
         }
 
         /**
-         * 
+         * Get FilterPostsWithPagingAsync list all category from data base
          */
+        [HttpGet("filterPosts/{pageSize}/{currentPage}", Name = "FilterPosts")]
+        public ActionResult FilterPostsWithPagingAsync(Int32 pageSize, Int32 currentPage)
+        {
+            ReqFilterPost reqFilterPost = new ReqFilterPost
+            {
+                PageSize = pageSize,
+                CurrentPage = currentPage
+            };
+            var result = _postLogic.FilterPostsWithPagingAsync(reqFilterPost);
+            return Ok(new BaseResponse(result.Result.Data, result.Result.Paging));
+        }
+
         [HttpGet("getPostWithEdit/{id}", Name = "GetPostWithEdit")]
         public ActionResult getPostWithEdit(Guid id)
         {
