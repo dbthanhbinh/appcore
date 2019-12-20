@@ -102,6 +102,20 @@ namespace AppCore.Business
         {
             try
             {
+                _logger.LogInformation("Update post");
+                Post postData = _uow.GetRepository<Post>().Get(reqUpdatePost.Id);
+                if(postData != null)
+                {
+                    postData.Name = reqUpdatePost.Name;
+                    postData.Content = reqUpdatePost.Content;
+                    postData.CategoryId = reqUpdatePost.CategoryId;
+                    // Update data for post.
+                    _uow.GetRepository<Post>().Update(postData);
+                    _uow.SaveChanges();
+
+
+
+                }
                 return null;
             }
             catch (Exception ex)

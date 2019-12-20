@@ -2,16 +2,16 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { createBrowserHistory } from 'history'
 import configureStore from './store/configureStore'
-import { BrowserRouter } from "react-router-dom"
+import { BrowserRouter, Route, Switch } from "react-router-dom"
 import './styles/App.scss'
 // import { Route } from "react-router-dom"
-import AppRoute from './routes/AppRoute'
+import WithAuthenticate from './routes/WithAuthenticate'
 
 // For admin
 import ALayout from './admin/layouts/Layout'
 import UnLayout from './admin/layouts/UnLayout'
 import PostApp from './admin/posts'
-import PostEditApp from './admin/posts/PostForm1'
+import PostEditApp from './admin/posts/EditPostForm'
 import Category from './admin/categories'
 import Tags from './admin/tags'
 import Login from './admin/users/Login'
@@ -54,63 +54,12 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <AppRoute exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
-        <AppRoute exact path='/admin/posts/:paging/:page' component={ PostApp } layout={ ALayout }/>
-        <AppRoute exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout } />
-        
-        <AppRoute exact path='/admin/categories' component={Category } layout={ ALayout } />
-        <AppRoute exact path='/admin/categories/edit/:id' component={ Category } layout={ ALayout } />
-
-        <AppRoute exact path='/admin/tags' component={Tags } layout={ ALayout } />
-        <AppRoute exact path='/admin/tags/edit/:id' component={Tags } layout={ ALayout } />
-        <AppRoute exact path='/admin/medias' component={ Media } layout={ ALayout }/>
-
-        <AppRoute exact path='/admin/menus' component={ MenuApp } layout={ ALayout }/>
-        <AppRoute exact path='/admin/menus/edit/:id' component={MenuApp } layout={ ALayout } />
-
-        <AppRoute exact path='/' component={ Home } layout={ appLayout }/>
-        <AppRoute exact path='/about' component={ About } layout={ appLayout }/>
-        <AppRoute exact path='/contact' component={ Contact } layout={ appLayout }/>
-
-        <AppRoute exact path='/user/login' component={ Login } layout={ UnLayout }/>
-
-        {/* <AppRoute exact path='/user/login' component={ Login } layout={ UnLayout }/> */}
-        {/* <AppRoute exact path='/user/login' component={ Login } layout={ UnLayout } /> */}
-
-        {/* <AppRoute exact path='/admin/posts' component={ PostApp } layout={ appLayout }/>
-        
-        <AppRoute exact path='/admin/categories' component={ Category } layout={ appLayout } />
-        <AppRoute exact path='/admin/categories/edit/:id' component={ Category } layout={ appLayout } />
-        <AppRoute exact path='/admin/medias' component={ Media } layout={ appLayout }/>
-
-        <AppRoute exact path='/' component={ Home } layout={ appLayout }/>
-        <AppRoute exact path='/about' component={ About } layout={ appLayout }/>
-        <AppRoute exact path='/contact' component={ Contact } layout={ appLayout }/> */}
-        
-
-        {/* For Front end */}
-        {/* <FLayout>
-          <Route exact path='/' component={ Home } />
-          <Route exact path='/about' component={ About } />
-          <Route exact path='/contact' component={ Contact } />
-        </FLayout> */}
-
-        {/* <AppRoute exact path='/' component={ Home } layout={ Layout }/> */}
-        {/* <AppRoute exact path='/admin/posts' component={ PostApp } layout={ FLayout }/>
-        <AppRoute exact path='/admin/categories' component={ Category } layout={ FLayout } />
-        <AppRoute exact path='/admin/categories/edit/:id' component={ Category } layout={ FLayout } />
-        <AppRoute exact path='/admin/medias' component={ Media } layout={ FLayout }/> */}
-
-        {/* For backend admin */}
-
-        {/* None protected route */}
-        {/* <UnLayout>
-          <Route path='/user/register' component={ Register } />
-          <Route path='/user/login' component={ Login } />
-          <Route path="*" component={ NotFound } />
-        </UnLayout> */}
-
-
+        <Switch>
+          <WithAuthenticate exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
+          <WithAuthenticate exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout }/>
+          <WithAuthenticate exact path='/user/login' component={ Login } layout={ UnLayout }/>
+          <Route exact render={ () => NotFound } /> */}
+        </Switch>
       </BrowserRouter>
     </Provider>
   )

@@ -27,7 +27,7 @@ import CKEditor from 'ckeditor4-react'
 import BuildTextField from '../components/form/BuildTextField'
 import {BtnWithModalEvent} from '../components/form/BtnDefined'
 
-class postForm extends Component {
+class EditPostForm extends Component {
     constructor(props){
         super(props)
         this.PostActions = new PostActions()
@@ -44,7 +44,7 @@ class postForm extends Component {
         }
         this.handleOnEditorChange = this.handleOnEditorChange.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
-        this.handleSubmitForm = this.handleSubmitForm.bind(this)
+        // this.handleSubmitUpdateForm = this.handleSubmitUpdateForm.bind(this)
     }
 
     componentDidMount(){
@@ -91,7 +91,7 @@ class postForm extends Component {
         })
     }
 
-    handleSubmitForm(e, data){
+    handleSubmitUpdateForm(id){
         let {isFormValid} = this.props
         let { model } = this.state
         let payload = {}
@@ -99,6 +99,7 @@ class postForm extends Component {
             payload = {
                 url: 'Post/updatePost',
                 body: {
+                    Id: id,
                     Name: model[PostDefined.NAME].value,
                     Content: model[PostDefined.CONTENT].value,
                     CategoryId: model[PostDefined.CATEGORYID].value,
@@ -181,7 +182,7 @@ class postForm extends Component {
                                         onInputChange = {this.handleOnInputChange} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <BtnWithModalEvent onBtnEvent={this.handleSubmitForm} label={'Add new'} />
+                                    <BtnWithModalEvent onBtnEvent={this.handleSubmitUpdateForm(this.isEditId)} label={'Update'} />
                                 </Form.Field>
                             </Form>
                         </Grid.Column>
@@ -191,5 +192,4 @@ class postForm extends Component {
         )
     }
 }
-const PostForm = withFormBehaviors(postForm, null)
-export default PostForm
+export default withFormBehaviors(EditPostForm, null)
