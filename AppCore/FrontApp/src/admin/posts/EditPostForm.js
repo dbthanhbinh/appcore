@@ -27,6 +27,40 @@ import CKEditor from 'ckeditor4-react'
 import BuildTextField from '../components/form/BuildTextField'
 import {BtnWithModalEvent} from '../components/form/BtnDefined'
 
+
+
+const findChildIds = (listItems, parentId, childIds) => {
+    if(_.isEmpty(listItems)) return []
+    let menuObject = []
+    listItems.forEach((element, i) => {
+        if(element.parentId === parentId){
+            menuObject.push({
+                id: element.id,
+                parentId: element.parentId,
+                name: element.name
+            })
+            listItems = listItems.filter((x) => x.id !== element.id)
+        }
+    })
+
+    if(menuObject) {
+        return menuObject.map((item) => {
+            childIds.push(item.id)
+            return findChildIds(listItems, item.id, childIds)
+        })
+    }
+}
+
+const adapterMapingDropdownOption = (options) => {
+    if(!options) return []
+    let mapOptions = []
+    options && options.forEach(item => {
+        mapOptions.push({
+            key: item.id, text: `${item.name}`, value: item.id
+        })
+    })
+    return mapOptions
+}
 class EditPostForm extends Component {
     constructor(props){
         super(props)
@@ -34,6 +68,7 @@ class EditPostForm extends Component {
         this.CategoryActions = new CategoryActions()
         let { models, isFormValid } = validatorModel(_.merge(PostModel.model(), SeoModel.model()))
         this.isEditId = null
+        this.isEditAble = false
         this.state = {
             isShowModal: false,
             isShowAlert: false,
@@ -54,6 +89,7 @@ class EditPostForm extends Component {
         let id = _.get(this.props, 'match.params.id')        
         if(id) {
             this.isEditId = id
+            this.isEditAble = true
             let { model } = this.state
             payload = {
                 url: `Post/getPostWithEdit/${this.isEditId}`
@@ -103,7 +139,7 @@ class EditPostForm extends Component {
         postTagList.forEach(element => {
             _postTagList.push(element.tagId)
         });
-        return _postTagList.toString()
+        return _postTagList
     }
 
     handleSubmitUpdateForm(id){
@@ -112,7 +148,7 @@ class EditPostForm extends Component {
         let payload = {}
         if(isFormValid){
             payload = {
-                url: 'Post/updatePost',
+                url: 'Post/updatePostBusiness',
                 body: {
                     Id: id,
                     Name: model[PostDefined.NAME].value,
@@ -142,8 +178,12 @@ class EditPostForm extends Component {
     render(){
         let { isShowAlert, model, postEditData, postTagList } = this.state
         let contentValue = _.get(model, `${PostDefined.CONTENT}.value`)
-        // console.log('=====hh', this.getCurrentPostTagList(postTagList))
-        // console.log('=====hh', this.getCurrentPostTagList(postTagList))
+        let categoryList = _.get(postEditData, 'categoryList')
+        categoryList = adapterMapingDropdownOption(categoryList)
+
+        let tagList = _.get(postEditData, 'tagList')
+        tagList = adapterMapingDropdownOption(tagList)
+
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
@@ -172,11 +212,12 @@ class EditPostForm extends Component {
                                 <Form.Field>
                                     <DropdownWrapper
                                         isEditId={this.isEditId}
-                                        options={_.get(postEditData, 'categoryList')}
+                                        isEditAble={this.isEditAble}
+                                        options={categoryList}
                                         name={PostDefined.CATEGORYID}
                                         onChange={this.handleOnInputChange}
-                                        placeholder={'Select group menu '}
-                                        defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
+                                        placeholder={'Select category '}
+                                        value={_.get(model, `${PostDefined.CATEGORYID}.value`)}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -184,10 +225,12 @@ class EditPostForm extends Component {
                                 </Form.Field>
                                 <Form.Field>
                                     <DropdownWrapper
+                                        search
+                                        multiple
                                         isEditId={this.isEditId}
-                                        options={_.get(postEditData, 'tagList')}
+                                        isEditAble={this.isEditAble}
+                                        options={tagList}
                                         name={PostDefined.TAGLIST}
-                                        multiple={true}
                                         onChange={this.handleOnInputChange}
                                         placeholder={'Select tags'}
                                         defaultValue={this.getCurrentPostTagList(postTagList) || null}

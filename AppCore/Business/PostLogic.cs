@@ -141,7 +141,7 @@ namespace AppCore.Business
                         CategoryId = reqUpdatePostBusiness.CategoryId,
                         File = reqUpdatePostBusiness.File
                     };
-                    await this.UpdatePostAsync(reqUpdatePost);
+                    Task<Post> postCreated = this.UpdatePostAsync(reqUpdatePost);
 
                     // Update seo data
                     ReqUpdateSeo reqUpdateSeo = new ReqUpdateSeo
@@ -151,8 +151,10 @@ namespace AppCore.Business
                         SeoKeys = reqUpdatePostBusiness.SeoKeys,
                         SeoDescription = reqUpdatePostBusiness.SeoDescription
                     };
-                    await _seoLogic.UpdateSeoAsync(reqUpdateSeo);
+                    Task<Seo> seoCreated = _seoLogic.UpdateSeoAsync(reqUpdateSeo);
+                    await Task.WhenAll(postCreated, seoCreated);
                 }
+                
                 return null;
             }
             catch (Exception ex)

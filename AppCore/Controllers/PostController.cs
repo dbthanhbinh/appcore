@@ -34,6 +34,16 @@ namespace AppCore.Controllers
         }
 
         /**
+         * Create new Post 
+         */
+        [HttpPost("updatePostBusiness", Name = "UpdatePostBusinessAsync")]
+        public async Task<ActionResult> UpdatePostBusinessAsync([FromForm] ReqUpdatePostBusiness reqData)
+        {
+            var result = await _postLogic.UpdatePostBusinessAsync(reqData);
+            return Ok(new BaseResponse(result));
+        }
+
+        /**
          * Update Post 
          */
         [HttpPost("createPost", Name = "CreatePostAsync")]
