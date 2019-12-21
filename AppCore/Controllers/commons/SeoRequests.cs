@@ -13,4 +13,13 @@ namespace AppCore.Controllers.commons
     {
         public Guid Id { get; set; }
     }
+
+    public class ReqUpdateSeo
+    {
+        public Guid ObjectId { get; set; }
+        // For Seo
+        public virtual string SeoTitle { get; set; }
+        public virtual string SeoKeys { get; set; }
+        public virtual string SeoDescription { get; set; }
+    }
 }

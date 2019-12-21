@@ -46,7 +46,18 @@ namespace AppCore.Controllers.commons
         public virtual int CurrentPage { get; set; } = 1;
         public virtual int PageSize { get; set; } = 10;
     }
+
     public class ReqUpdatePost
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Content { get; set; }
+        public Guid? CategoryId { get; set; }
+        public virtual IFormFile File { get; set; }
+        public virtual string PostType { get; set; } = "Post";
+    }
+
+    public class ReqUpdatePostBusiness
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

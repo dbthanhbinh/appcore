@@ -97,5 +97,29 @@ namespace AppCore.Business
                 throw ex;
             }
         }
+
+        public Task<Seo> UpdateSeoAsync(ReqUpdateSeo seoData)
+        {
+            try
+            {
+                Seo seoObj = new Seo();
+                if (seoData != null)
+                {
+                    seoObj = _uow.GetRepository<Seo>().GetByFilter((x) => x.ObjectId == seoData.ObjectId).FirstOrDefault();
+                    seoObj.SeoTitle = seoData.SeoTitle;
+                    seoObj.SeoDescription = seoData.SeoDescription;
+                    seoObj.SeoKeys = seoData.SeoKeys;
+
+                    _uow.GetRepository<Seo>().Update(seoObj);
+                    _uow.SaveChanges();
+                }
+                return Task.FromResult(seoObj);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
     }
 }

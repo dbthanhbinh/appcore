@@ -12,7 +12,7 @@ export function getInputData(e, data){
 }
 
 export function getEditorData(e){
-    let name = 'editor1'
+    let name = 'content'
     let value = ''
     if(e && e.name === 'change' && e.editor) {
         value = e.editor.getData()

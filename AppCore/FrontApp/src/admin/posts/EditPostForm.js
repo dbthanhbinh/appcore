@@ -40,6 +40,7 @@ class EditPostForm extends Component {
             isLoading: false,
             isFormValid: isFormValid,
             model: models,
+            postTagList: null,
             postEditData: null
         }
         this.handleOnEditorChange = this.handleOnEditorChange.bind(this)
@@ -69,7 +70,12 @@ class EditPostForm extends Component {
                     let seoData = _.pick(_.get(resultData, 'seo'), keysFromSeoModel)
                     let result = _.merge(postData, seoData)
                     let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
-                    return { model: models, isFormValid, postEditData: resultData }
+                    return { 
+                        model: models,
+                        isFormValid,
+                        postEditData: resultData,
+                        postTagList: _.get(resultData, 'postTagList')
+                    }
                 })
             })
         }
@@ -89,6 +95,15 @@ class EditPostForm extends Component {
             let { models, isFormValid } = setFieldValue(name, value, prevState)
             return { model: models, isFormValid: isFormValid }
         })
+    }
+
+    getCurrentPostTagList(postTagList){
+        if(_.isEmpty(postTagList)) return null
+        let _postTagList = []
+        postTagList.forEach(element => {
+            _postTagList.push(element.tagId)
+        });
+        return _postTagList.toString()
     }
 
     handleSubmitUpdateForm(id){
@@ -113,10 +128,10 @@ class EditPostForm extends Component {
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.setState(()=>({ isLoading: false, isShowModal: false }), ()=>{
-                    this.PostActions.addItemWithForm(payload, (err, result)=> {
+                    this.PostActions.updateItemWithForm(payload, (err, result)=> {
                         if(err) return
-                        let postData = Utils.getResListApi(result)
-                        if(result) this.props.addItem(postData)
+                        // let postData = Utils.getResListApi(result)
+                        // if(result) this.props.addItem(postData)
                     })
                     // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
                 })
@@ -125,9 +140,10 @@ class EditPostForm extends Component {
     }
 
     render(){
-        let { isShowAlert, model, postEditData } = this.state
+        let { isShowAlert, model, postEditData, postTagList } = this.state
         let contentValue = _.get(model, `${PostDefined.CONTENT}.value`)
-        console.log('=====', _.get(postEditData, 'tagList'))
+        // console.log('=====hh', this.getCurrentPostTagList(postTagList))
+        // console.log('=====hh', this.getCurrentPostTagList(postTagList))
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
@@ -160,6 +176,7 @@ class EditPostForm extends Component {
                                         name={PostDefined.CATEGORYID}
                                         onChange={this.handleOnInputChange}
                                         placeholder={'Select group menu '}
+                                        defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -170,9 +187,17 @@ class EditPostForm extends Component {
                                         isEditId={this.isEditId}
                                         options={_.get(postEditData, 'tagList')}
                                         name={PostDefined.TAGLIST}
-                                        setMultiple={true}
+                                        multiple={true}
                                         onChange={this.handleOnInputChange}
-                                        placeholder={'Select group menu '}
+                                        placeholder={'Select tags'}
+                                        defaultValue={this.getCurrentPostTagList(postTagList) || null}
+                                    />
+                                </Form.Field>
+                                <Form.Field>
+                                    <input type='hidden'
+                                        className='tag-list-hidden'
+                                        name='tagListHidden'
+                                        defaultValue={this.getCurrentPostTagList(postTagList) || null}
                                     />
                                 </Form.Field>
                                 <Form.Field>
@@ -182,7 +207,7 @@ class EditPostForm extends Component {
                                         onInputChange = {this.handleOnInputChange} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <BtnWithModalEvent onBtnEvent={this.handleSubmitUpdateForm(this.isEditId)} label={'Update'} />
+                                    <BtnWithModalEvent onBtnEvent={()=>this.handleSubmitUpdateForm(this.isEditId)} label={'Update'} />
                                 </Form.Field>
                             </Form>
                         </Grid.Column>

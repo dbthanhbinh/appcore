@@ -98,13 +98,13 @@ namespace AppCore.Business
         /*
          * Update post
          */
-        public async Task<Post> UpdatePostAsync(ReqUpdatePost reqUpdatePost)
+        public Task<Post> UpdatePostAsync(ReqUpdatePost reqUpdatePost)
         {
             try
             {
                 _logger.LogInformation("Update post");
                 Post postData = _uow.GetRepository<Post>().Get(reqUpdatePost.Id);
-                if(postData != null)
+                if (postData != null)
                 {
                     postData.Name = reqUpdatePost.Name;
                     postData.Content = reqUpdatePost.Content;
@@ -112,9 +112,46 @@ namespace AppCore.Business
                     // Update data for post.
                     _uow.GetRepository<Post>().Update(postData);
                     _uow.SaveChanges();
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
 
+        /*
+         * Update post
+         */
+        public async Task<Post> UpdatePostBusinessAsync(ReqUpdatePostBusiness reqUpdatePostBusiness)
+        {
+            try
+            {
+                _logger.LogInformation("Update post business");
+                if (reqUpdatePostBusiness != null)
+                {
+                    // Update data for post.
+                    ReqUpdatePost reqUpdatePost = new ReqUpdatePost
+                    {
+                        Id = reqUpdatePostBusiness.Id,
+                        Name = reqUpdatePostBusiness.Name,
+                        Content = reqUpdatePostBusiness.Content,
+                        CategoryId = reqUpdatePostBusiness.CategoryId,
+                        File = reqUpdatePostBusiness.File
+                    };
+                    await this.UpdatePostAsync(reqUpdatePost);
 
-
+                    // Update seo data
+                    ReqUpdateSeo reqUpdateSeo = new ReqUpdateSeo
+                    {
+                        ObjectId = reqUpdatePostBusiness.Id,
+                        SeoTitle = reqUpdatePostBusiness.SeoTitle,
+                        SeoKeys = reqUpdatePostBusiness.SeoKeys,
+                        SeoDescription = reqUpdatePostBusiness.SeoDescription
+                    };
+                    await _seoLogic.UpdateSeoAsync(reqUpdateSeo);
                 }
                 return null;
             }
@@ -191,12 +228,13 @@ namespace AppCore.Business
             PostWithEditVM postWithEditVM = new PostWithEditVM();
             try
             {
-                postWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll();
-                postWithEditVM.TagList = _uow.GetRepository<Tag>().GetAll();
-                postWithEditVM.Post = _uow.GetRepository<Post>().Get(id);
+                postWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll(); // Get all category
+                postWithEditVM.TagList = _uow.GetRepository<Tag>().GetAll(); // Get all taglist
+                postWithEditVM.PostTagList = _uow.GetRepository<ObjectTag>().GetByFilter((x) => x.ObjectId == id);
+                postWithEditVM.Post = _uow.GetRepository<Post>().Get(id);  // Get post object data
                 IEnumerable<Seo> enumerable = _uow.GetRepository<Seo>().Get((x) => x.ObjectId == id);
-                postWithEditVM.Seo = enumerable.FirstOrDefault();
-                postWithEditVM.Media = null;
+                postWithEditVM.Seo = enumerable.FirstOrDefault(); // Get Post SEO object data
+                postWithEditVM.Media = null; // Get Post Media
                 return await Task.FromResult(postWithEditVM);
             }
             catch (Exception ex)

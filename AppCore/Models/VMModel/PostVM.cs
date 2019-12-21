@@ -15,6 +15,7 @@ namespace AppCore.Models.VMModel
         public Post Post { get; set; }
         public List<Category> CategoryList { get; set; }
         public List<Tag> TagList { get; set; }
+        public List<ObjectTag> PostTagList { get; set; }
         public Media Media { get; set; }
         public Seo Seo { get; set; }
     }

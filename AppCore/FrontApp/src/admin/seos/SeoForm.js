@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { Form } from 'semantic-ui-react'
 import { SeoDefined } from '../commons/Defined'
+import BuildTextField from '../components/form/BuildTextField'
+import BuildTextAreaField from '../components/form/BuildTextAreaField'
 
 class SeoForm extends Component {
     constructor(props){
@@ -27,18 +29,25 @@ class SeoForm extends Component {
             <React.Fragment>
                 <h5>Config SEO</h5>
                 <Form.Field>
-                    <input type='text' name={ SeoDefined.SEOTITLE }
-                        onChange={this.handleOnInputChange} defaultValue={ seoTitle } placeholder={ seoTitleLabel }
+                    <BuildTextField
+                        name={SeoDefined.SEOTITLE}
+                        onChange={this.handleOnInputChange}
+                        modelField={model[SeoDefined.SEOTITLE]}
                     />
                 </Form.Field>
                 <Form.Field>
-                    <input type='text' name={ SeoDefined.SEOKEYS }
-                        onChange={this.handleOnInputChange} defaultValue={ seoKeys } placeholder={ seoKeysLabel }
+                    <BuildTextField
+                        name={SeoDefined.SEOKEYS}
+                        onChange={this.handleOnInputChange}
+                        modelField={model[SeoDefined.SEOKEYS]}
                     />
                 </Form.Field>
                 <Form.Field>
-                    <input as="textarea" rows="4" name={ SeoDefined.SEODESCRIPTION }
-                        placeholder={ seoDescriptionLabel } onChange={this.handleOnInputChange} defaultValue={ seoDescription } />
+                    <BuildTextAreaField
+                        name={SeoDefined.SEODESCRIPTION}
+                        onChange={this.handleOnInputChange}
+                        modelField={model[SeoDefined.SEODESCRIPTION]}
+                    />
                 </Form.Field>
             </React.Fragment>
         )

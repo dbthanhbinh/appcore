@@ -40,6 +40,7 @@ const adapterMapingDropdownOption = (options, isEditId) => {
 }
 
 const DropdownWrapper = (props) => {
+    
     let {
         isEditId,
         defaultValue,
@@ -48,38 +49,73 @@ const DropdownWrapper = (props) => {
         options,
         onChange,
         name,
-        value
     } = props
     
+    let _defaultValues = defaultValue
     let mapOptions = adapterMapingDropdownOption(options, isEditId)
-    
+    if(multiple){
+        if(defaultValue){
+            _defaultValues = []
+            _defaultValues.push(defaultValue)
+        }   
+    }
+    console.log('=====hh', mapOptions)
     return(
         <Fragment>
             <h5>{ placeholder }</h5>
             <Form.Field>
                 {
                     isEditId
-                    ? <Dropdown
-                        clearable
-                        fluid
-                        search
-                        selection
-                        name={name}
-                        options={mapOptions}
-                        onChange={onChange}
-                        placeholder={ placeholder }
-                        value={value}
-                    />
-                    : <Dropdown
-                        clearable
-                        name={name}
-                        fluid
-                        search
-                        selection
-                        options={mapOptions}
-                        onChange={onChange}
-                        placeholder={ placeholder }
-                    />
+                    ? (
+                        multiple
+                        ? <Dropdown
+                            clearable
+                            fluid
+                            search
+                            selection
+                            multiple
+                            name={name}
+                            options={mapOptions}
+                            onChange={onChange}
+                            placeholder={ placeholder }
+                            defaultValue={['fbf5c9cf-acc1-413d-bdbb-3bd30f4c5ba3','ab9cc869-ad6e-4d19-809c-f5835d643422']}
+                        />
+                        : <Dropdown
+                            clearable
+                            fluid
+                            search
+                            selection
+                            name={name}
+                            options={mapOptions}
+                            onChange={onChange}
+                            placeholder={ placeholder }
+                            value={`${_defaultValues}`}
+                        />
+                    )
+                    : (
+                        multiple
+                        ? <Dropdown
+                            clearable
+                            name={name}
+                            fluid
+                            search
+                            selection
+                            multiple
+                            options={mapOptions}
+                            onChange={onChange}
+                            placeholder={ placeholder }
+                        />
+                        : <Dropdown
+                            clearable
+                            name={name}
+                            fluid
+                            search
+                            selection
+                            options={mapOptions}
+                            onChange={onChange}
+                            placeholder={ placeholder }
+                        />
+                    )
                 }
             </Form.Field>
         </Fragment>
