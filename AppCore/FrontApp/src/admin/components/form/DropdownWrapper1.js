@@ -3,8 +3,8 @@ import _ from 'lodash'
 import { Form, Dropdown } from 'semantic-ui-react'
 
 const DropdownWrapper = (props) => {
-    let {defaultValue} = props
-    let otherProps = _.omit(props, ['isEditId', 'isEditAble', 'defaultValue'])
+    
+    let otherProps = _.omit(props, ['isEditId', 'isEditAble'])
     return(
         <Fragment>
             <h5>{ props.placeholder }</h5>
@@ -12,9 +12,8 @@ const DropdownWrapper = (props) => {
                 <Dropdown
                     clearable
                     fluid
-                    selection    
+                    selection
                     {...otherProps}
-                    value={defaultValue}
                 />
             </Form.Field>
         </Fragment>

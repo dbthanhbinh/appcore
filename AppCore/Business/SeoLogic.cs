@@ -111,9 +111,10 @@ namespace AppCore.Business
                     seoObj.SeoKeys = seoData.SeoKeys;
 
                     _uow.GetRepository<Seo>().Update(seoObj);
-                    //_uow.SaveChanges();
+                    _uow.SaveChanges();
+                    return Task.FromResult(seoObj);
                 }
-                return Task.FromResult(seoObj);
+                return null;
             }
             catch (Exception ex)
             {

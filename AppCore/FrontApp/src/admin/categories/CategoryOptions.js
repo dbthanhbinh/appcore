@@ -8,7 +8,7 @@ import { actionCreators } from '../../store/Category'
 
 import Utils from '../../apis/utils'
 import CategoryActions from '../../store/CategoryActions'
-import DropdownWrapper from '../components/form/DropdownWrapper'
+import DropdownWrapper from '../components/form/DropdownWrapper1'
 
 class CategoryOptions extends Component {
     constructor(props){

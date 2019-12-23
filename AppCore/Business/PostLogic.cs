@@ -112,6 +112,7 @@ namespace AppCore.Business
                     // Update data for post.
                     _uow.GetRepository<Post>().Update(postData);
                     _uow.SaveChanges();
+                    return Task.FromResult(postData);
                 }
                 return null;
             }
@@ -152,7 +153,11 @@ namespace AppCore.Business
                         SeoDescription = reqUpdatePostBusiness.SeoDescription
                     };
                     Task<Seo> seoCreated = _seoLogic.UpdateSeoAsync(reqUpdateSeo);
-                    await Task.WhenAll(postCreated, seoCreated);
+
+                    // Updated Tag list (ObjectTag)
+                    Task<bool> objectTagCreated = _objectTagLogic.UpdateObjectTagsBusinessAsync(reqUpdatePostBusiness.TagList, reqUpdatePostBusiness.TagListHidden, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType);
+
+                    await Task.WhenAll(postCreated, seoCreated, objectTagCreated);
                 }
                 
                 return null;

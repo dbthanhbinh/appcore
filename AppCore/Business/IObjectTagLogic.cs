@@ -9,5 +9,7 @@ namespace AppCore.Business
     public interface IObjectTagLogic
     {
         Task<List<ObjectTag>> CreateObjectTagsAsync(List<Guid> listTags, Guid objectId, string objectType);
+        List<ObjectTag> GetObjectTagsFilterByObjectId(Guid objectId);
+        Task<bool> UpdateObjectTagsBusinessAsync(string listTags, string listHiddenTags, Guid objectId, string objectType);
     }
 }

@@ -8,7 +8,7 @@ import { actionCreators } from '../../store/Tag'
 
 import Utils from '../../apis/utils'
 import TagActions from '../../store/TagActions'
-import DropdownWrapper from '../components/form/DropdownWrapper'
+import DropdownWrapper from '../components/form/DropdownWrapper1'
 
 class TagOptions extends Component {
     constructor(props){

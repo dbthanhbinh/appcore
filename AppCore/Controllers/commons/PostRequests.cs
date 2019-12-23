@@ -64,6 +64,7 @@ namespace AppCore.Controllers.commons
         public string Content { get; set; }
         public Guid? CategoryId { get; set; }
         public virtual string TagList { get; set; }
+        public virtual string TagListHidden { get; set; }
         // For Seo
         public virtual string SeoTitle { get; set; }
         public virtual string SeoKeys { get; set; }

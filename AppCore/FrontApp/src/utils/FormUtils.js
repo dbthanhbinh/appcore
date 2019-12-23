@@ -126,3 +126,36 @@ export function appendFormData(body) {
 export function getFormFieldLabel(){
 
 }
+
+export function findChildIds(listItems, parentId, childIds){
+    if(_.isEmpty(listItems)) return []
+    let menuObject = []
+    listItems.forEach((element, i) => {
+        if(element.parentId === parentId){
+            menuObject.push({
+                id: element.id,
+                parentId: element.parentId,
+                name: element.name
+            })
+            listItems = listItems.filter((x) => x.id !== element.id)
+        }
+    })
+
+    if(menuObject) {
+        return menuObject.map((item) => {
+            childIds.push(item.id)
+            return findChildIds(listItems, item.id, childIds)
+        })
+    }
+}
+
+export function adapterMapingDropdownOption(options){
+    if(!options) return []
+    let mapOptions = []
+    options && options.forEach(item => {
+        mapOptions.push({
+            key: item.id, text: `${item.name}`, value: item.id
+        })
+    })
+    return mapOptions
+}
