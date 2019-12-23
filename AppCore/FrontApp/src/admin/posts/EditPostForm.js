@@ -117,7 +117,7 @@ class EditPostForm extends Component {
     }
 
     getCurrentPostTagList(postTagList){
-        if(_.isEmpty(postTagList)) return null
+        if(_.isEmpty(postTagList)) return []
         let _postTagList = []
         postTagList.forEach(element => {
             _postTagList.push(element.tagId)
@@ -167,7 +167,6 @@ class EditPostForm extends Component {
         let tagList = _.get(postEditData, 'tagList')
         tagList = adapterMapingDropdownOption(tagList)
         let {postTagDefaultValues} = this.state
-        console.log('======', model)
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}

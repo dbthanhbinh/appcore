@@ -224,7 +224,7 @@ namespace AppCore.Business
 
                 List<Post> result = null;
                 result = _uow.GetRepository<Post>().GetAll();
-
+                
                 var resultPg = PagingHelper<Post>.GetPagingList(result, currentPage, pageSize);
                 await Task.FromResult(resultPg);
                 return resultPg;
@@ -239,9 +239,6 @@ namespace AppCore.Business
         public async Task<PostWithEditVM> GetPostWithEditAsync(Guid id)
         {
             PostWithEditVM postWithEditVM = new PostWithEditVM();
-            
-
-
             try
             {
                 postWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll(); // Get all category
@@ -251,22 +248,20 @@ namespace AppCore.Business
                 IEnumerable<Seo> enumerable = _uow.GetRepository<Seo>().Get((x) => x.ObjectId == id);
                 postWithEditVM.Seo = enumerable.FirstOrDefault(); // Get Post SEO object data
 
-                //List<Media> medias = new List<Media>();
-                //List<MediaJoinInfo> objectMedias = _uow.GetRepository<ObjectMedia>().GetByFilter(m => m.ObjectId == id).Select(s => new MediaJoinInfo { MediaType = s.MediaType, MediaId = s.MediaId }).ToList();
-                //Guid thumbnail = objectMedias.Find(s => s.MediaType == "thumbnail").MediaId;
-                //List<Guid> photos = objectMedias.FindAll(s => s.MediaType == "photos").Select(b => b.MediaId).ToList();
-
-                //if (objectMedias.Count() > 0)
-                //{
-                //    // medias = _uow.GetRepository<Media>().GetByFilter(m => objectMedias.Contains(m.Id));
-                //    postWithEditVM.MediaThumbnal = _uow.GetRepository<Media>().GetByFilter(m => m.Id == thumbnail).FirstOrDefault(); // Get Post Media
-                //    postWithEditVM.MediaPhotos = _uow.GetRepository<Media>().GetByFilter(m => photos.Contains(m.Id)).ToList(); // Get Post photos
-                //}
-
                 List<Guid> objectGuids = _uow.GetRepository<ObjectMedia>().GetByFilter(m => m.ObjectId == id).Select(s => s.MediaId).ToList();
-                List<MediaJoinInfo> objectMedias = _uow.GetRepository<ObjectMedia>().GetByFilter(m => m.ObjectId == id).Join(_uow.GetRepository<Media>().GetByFilter(y => objectGuids.Contains(y.Id)), q => q.MediaId, m =>m.Id, (q, m) => new MediaJoinInfo { MediaType = q.MediaType, MediaId = m.Id }).ToList();
-
-
+                if(objectGuids.Count > 0)
+                {
+                    // For post thumbnail
+                    MediaJoinInfo objectMediaThumb =
+                        _uow.GetRepository<ObjectMedia>().GetByFilter(m => m.ObjectId == id && m.MediaType == "thumbnail")
+                        .Join(_uow.GetRepository<Media>().GetByFilter(y => objectGuids.Contains(y.Id)), q => q.MediaId, m => m.Id, (q, m) => new MediaJoinInfo { MediaType = q.MediaType, Media = m })
+                        .ToList().FirstOrDefault();
+                    if(objectMediaThumb != null)
+                    {
+                        postWithEditVM.MediaThumbnal = objectMediaThumb.Media;
+                    }
+                }
+                
                 return await Task.FromResult(postWithEditVM);
             }
             catch (Exception ex)

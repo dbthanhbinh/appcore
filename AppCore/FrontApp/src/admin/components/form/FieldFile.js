@@ -26,7 +26,7 @@ class FieldFile extends Component {
 
     render(){
         let {removedThumbnailAndChange} = this.state
-        let { name, id, type, mediaThumbnail } = this.props        
+        let { name, id, type, mediaThumbnail } = this.props
         return(
             <Fragment>
                 {
