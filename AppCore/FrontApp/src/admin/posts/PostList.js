@@ -34,7 +34,7 @@ const PostList = (props) => {
                                 <tr key={ item.id }>
                                     <td>{i + 1}</td>
                                     <td>
-                                        <ImageView src={null} />
+                                        <ImageView className='admin-postlist-thumb' src={ (item && item.media && item.media.path) ? item.media.path : null} />
                                     </td>
                                     <td>{ item.name }</td>
                                     <td>Otto</td>

@@ -224,9 +224,41 @@ namespace AppCore.Business
 
                 List<Post> result = null;
                 result = _uow.GetRepository<Post>().GetAll();
-                
+
+                //List<ObjectMedia> objectMedias = _uow.GetRepository<ObjectMedia>().GetAll();
+                //List<Media> medias = _uow.GetRepository<Media>().GetAll();
+
+                //var Privs = (
+                //                from rpm in result
+                //                 join urm in objectMedias on rpm.Id equals urm.ObjectId
+                //                 join um in medias on urm.MediaId equals um.Id
+                //                 select rpm.Name
+                //             ).Distinct();
+
+
                 var resultPg = PagingHelper<Post>.GetPagingList(result, currentPage, pageSize);
                 await Task.FromResult(resultPg);
+                List<ListPostDataVM> listPostDataVMs = new List<ListPostDataVM>();
+
+                if (resultPg.Data != null)
+                {   
+                    foreach (Post post in (List<Post>)resultPg.Data)
+                    {
+                        //Media media = _uow.GetRepository<ObjectMedia>().GetByFilter(o => o.ObjectId == post.Id)
+                        //    .Join(_uow.GetRepository<Media>().GetAll(), o=>o.MediaId, m=>m.Id, (o, p) => new Media { }).FirstOrDefault();
+
+                        Media media = (
+                                       from ob in _uow.GetRepository<ObjectMedia>().GetByFilter(o => o.ObjectId == post.Id)
+                                       join m in _uow.GetRepository<Media>().GetAll() on ob.MediaId equals m.Id
+                                       select new Media { Name = m.Name, Path = m.Path }
+                                      ).Distinct().FirstOrDefault();
+                        ListPostDataVM listPostDataVM = new ListPostDataVM(post);
+                        listPostDataVM.Media = media;
+                        listPostDataVMs.Add(listPostDataVM);
+                    }
+
+                }
+                resultPg.Data = listPostDataVMs;
                 return resultPg;
             }
             catch (Exception ex)

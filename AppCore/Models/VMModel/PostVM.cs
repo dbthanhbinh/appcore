@@ -20,4 +20,20 @@ namespace AppCore.Models.VMModel
         public Media MediaThumbnal { get; set; }
         public Seo Seo { get; set; }
     }
+
+    public class ListPostDataVM : Post
+    {
+        public ListPostDataVM(Post post)
+        {
+            Id = post.Id;
+            Name = post.Name;
+            Content = post.Content;
+            Status = post.Status;
+            PostType = post.PostType;
+            CategoryId = post.CategoryId;
+            CreatedBy = post.CreatedBy;
+            Created = post.Created;
+        }
+        public virtual Media Media { get; set; }
+    }
 }
