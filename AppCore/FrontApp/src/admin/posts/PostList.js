@@ -4,6 +4,7 @@ import { Table } from 'semantic-ui-react'
 import LoadingItem from '../commons/LoadingItem'
 import ItemActions from './ItemAction'
 import Pagination from '../../helpers/PaginationGet'
+import ImageView from '../components/form/ImageView'
 
 /**
  * Input: items: [] => array of list item
@@ -32,7 +33,9 @@ const PostList = (props) => {
                             return (
                                 <tr key={ item.id }>
                                     <td>{i + 1}</td>
-                                    <td>{ item.name }</td>
+                                    <td>
+                                        <ImageView src={null} />
+                                    </td>
                                     <td>{ item.name }</td>
                                     <td>Otto</td>
                                     <td>fff</td>

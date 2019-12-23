@@ -57,6 +57,11 @@ namespace AppCore.Models.Repository
             _dbSet.AddRange(entities);
         }
 
+        public void AddRange(IEnumerable<T> entities)
+        {
+            _dbSet.AddRange(entities);
+        }
+
         public async Task<bool> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
@@ -105,6 +110,16 @@ namespace AppCore.Models.Repository
         }
 
         public void Delete(IEnumerable<T> entities)
+        {
+            _dbSet.RemoveRange(entities);
+        }
+
+        public void DeleteRange(params T[] entities)
+        {
+            _dbSet.RemoveRange(entities);
+        }
+
+        public void DeleteRange(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);
         }

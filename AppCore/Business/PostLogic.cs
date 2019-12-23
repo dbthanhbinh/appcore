@@ -43,10 +43,6 @@ namespace AppCore.Business
             try
             {
                 CreatedPostVM postVM = new CreatedPostVM();
-
-                // Created Media
-                Task<Media> mediaCreated = _mediaLogic.CreateMediaAsync(reqData.File);
-
                 // Created Post
                 _logger.LogWarning("Begin create post");
                 Post postData = new Post();
@@ -54,7 +50,7 @@ namespace AppCore.Business
                 postData.CategoryId = reqData.CategoryId;
                 postData.Content = reqData.Content;
                 Task<bool> postCreated = _uow.GetRepository<Post>().AddAsync(postData);
-                await Task.WhenAll(mediaCreated, postCreated);
+                await Task.WhenAll(postCreated);
 
                 // Created seo
                 Task<Seo> seoCreated = null;
@@ -71,9 +67,9 @@ namespace AppCore.Business
                 }
 
                 // Created Object Post media
-                Task<ObjectMedia> objectMediaCreate = _objectMediaLogic.CreateObjectMediaAsync(mediaCreated.Result.Id, postData.Id, reqData.PostType);
+                Task<ObjectMedia> objectMediaCreated = _objectMediaLogic.CreateObjectMediaAsync(reqData.File, postData.Id, reqData.PostType, "thumbnail");
                 _uow.SaveChanges();
-                await Task.WhenAll(objectMediaCreate);
+                await Task.WhenAll(objectMediaCreated);
 
                 // Create tag object
                 if(!string.IsNullOrEmpty(reqData.TagList))
@@ -84,8 +80,8 @@ namespace AppCore.Business
                 }
 
                 postVM.postData = postData;
-                postVM.mediaData = mediaCreated.Result;
-                postVM.objectMediaData = objectMediaCreate.Result;
+                postVM.mediaData = null;
+                postVM.objectMediaData = objectMediaCreated.Result;
                 return postVM;
             }
             catch(Exception ex)
@@ -126,10 +122,11 @@ namespace AppCore.Business
         /*
          * Update post
          */
-        public async Task<Post> UpdatePostBusinessAsync(ReqUpdatePostBusiness reqUpdatePostBusiness)
+        public async Task<ResUpdatePostBusiness> UpdatePostBusinessAsync(ReqUpdatePostBusiness reqUpdatePostBusiness)
         {
             try
             {
+                ResUpdatePostBusiness resUpdatePostBusiness = new ResUpdatePostBusiness();
                 _logger.LogInformation("Update post business");
                 if (reqUpdatePostBusiness != null)
                 {
@@ -142,7 +139,11 @@ namespace AppCore.Business
                         CategoryId = reqUpdatePostBusiness.CategoryId,
                         File = reqUpdatePostBusiness.File
                     };
-                    Task<Post> postCreated = this.UpdatePostAsync(reqUpdatePost);
+                    Task<Post> postUpdated = this.UpdatePostAsync(reqUpdatePost);
+
+                    // Update Object Media (feature image)
+                    Task<ObjectMedia> objectMediaUpdated = _objectMediaLogic.ObjectMediaUpdatePostBusinessAsync(reqUpdatePostBusiness.File, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType, "thumbnail");
+
 
                     // Update seo data
                     ReqUpdateSeo reqUpdateSeo = new ReqUpdateSeo
@@ -152,15 +153,20 @@ namespace AppCore.Business
                         SeoKeys = reqUpdatePostBusiness.SeoKeys,
                         SeoDescription = reqUpdatePostBusiness.SeoDescription
                     };
-                    Task<Seo> seoCreated = _seoLogic.UpdateSeoAsync(reqUpdateSeo);
+                    Task<Seo> seoUpdated = _seoLogic.UpdateSeoAsync(reqUpdateSeo);
 
                     // Updated Tag list (ObjectTag)
-                    Task<bool> objectTagCreated = _objectTagLogic.UpdateObjectTagsBusinessAsync(reqUpdatePostBusiness.TagList, reqUpdatePostBusiness.TagListHidden, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType);
+                    Task<List<ObjectTagItem>> objectTagUpdated = _objectTagLogic.UpdateObjectTagsBusinessAsync(reqUpdatePostBusiness.TagList, reqUpdatePostBusiness.TagListHidden, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType);
 
-                    await Task.WhenAll(postCreated, seoCreated, objectTagCreated);
+                    await Task.WhenAll(postUpdated, seoUpdated, objectMediaUpdated, objectTagUpdated);
+
+                    resUpdatePostBusiness.PostUpdated = postUpdated.Result;
+                    resUpdatePostBusiness.SeoUpdated = seoUpdated.Result;
+                    resUpdatePostBusiness.ObjectTagUpdated = objectTagUpdated.Result;
+                    resUpdatePostBusiness.ObjectMediaUpdated = objectMediaUpdated.Result;
                 }
                 
-                return null;
+                return resUpdatePostBusiness;
             }
             catch (Exception ex)
             {
@@ -233,6 +239,9 @@ namespace AppCore.Business
         public async Task<PostWithEditVM> GetPostWithEditAsync(Guid id)
         {
             PostWithEditVM postWithEditVM = new PostWithEditVM();
+            
+
+
             try
             {
                 postWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll(); // Get all category
@@ -241,7 +250,23 @@ namespace AppCore.Business
                 postWithEditVM.Post = _uow.GetRepository<Post>().Get(id);  // Get post object data
                 IEnumerable<Seo> enumerable = _uow.GetRepository<Seo>().Get((x) => x.ObjectId == id);
                 postWithEditVM.Seo = enumerable.FirstOrDefault(); // Get Post SEO object data
-                postWithEditVM.Media = null; // Get Post Media
+
+                //List<Media> medias = new List<Media>();
+                //List<MediaJoinInfo> objectMedias = _uow.GetRepository<ObjectMedia>().GetByFilter(m => m.ObjectId == id).Select(s => new MediaJoinInfo { MediaType = s.MediaType, MediaId = s.MediaId }).ToList();
+                //Guid thumbnail = objectMedias.Find(s => s.MediaType == "thumbnail").MediaId;
+                //List<Guid> photos = objectMedias.FindAll(s => s.MediaType == "photos").Select(b => b.MediaId).ToList();
+
+                //if (objectMedias.Count() > 0)
+                //{
+                //    // medias = _uow.GetRepository<Media>().GetByFilter(m => objectMedias.Contains(m.Id));
+                //    postWithEditVM.MediaThumbnal = _uow.GetRepository<Media>().GetByFilter(m => m.Id == thumbnail).FirstOrDefault(); // Get Post Media
+                //    postWithEditVM.MediaPhotos = _uow.GetRepository<Media>().GetByFilter(m => photos.Contains(m.Id)).ToList(); // Get Post photos
+                //}
+
+                List<Guid> objectGuids = _uow.GetRepository<ObjectMedia>().GetByFilter(m => m.ObjectId == id).Select(s => s.MediaId).ToList();
+                List<MediaJoinInfo> objectMedias = _uow.GetRepository<ObjectMedia>().GetByFilter(m => m.ObjectId == id).Join(_uow.GetRepository<Media>().GetByFilter(y => objectGuids.Contains(y.Id)), q => q.MediaId, m =>m.Id, (q, m) => new MediaJoinInfo { MediaType = q.MediaType, MediaId = m.Id }).ToList();
+
+
                 return await Task.FromResult(postWithEditVM);
             }
             catch (Exception ex)

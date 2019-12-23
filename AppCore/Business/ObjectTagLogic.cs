@@ -74,11 +74,17 @@ namespace AppCore.Business
                 if(listTags.Count() > 0)
                 {
                     List<ObjectTag> objectTags = new List<ObjectTag>();
-                    foreach(Guid guid in listTags)
+                    foreach(Guid objectTagId in listTags)
                     {
-                        _uow.GetRepository<ObjectTag>().Delete(guid);
+                        ObjectTag objectTag = _uow.GetRepository<ObjectTag>().Get(objectTagId);
+                        objectTags.Add(objectTag);
                     }
-                    _uow.SaveChanges();
+
+                    if (objectTags.Count() > 0)
+                    {
+                        _uow.GetRepository<ObjectTag>().DeleteRange(objectTags);
+                        _uow.SaveChanges();
+                    }   
                 }
             }
             catch (Exception ex)
@@ -108,7 +114,7 @@ namespace AppCore.Business
 
                     if (objectTags.Count() > 0)
                     {
-                        _uow.GetRepository<ObjectTag>().Add(objectTags);
+                        _uow.GetRepository<ObjectTag>().AddRange(objectTags);
                         _uow.SaveChanges();
                     }
                 }
@@ -120,7 +126,7 @@ namespace AppCore.Business
             }
         }
 
-        public Task<bool> UpdateObjectTagsBusinessAsync(string listTags, string listHiddenTags, Guid objectId, string objectType)
+        public Task<List<ObjectTagItem>> UpdateObjectTagsBusinessAsync(string listTags, string listHiddenTags, Guid objectId, string objectType)
         {
             try
             {
@@ -128,6 +134,7 @@ namespace AppCore.Business
 
                 List<Guid> tagListHiddens = new List<Guid>();
                 List<Guid> tagListIds = new List<Guid>();
+                List<ObjectTagItem> listAllTagsNew = new List<ObjectTagItem>();
 
                 if (!string.IsNullOrEmpty(listTags))
                 {   
@@ -145,8 +152,6 @@ namespace AppCore.Business
                         ObjectListTagsInitial objectListTagsInitialNew = new ObjectListTagsInitial(tagListIds, "New");
 
                         List<ObjectTagItem> listAllTags = objectListTagsInitialOld.ListAllTags.Concat(objectListTagsInitialNew.ListAllTags).Distinct().ToList();
-
-                        List<ObjectTagItem> listAllTagsNew = new List<ObjectTagItem>();
 
                         foreach (ObjectTagItem objectTagItem in listAllTags)
                         {
@@ -178,7 +183,7 @@ namespace AppCore.Business
                     }
                 }
 
-                return Task.FromResult(true);
+                return Task.FromResult(listAllTagsNew);
             }
             catch (Exception ex)
             {

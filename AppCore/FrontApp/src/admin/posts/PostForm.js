@@ -7,12 +7,12 @@ import FieldFile from '../components/form/FieldFile'
 import PostActions from '../../store/PostActions'
 import Utils from '../../apis/utils'
 import { PostDefined, SeoDefined } from "../commons/Defined"
-import TagOptions from '../tags/TagOptions'
-import CategoryOptions from '../categories/CategoryOptions'
+import DropdownWrapper from '../components/form/DropdownWrapper'
 import SeoForm from '../seos/SeoForm'
 import PostModel from '../models/addPost.model'
 import SeoModel from '../models/seo.model'
 import {
+    adapterMapingDropdownOption,
     getInputData,
     getEditorData,
     setFieldValue,
@@ -32,13 +32,15 @@ class postForm extends Component {
             isShowAlert: false,
             isLoading: false,
             isFormValid: isFormValid,
-            model: models
+            model: models,
+            postTagDefaultValues: []
         }
         this.handleOnEditorChange = this.handleOnEditorChange.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
         this.handleOpenModal = this.handleOpenModal.bind(this)
         this.handleCloseModal = this.handleCloseModal.bind(this)
+        this.handleOnMultipleDropChange = this.handleOnMultipleDropChange.bind(this)
     }
 
     handleOpenModal(){
@@ -97,15 +99,28 @@ class postForm extends Component {
         }
     }
 
+    handleOnMultipleDropChange(e, data){
+        if(data && data.name){
+            this.setState((prevState)=>{
+                let { models, isFormValid } = setFieldValue(data.name, data.value, prevState)
+                return { model: models, isFormValid: isFormValid, postTagDefaultValues: data.value }
+            })
+        }
+    }
+
     render(){
         let { isShowAlert, isShowModal, model } = this.state
         let {
-            detailData,
-            isEdit,
-            listItems,
-            currentEditId
+            categoryData,
+            tagData,
+            detailData           
         } = this.props
+
         let contentValue = _.get(model, `${PostDefined.CONTENT}.value`)
+        let categoryList = adapterMapingDropdownOption(_.get(categoryData, 'categoryList'))
+        let tagList = adapterMapingDropdownOption(_.get(tagData, 'tagList'))
+        let {postTagDefaultValues} = this.state
+
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
@@ -141,26 +156,28 @@ class postForm extends Component {
                                     <Grid.Column width={6}>
                                         <Form>
                                             <Form.Field>
-                                                <CategoryOptions
-                                                    isEdit={isEdit}
-                                                    currentCatId={currentEditId}
-                                                    categoryList={listItems}
-                                                    name={PostDefined.CATEGORYID}
-                                                    parentId={null}
-                                                    onInputChange={this.handleOnInputChange}
-                                                />
-                                            </Form.Field>
-                                            <Form.Field>
                                                 <FieldFile defaultValue='' onInputChange = {this.handleOnInputChange} />
                                             </Form.Field>
                                             <Form.Field>
-                                                <TagOptions
-                                                    isEdit={isEdit}
-                                                    currentCatId={currentEditId}
-                                                    categoryList={listItems}
+                                                <DropdownWrapper
+                                                    search
+                                                    options={categoryList}
+                                                    name={PostDefined.CATEGORYID}
+                                                    onChange={this.handleOnInputChange}
+                                                    placeholder={'Select category '}
+                                                    defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
+                                                />
+
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <DropdownWrapper
+                                                    search
+                                                    multiple
+                                                    options={tagList}
                                                     name={PostDefined.TAGLIST}
-                                                    parentId={null}
-                                                    onInputChange={this.handleOnInputChange}
+                                                    onChange={this.handleOnMultipleDropChange}
+                                                    placeholder={'Select tags'}
+                                                    defaultValue={postTagDefaultValues}
                                                 />
                                             </Form.Field>
                                             <Form.Field>

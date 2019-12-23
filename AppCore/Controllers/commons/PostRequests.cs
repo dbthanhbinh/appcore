@@ -73,4 +73,12 @@ namespace AppCore.Controllers.commons
         public virtual IFormFile File { get; set; }
         public virtual string PostType { get; set; } = "Post";
     }
+
+    public class ResUpdatePostBusiness
+    {
+        public Post PostUpdated { set; get; }
+        public Seo SeoUpdated { get; set; }
+        public List<ObjectTagItem> ObjectTagUpdated { get; set; }
+        public ObjectMedia ObjectMediaUpdated { get; set; }
+    }
 }

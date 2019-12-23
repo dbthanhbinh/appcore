@@ -1,4 +1,5 @@
-﻿using AppCore.Models.DBModel;
+﻿using AppCore.Controllers.commons;
+using AppCore.Models.DBModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace AppCore.Business
     {
         Task<List<ObjectTag>> CreateObjectTagsAsync(List<Guid> listTags, Guid objectId, string objectType);
         List<ObjectTag> GetObjectTagsFilterByObjectId(Guid objectId);
-        Task<bool> UpdateObjectTagsBusinessAsync(string listTags, string listHiddenTags, Guid objectId, string objectType);
+        Task<List<ObjectTagItem>> UpdateObjectTagsBusinessAsync(string listTags, string listHiddenTags, Guid objectId, string objectType);
     }
 }

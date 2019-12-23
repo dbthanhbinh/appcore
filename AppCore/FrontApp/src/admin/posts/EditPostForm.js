@@ -194,6 +194,9 @@ class EditPostForm extends Component {
                         <Grid.Column width={6}>
                             <Form>
                                 <Form.Field>
+                                    <FieldFile mediaThumbnail={_.get(postEditData, 'mediaThumbnal')} onInputChange = {this.handleOnInputChange} />
+                                </Form.Field>
+                                <Form.Field>
                                     <DropdownWrapper
                                         search
                                         options={categoryList}
@@ -202,9 +205,6 @@ class EditPostForm extends Component {
                                         placeholder={'Select category '}
                                         defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
                                     />
-                                </Form.Field>
-                                <Form.Field>
-                                    <FieldFile defaultValue='' onInputChange = {this.handleOnInputChange} />
                                 </Form.Field>
                                 <Form.Field>
                                     <DropdownWrapper

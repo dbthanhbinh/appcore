@@ -12,7 +12,7 @@ namespace AppCore.Business
     {
         Task<CreatedPostVM> CreatePostAsync(ReqCreatePost postData);
         Task<Post> UpdatePostAsync(ReqUpdatePost reqUpdatePost);
-        Task<Post> UpdatePostBusinessAsync(ReqUpdatePostBusiness reqUpdatePostBusiness);
+        Task<ResUpdatePostBusiness> UpdatePostBusinessAsync(ReqUpdatePostBusiness reqUpdatePostBusiness);
         Task<bool> DeletePostAsync(ReqDeletePost reqDelete);
         Task<PagingResponse> FilterPostsWithPagingAsync(ReqFilterPost reqFilterPost);
         Task<PostWithEditVM> GetPostWithEditAsync(Guid id);

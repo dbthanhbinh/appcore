@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using AppCore.Models.DBModel;
+using AppCore.Models.VMModel;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace AppCore.Models.Repository
         void Add(T entity);
         void Add(params T[] entities);
         void Add(IEnumerable<T> entities);
+        void AddRange(IEnumerable<T> entities);
         Task<bool> AddAsync(T entity);
         void AddAsync(params T[] entities);
         void AddAsync(IEnumerable<T> entities);
@@ -21,6 +24,9 @@ namespace AppCore.Models.Repository
         void Delete(params T[] entities);
         void Delete(IEnumerable<T> entities);
         void DeleteAsync(T entity);
+        void DeleteRange(params T[] entities);
+
+        void DeleteRange(IEnumerable<T> entities);
 
 
         void Update(T entity);
