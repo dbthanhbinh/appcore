@@ -1,5 +1,6 @@
 ﻿using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
+using AppCore.Models.VMModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
@@ -49,22 +50,27 @@ namespace AppCore.Business
             }
         }
 
-        public Task<ObjectMedia> ObjectMediaUpdatePostBusinessAsync(IFormFile File, Guid objectId, string objectType, string mediaType)
+        public Task<UpdatedPostBusinessObjectMediaVM> ObjectMediaUpdatePostBusinessAsync(IFormFile File, Guid objectId, string objectType, string mediaType)
         {
             try
             {
                 Logger.LogWarning("UpdatePostBusiness Object Media");
                 Task<Media> mediaCreated = _mediaLogic.CreateMediaAsync(File);
                 //Task.WaitAll(mediaCreated);
-                ObjectMedia objectMediaInfo = new ObjectMedia();
+                UpdatedPostBusinessObjectMediaVM objectMediaUpdatedInfo = null;
                 if (mediaCreated.Result.Id != null && mediaCreated.Result.Name != null && mediaCreated.Result.Size > 0)
                 {
-                    objectMediaInfo = _uow.GetRepository<ObjectMedia>().GetByFilter(om => om.ObjectId == objectId && om.ObjectType == objectType && om.MediaType == mediaType).FirstOrDefault();
-                    objectMediaInfo.MediaId = mediaCreated.Result.Id;
-                    _uow.GetRepository<ObjectMedia>().Update(objectMediaInfo);
-                    _uow.SaveChanges();
+                    ObjectMedia objectMediaInfo = _uow.GetRepository<ObjectMedia>().GetByFilter(om => om.ObjectId == objectId && om.ObjectType == objectType && om.MediaType == mediaType).FirstOrDefault();
+                    if(objectMediaInfo != null)
+                    {
+                        objectMediaInfo.MediaId = mediaCreated.Result.Id;
+                        _uow.GetRepository<ObjectMedia>().Update(objectMediaInfo);
+                        _uow.SaveChanges();
+                        objectMediaUpdatedInfo = new UpdatedPostBusinessObjectMediaVM(objectMediaInfo);
+                    }
                 }
-                return Task.FromResult(objectMediaInfo);
+                objectMediaUpdatedInfo.MediaInfo = mediaCreated.Result;
+                return Task.FromResult(objectMediaUpdatedInfo);
 
             }
             catch (Exception ex)

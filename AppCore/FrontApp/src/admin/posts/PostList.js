@@ -20,7 +20,7 @@ const PostList = (props) => {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Image</th>
+                        <th className='admin-postlist-thumb'>Image</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>CategoryId</th>

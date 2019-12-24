@@ -47,12 +47,16 @@ class EditPostForm extends Component {
             tagListHidden: null,
             postTagDefaultValues: [],
             postEditData: null,
-            postCategoryId: null
+            postCategoryId: null,
+            mediaThumbnal: null,
+            isUploadedThumbnail: false,
+            isRemovedThumbnail: false
         }
         this.handleOnEditorChange = this.handleOnEditorChange.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleOnMultipleDropChange = this.handleOnMultipleDropChange.bind(this)
         // this.handleSubmitUpdateForm = this.handleSubmitUpdateForm.bind(this)
+        this.handleRemoveThumbnail = this.handleRemoveThumbnail.bind(this)
     }
 
     componentDidMount(){
@@ -84,11 +88,19 @@ class EditPostForm extends Component {
                         postEditData: resultData,
                         postTagList: _.get(resultData, 'postTagList'),
                         tagListHidden: this.getCurrentPostTagList(_.get(resultData, 'postTagList')),
-                        postTagDefaultValues: this.getCurrentPostTagList(_.get(resultData, 'postTagList'))
+                        postTagDefaultValues: this.getCurrentPostTagList(_.get(resultData, 'postTagList')),
+                        mediaThumbnal: _.get(resultData, 'mediaThumbnal')
                     }
                 })
             })
         }
+    }
+
+    handleRemoveThumbnail(){
+        this.setState({
+            isRemovedThumbnail: true,
+            isUploadedThumbnail: false
+        })
     }
 
     handleOnEditorChange(e, data){        
@@ -147,26 +159,43 @@ class EditPostForm extends Component {
             }
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
-                this.setState(()=>({ isLoading: false, isShowModal: false }), ()=>{
-                    this.PostActions.updateItemWithForm(payload, (err, result)=> {
-                        if(err) return
-                        // let postData = Utils.getResListApi(result)
-                        // if(result) this.props.addItem(postData)
+                this.PostActions.updateItemWithForm(payload, (err, result)=> {
+                    if(err) return
+                    let mediaUpdatedInfo = _.get(result, 'data.objectMediaUpdated.mediaInfo')
+                    this.setState((prevState)=>{
+                        return { 
+                            mediaThumbnal: mediaUpdatedInfo,
+                            isUploadedThumbnail: true,
+                            isRemovedThumbnail: false
+                        }
                     })
-                    // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
                 })
+                // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
             }
         }
     }
 
     render(){
-        let { isShowAlert, model, postEditData, postTagList } = this.state
+        let {
+            isShowAlert,
+            model,
+            postEditData,
+            postTagList,
+            mediaThumbnal,
+            isUploadedThumbnail,
+            isRemovedThumbnail
+        } = this.state
+
         let contentValue = _.get(model, `${PostDefined.CONTENT}.value`)
         let categoryList = _.get(postEditData, 'categoryList')
         categoryList = adapterMapingDropdownOption(categoryList)
         let tagList = _.get(postEditData, 'tagList')
         tagList = adapterMapingDropdownOption(tagList)
         let {postTagDefaultValues} = this.state
+        let isShowPreview = false
+        if(isUploadedThumbnail || !isRemovedThumbnail){
+            isShowPreview = true
+        }
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
@@ -193,7 +222,13 @@ class EditPostForm extends Component {
                         <Grid.Column width={6}>
                             <Form>
                                 <Form.Field>
-                                    <FieldFile mediaThumbnail={_.get(postEditData, 'mediaThumbnal')} onInputChange = {this.handleOnInputChange} />
+                                    <FieldFile mediaThumbnail={mediaThumbnal}
+                                        isUploadedThumbnail={isUploadedThumbnail}
+                                        onInputChange = {this.handleOnInputChange}
+                                        isRemovedThumbnail = {isRemovedThumbnail}
+                                        isShowPreview = {isShowPreview}
+                                        onHandleRemoveThumbnail = {this.handleRemoveThumbnail}
+                                    />
                                 </Form.Field>
                                 <Form.Field>
                                     <DropdownWrapper

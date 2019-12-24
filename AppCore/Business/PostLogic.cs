@@ -142,7 +142,7 @@ namespace AppCore.Business
                     Task<Post> postUpdated = this.UpdatePostAsync(reqUpdatePost);
 
                     // Update Object Media (feature image)
-                    Task<ObjectMedia> objectMediaUpdated = _objectMediaLogic.ObjectMediaUpdatePostBusinessAsync(reqUpdatePostBusiness.File, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType, "thumbnail");
+                    Task<UpdatedPostBusinessObjectMediaVM> objectMediaUpdated = _objectMediaLogic.ObjectMediaUpdatePostBusinessAsync(reqUpdatePostBusiness.File, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType, "thumbnail");
 
 
                     // Update seo data

@@ -33,14 +33,24 @@
   }
 }
 
-.ui.table td {
-  .admin-postlist-thumb {
-    max-width: 150px;
-    margin: 0;
-    padding: 0;
-    img.image {
-      max-width: 100%;
-      height: auto;
+.ui.table {
+  thead {
+    th.admin-postlist-thumb {
+      width: 150px;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  td {
+    .admin-postlist-thumb {
+      width: 150px;
+      margin: 0;
+      padding: 0;
+      img.image {
+        max-width: 100%;
+        height: auto;
+      }
     }
   }
 }
