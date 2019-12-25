@@ -12,5 +12,17 @@ export const StoreDefided = {
         DEL_TAG:'DEL_TAG',
         DETAIL_TAG_WITH_EDIT:'DETAIL_TAG_WITH_EDIT',
         DETAIL_TAG:'DETAIL_TAG',
+    },
+    SEO_DEFINED: {
+        ADD_ITEM: 'ADD_ITEM',
+        UPDATE_ITEM: 'UPDATE_ITEM',
+        FETCH_ITEMS: 'FETCH_ITEMS',
+        DETAIL_SEO: 'DETAIL_SEO'
+    },
+    SETTING_DEFINED: {
+        ADD_ITEM: 'ADD_ITEM',
+        UPDATE_ITEM: 'UPDATE_ITEM',
+        FETCH_ITEMS: 'FETCH_ITEMS',
+        DETAIL_SETTING: 'DETAIL_SETTING'
     }
 }

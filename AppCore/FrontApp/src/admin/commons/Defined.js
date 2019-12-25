@@ -37,3 +37,8 @@ export const MenuDefined = {
     OBJECTTYPE: 'objectType',
     GROUPMENU: 'groupMenu'
 }
+
+export const GeneralSettingDefined = {
+    GOOGLEANALYTICCODE: 'googleAnalyticCode',
+    COPYRIGHTTEXT: 'copyrightText'
+}
