@@ -22,4 +22,12 @@ namespace AppCore.Controllers.commons
         public virtual string SeoKeys { get; set; }
         public virtual string SeoDescription { get; set; }
     }
+
+    public class ReqUpdateSeoHome
+    {
+        // For Seo
+        public virtual string SeoTitle { get; set; }
+        public virtual string SeoKeys { get; set; }
+        public virtual string SeoDescription { get; set; }
+    }
 }

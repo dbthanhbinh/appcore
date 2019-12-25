@@ -20,4 +20,13 @@ namespace AppCore.Business.Commons
     {
         public static string Default { get { return "post"; } }
     }
+
+    public static class GeneralSetting
+    {
+        public static string SettingAutoLoad { get { return "Yes"; } }
+        public static string SettingType { get { return "Setting"; } }
+        public static string SeoSettingName { get { return "GeneralSeoSetting"; } }
+
+        public static string GeneralettingName { get { return "GeneralSetting"; } }
+    }
 }

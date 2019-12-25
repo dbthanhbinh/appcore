@@ -122,5 +122,19 @@ namespace AppCore.Business
                 throw ex;
             }
         }
+
+        public Task<Seo> UpdateSeoHomeAsync(ReqUpdateSeoHome seoData)
+        {
+            try
+            {
+               
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
     }
 }

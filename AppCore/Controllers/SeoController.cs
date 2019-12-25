@@ -28,5 +28,12 @@ namespace AppCore.Controllers
             var result = await _seoLogic.GetSeoBySlug(slug);
             return Ok(new BaseResponse(result));
         }
+
+        [HttpPost("updateSeoHome", Name = "UpdateSeoHome")]
+        public async Task<ActionResult> UpdateSeoHome([FromForm] ReqUpdateSeoHome reqUpdateSeoHome)
+        {
+            var result = await _seoLogic.UpdateSeoHomeAsync(reqUpdateSeoHome);
+            return Ok(new BaseResponse(result));
+        }
     }
 }

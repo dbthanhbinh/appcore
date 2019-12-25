@@ -17,5 +17,6 @@ namespace AppCore.Models
         DbSet<ObjectTag> ObjectTag { get; set; }
         DbSet<Menu> Menu { get; set; }
         DbSet<Page> Page { get; set; }
+        DbSet<Setting> Setting { get; set; }
     }
 }
