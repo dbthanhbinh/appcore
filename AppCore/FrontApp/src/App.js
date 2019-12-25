@@ -10,6 +10,8 @@ import WithAuthenticate from './routes/WithAuthenticate'
 // For admin
 import ALayout from './admin/layouts/Layout'
 import UnLayout from './admin/layouts/UnLayout'
+
+import Setting from './admin/settings'
 import PostApp from './admin/posts'
 import PostEditApp from './admin/posts/EditPostForm'
 import Category from './admin/categories'
@@ -55,9 +57,10 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
+          <WithAuthenticate exact path='/user/login' component={ Login } layout={ UnLayout }/>
           <WithAuthenticate exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout }/>
-          <WithAuthenticate exact path='/user/login' component={ Login } layout={ UnLayout }/>
+          <WithAuthenticate exact path='/admin/setting' component={ Setting } layout={ ALayout }/>
           <Route exact render={ () => NotFound } /> */}
         </Switch>
       </BrowserRouter>

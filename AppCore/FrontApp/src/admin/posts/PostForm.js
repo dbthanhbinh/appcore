@@ -184,7 +184,8 @@ class postForm extends Component {
                                                 <SeoForm
                                                     model={model}
                                                     seoData={ _.get(detailData, 'seo') }
-                                                    onInputChange = {this.handleOnInputChange} />
+                                                    onInputChange = {this.handleOnInputChange}
+                                                />
                                             </Form.Field>
                                             <Form.Field>
                                                 <BtnWithModalEvent onBtnEvent={this.handleSubmitForm} label={'Add new'} />

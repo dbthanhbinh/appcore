@@ -17,14 +17,6 @@ class SeoForm extends Component {
 
     render(){
         let { model } = this.props
-        let seoTitleLabel = _.get(model, `${SeoDefined.SEOTITLE}.label`)
-        let seoKeysLabel = _.get(model, `${SeoDefined.SEOKEYS}.label`)
-        let seoDescriptionLabel = _.get(model, `${SeoDefined.SEODESCRIPTION}.label`)
-
-        let seoTitle = _.get(model, `${SeoDefined.SEOTITLE}.value`) || ''
-        let seoKeys = _.get(model, `${SeoDefined.SEOKEYS}.value`) || ''
-        let seoDescription = _.get(model, `${SeoDefined.SEODESCRIPTION}.value`) || ''
-        
         return(
             <React.Fragment>
                 <h5>Config SEO</h5>
@@ -32,21 +24,21 @@ class SeoForm extends Component {
                     <BuildTextField
                         name={SeoDefined.SEOTITLE}
                         onChange={this.handleOnInputChange}
-                        modelField={model[SeoDefined.SEOTITLE]}
+                        modelField={model ? model[SeoDefined.SEOTITLE] : null}
                     />
                 </Form.Field>
                 <Form.Field>
                     <BuildTextField
                         name={SeoDefined.SEOKEYS}
                         onChange={this.handleOnInputChange}
-                        modelField={model[SeoDefined.SEOKEYS]}
+                        modelField={model ? model[SeoDefined.SEOKEYS] : null}
                     />
                 </Form.Field>
                 <Form.Field>
                     <BuildTextAreaField
                         name={SeoDefined.SEODESCRIPTION}
                         onChange={this.handleOnInputChange}
-                        modelField={model[SeoDefined.SEODESCRIPTION]}
+                        modelField={model ? model[SeoDefined.SEODESCRIPTION] : null}
                     />
                 </Form.Field>
             </React.Fragment>
