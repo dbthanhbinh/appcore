@@ -15,7 +15,7 @@ namespace AppCore.Migrations
                     IsActive = table.Column<bool>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     Value = table.Column<string>(nullable: true),
                     Type = table.Column<string>(nullable: true),
                     AutoLoad = table.Column<string>(nullable: true),
@@ -23,7 +23,7 @@ namespace AppCore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Setting", x => x.Name);
+                    table.PrimaryKey("PK_Setting", x => x.Id);
                 });
         }
 

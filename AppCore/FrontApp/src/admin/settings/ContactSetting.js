@@ -1,42 +1,45 @@
 import React, {Component} from 'react'
-import SeoForm from '../seos/SeoForm'
-import SeoModel from '../models/seo.model'
+import BuildTextField from '../components/form/BuildTextField'
+
+import Model from '../models/contactSetting.model'
+import { GeneralSettingDefined } from "../commons/Defined"
+
 import { Form } from 'semantic-ui-react'
 import {BtnWithModalEvent} from '../components/form/BtnDefined'
 import { withFormBehaviors } from '../components/form/form'
-import { SeoDefined } from "../commons/Defined"
 import _ from 'lodash'
 import {
     validatorModel
 } from '../../utils/FormUtils'
+
 import BaseSetting from './BaseSetting'
 
-class SeoSetting extends BaseSetting {
+class ContactSetting extends BaseSetting {
     constructor(props){
         super(props)
-        let { models, isFormValid } = validatorModel(SeoModel.model())
+        let { models, isFormValid } = validatorModel(Model.model())
         this.state = {
             model: models,
             isFormValid: isFormValid
         }
-        this.settingName = 'GeneralSeoSetting'
+        this.settingName = 'GeneralSetting'
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
     }
 
     handleSubmitForm(){
         let {isFormValid} = this.props
         let { model } = this.state
-        let seoFormData = {
-            seoTitle: model[SeoDefined.SEOTITLE].value,
-            seoKeys: model[SeoDefined.SEOKEYS].value,
-            seoDescription: model[SeoDefined.SEODESCRIPTION].value
+        let formData = {
+            googleAnalyticCode: model[GeneralSettingDefined.GOOGLEANALYTICCODE].value,
+            copyrightText: model[GeneralSettingDefined.COPYRIGHTTEXT].value
         }
         let payload = {}
         if(isFormValid){
             payload = {
                 url: 'Setting/updateGeneralSeting',
                 body: {
-                    Value: JSON.stringify(seoFormData),
+                    settingName: this.settingName,
+                    Value: JSON.stringify(formData),
                     CustomValue: null
                 }
             }
@@ -47,14 +50,21 @@ class SeoSetting extends BaseSetting {
     }
 
     render(){
-        let {model, generalSeoSetting} = this.state
+        let {model} = this.state
         return(
             <Form>
                 <Form.Field>
-                    <SeoForm
-                        model={model}
-                        seoData={generalSeoSetting}  
-                        onInputChange={this.handleOnInputChange}
+                    <BuildTextField
+                        name={GeneralSettingDefined.GOOGLEANALYTICCODE}
+                        onChange={this.handleOnInputChange}
+                        modelField={model ? model[GeneralSettingDefined.GOOGLEANALYTICCODE] : null}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        name={GeneralSettingDefined.COPYRIGHTTEXT}
+                        onChange={this.handleOnInputChange}
+                        modelField={model ? model[GeneralSettingDefined.COPYRIGHTTEXT] : null}
                     />
                 </Form.Field>
                 <Form.Field>
@@ -65,4 +75,4 @@ class SeoSetting extends BaseSetting {
     }
 }
 
-export default withFormBehaviors(SeoSetting, null)
+export default withFormBehaviors(ContactSetting, null)

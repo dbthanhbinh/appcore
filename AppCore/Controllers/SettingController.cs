@@ -27,23 +27,16 @@ namespace AppCore.Controllers
             return Ok(new BaseResponse(result));
         }
 
-        [HttpPost("updateGeneralSetingSeo", Name = "UpdateGeneralSetingSeo")]
-        public async Task<ActionResult> UpdateGeneralSetingSeo([FromBody] GeneralSettingRequests generalSettingRequests)
-        {
-            SettingRequests settingRequests = new SettingRequests(generalSettingRequests);
-            settingRequests.Name = GeneralSetting.SeoSettingName;
-            settingRequests.Type = GeneralSetting.SettingType;
-            
-            var result = await _settingLogic.UpdateSetingOptionAsync(settingRequests);
-            return Ok(new BaseResponse(result));
-        }
-
         [HttpPost("updateGeneralSeting", Name = "UpdateGeneralSeting")]
         public async Task<ActionResult> UpdateGeneralSeting([FromBody] GeneralSettingRequests generalSettingRequests)
         {
-            SettingRequests settingRequests = new SettingRequests(generalSettingRequests);
-            settingRequests.Name = GeneralSetting.GeneralettingName;
-            settingRequests.Type = GeneralSetting.SettingType;
+            //if(!GeneralSetting.SettingNames.Contains(generalSettingRequests.SettingName))
+            //    return Ok(new BaseResponse());
+
+            SettingRequests settingRequests = new SettingRequests(generalSettingRequests)
+            {
+                Type = GeneralSetting.SettingType
+            };
 
             var result = await _settingLogic.UpdateSetingOptionAsync(settingRequests);
             return Ok(new BaseResponse(result));

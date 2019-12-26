@@ -9,6 +9,7 @@ namespace AppCore.Controllers.commons
     {
         public SettingRequests(GeneralSettingRequests generalSettingRequests)
         {
+            this.Name = generalSettingRequests.SettingName;
             this.Value = generalSettingRequests.Value;
             this.CustomValue = generalSettingRequests.CustomValue;
         }
@@ -21,6 +22,7 @@ namespace AppCore.Controllers.commons
 
     public class GeneralSettingRequests
     {
+        public string SettingName { get; set; }
         public string Value { get; set; }
         public string CustomValue { get; set; }
     }

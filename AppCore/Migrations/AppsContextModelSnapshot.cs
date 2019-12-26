@@ -16,12 +16,12 @@ namespace AppCore.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("AppCore.Models.DBModel.Setting", b =>
                 {
-                    b.Property<string>("Name")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AutoLoad");
@@ -30,17 +30,17 @@ namespace AppCore.Migrations
 
                     b.Property<string>("CustomValue");
 
-                    b.Property<Guid>("Id");
-
                     b.Property<bool>("IsActive");
 
                     b.Property<DateTime>("Modified");
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("Type");
 
                     b.Property<string>("Value");
 
-                    b.HasKey("Name");
+                    b.HasKey("Id");
 
                     b.ToTable("Setting");
                 });

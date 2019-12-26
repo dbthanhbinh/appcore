@@ -6,6 +6,7 @@ const BuildTextAreaField = (props) => {
     const className = isValid ? 'field-valid' : 'field-invalid'
     return (
         <React.Fragment>
+            <label>{label}</label>
             <textarea
                 className={className}
                 placeholder={label}

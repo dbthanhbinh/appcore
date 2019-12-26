@@ -1,30 +1,63 @@
 import _ from 'lodash'
+import { StoreDefided } from './Utils'
+const SETTING_DEFINED = _.get(StoreDefided, 'SEO_DEFINED')
 
-const FETCH_LISTITEM = 'FETCH_LISTITEM'
-const DETAIL_ITEM = 'DETAIL_ITEM'
+const ADD_SETTING = SETTING_DEFINED.ADD_ITEM
+const FETCH_SETTINGS = SETTING_DEFINED.FETCH_ITEMS
+const UPDATE_SETTING = SETTING_DEFINED.UPDATE_ITEM
+const DETAIL_SETTING = SETTING_DEFINED.DETAIL_SETTING
 
 const initialState = {
-    simCardList: null,
-    detailData: null
+    settingData: {
+        settingList: null,
+        detailData: null
+    }
 }
 
 export const actionCreators = {
-    fetchListItem: (listItem) => ({ type: FETCH_LISTITEM, payload: { listItem } }),
-    detailItem: (item) => ({ type: DETAIL_ITEM, payload: { item } })
+    fetchSetting: (settingList) => ({ type: FETCH_SETTINGS, payload: { settingList } }),
+    addSetting: (setting) => ({ type: ADD_SETTING, payload: { setting } }),
+    updateSetting: (setting) => ({ type: UPDATE_SETTING, payload: { setting } }),
+    detailSetting: (detailData) => ({ type: DETAIL_SETTING, payload: { detailData } })
 }
 
 export const reducer = (state, action) => {
     state = state || initialState
     switch(action.type){
-        case FETCH_LISTITEM:
-            let { categoryList } = action.payload
-            return Object.assign({}, state, {
-                categoryList
-              })
-        case DETAIL_ITEM:            
+        case FETCH_SETTINGS:
+            return {
+                ...state,
+                settingData: {
+                    ...state.settingData,
+                    settingList: action.payload.settingList         
+                }
+            }
+        case ADD_SETTING:
+            return {
+                ...state,
+                settingData: {
+                    ...state.settingData,
+                    settingList: [...state.settingData.settingList, action.payload.setting]
+                }
+            }
+        case UPDATE_SETTING:
+                let updateList = _.get(state, 'settingData.settingList')
+                updateList && updateList.forEach((e, i) => {
+                    if(e.id === action.payload.setting.id) {
+                        updateList[i] = action.payload.setting
+                    }
+                })
+                return {
+                    ...state,
+                    settingData: {
+                        ...state.settingData,
+                        settingList: updateList
+                    }
+                }
+        case DETAIL_SETTING:            
             return Object.assign({}, state, {
                 detailData: _.get(action.payload, 'detailData')
-              })
+                })
         default:
             return state
     }

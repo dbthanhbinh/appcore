@@ -23,6 +23,7 @@ namespace AppCore.Business.Commons
 
     public static class GeneralSetting
     {
+        public static string[] SettingNames = { "GeneralSeoSetting", "GeneralSetting" };
         public static string SettingAutoLoad { get { return "Yes"; } }
         public static string SettingType { get { return "Setting"; } }
         public static string SeoSettingName { get { return "GeneralSeoSetting"; } }

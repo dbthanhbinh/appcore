@@ -42,3 +42,14 @@ export const GeneralSettingDefined = {
     GOOGLEANALYTICCODE: 'googleAnalyticCode',
     COPYRIGHTTEXT: 'copyrightText'
 }
+
+export const ContactDefined = {
+    COMPANY_NAME: 'companyName',
+    COMPANY_ADDRESS: 'companyAddress',
+    COMPANY_HOTLINE: 'companyHotline',
+    COMPANY_PHONE: 'companyPhone',
+    COMPANY_EMAIL: 'companyEmail',
+    ZALO_MESSAGE: 'zaloMessage',
+    PHONE_MESSAGE: 'phoneMessage',
+    FACEBOOK_MESSAGE: 'facebookMessage',
+}

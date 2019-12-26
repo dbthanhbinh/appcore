@@ -6,6 +6,7 @@ const BuildTextField = (props) => {
     const className = isValid ? 'field-valid' : 'field-invalid'
     return (
         <React.Fragment>
+            <label>{label}</label>
             <input type={type || 'text'}
                 className={className}
                 placeholder={label}
