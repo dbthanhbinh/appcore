@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
+import React from 'react'
 import BuildTextField from '../components/form/BuildTextField'
 
 import Model from '../models/contactSetting.model'
-import { GeneralSettingDefined } from "../commons/Defined"
+import { ContactDefined } from "../commons/Defined"
 
 import { Form } from 'semantic-ui-react'
 import {BtnWithModalEvent} from '../components/form/BtnDefined'
@@ -30,8 +30,14 @@ class ContactSetting extends BaseSetting {
         let {isFormValid} = this.props
         let { model } = this.state
         let formData = {
-            googleAnalyticCode: model[GeneralSettingDefined.GOOGLEANALYTICCODE].value,
-            copyrightText: model[GeneralSettingDefined.COPYRIGHTTEXT].value
+            companyName: model[ContactDefined.COMPANY_NAME].value,
+            companyAddress: model[ContactDefined.COMPANY_ADDRESS].value,
+            companyHotline: model[ContactDefined.COMPANY_HOTLINE].value,
+            companyPhone: model[ContactDefined.COMPANY_PHONE].value,
+            companyEmail: model[ContactDefined.COMPANY_EMAIL].value,
+            zaloMessage: model[ContactDefined.ZALO_MESSAGE].value,
+            phoneMessage: model[ContactDefined.PHONE_MESSAGE].value,
+            facebookMessage: model[ContactDefined.FACEBOOK_MESSAGE].value
         }
         let payload = {}
         if(isFormValid){
@@ -55,16 +61,59 @@ class ContactSetting extends BaseSetting {
             <Form>
                 <Form.Field>
                     <BuildTextField
-                        name={GeneralSettingDefined.GOOGLEANALYTICCODE}
+                        name={ContactDefined.COMPANY_NAME}
                         onChange={this.handleOnInputChange}
-                        modelField={model ? model[GeneralSettingDefined.GOOGLEANALYTICCODE] : null}
+                        modelField={model ? model[ContactDefined.COMPANY_NAME] : null}
                     />
                 </Form.Field>
                 <Form.Field>
                     <BuildTextField
-                        name={GeneralSettingDefined.COPYRIGHTTEXT}
+                        name={ContactDefined.COMPANY_ADDRESS}
                         onChange={this.handleOnInputChange}
-                        modelField={model ? model[GeneralSettingDefined.COPYRIGHTTEXT] : null}
+                        modelField={model ? model[ContactDefined.COMPANY_ADDRESS] : null}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        name={ContactDefined.COMPANY_HOTLINE}
+                        onChange={this.handleOnInputChange}
+                        modelField={model ? model[ContactDefined.COMPANY_HOTLINE] : null}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        name={ContactDefined.COMPANY_PHONE}
+                        onChange={this.handleOnInputChange}
+                        modelField={model ? model[ContactDefined.COMPANY_PHONE] : null}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        type='email'
+                        name={ContactDefined.COMPANY_EMAIL}
+                        onChange={this.handleOnInputChange}
+                        modelField={model ? model[ContactDefined.COMPANY_EMAIL] : null}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        name={ContactDefined.ZALO_MESSAGE}
+                        onChange={this.handleOnInputChange}
+                        modelField={model ? model[ContactDefined.ZALO_MESSAGE] : null}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        name={ContactDefined.PHONE_MESSAGE}
+                        onChange={this.handleOnInputChange}
+                        modelField={model ? model[ContactDefined.PHONE_MESSAGE] : null}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        name={ContactDefined.FACEBOOK_MESSAGE}
+                        onChange={this.handleOnInputChange}
+                        modelField={model ? model[ContactDefined.FACEBOOK_MESSAGE] : null}
                     />
                 </Form.Field>
                 <Form.Field>

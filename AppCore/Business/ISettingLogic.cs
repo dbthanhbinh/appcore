@@ -1,5 +1,6 @@
 ﻿using AppCore.Controllers.commons;
 using AppCore.Models.DBModel;
+using AppCore.Models.VMModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace AppCore.Business
     {
         Task<Setting> UpdateSetingOptionAsync(SettingRequests settingRequests);
         Task<Setting> GetSetingOptionAsync(string settingName);
+        Task<List<ListSettingVM>> GetLayoutSettingsAsync();
     }
 }

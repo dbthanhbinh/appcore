@@ -1,4 +1,5 @@
 import React from 'react'
+import {Form} from 'semantic-ui-react'
 
 const BuildTextField = (props) => {
     let {name, onChange, modelField, type} = props
@@ -6,7 +7,7 @@ const BuildTextField = (props) => {
     const className = isValid ? 'field-valid' : 'field-invalid'
     return (
         <React.Fragment>
-            <label>{label}</label>
+            {/* <label>{label}</label>
             <input type={type || 'text'}
                 className={className}
                 placeholder={label}
@@ -14,7 +15,19 @@ const BuildTextField = (props) => {
                 onChange={onChange}
                 defaultValue={value}
             />
-            { !isValid && <span className='field-invalid-message'>{message}</span> }
+            { !isValid && <span className='field-invalid-message'>{message}</span> } */}
+
+            <Form.Input
+                error={message || null}
+                fluid
+                name={name}
+                type={type || 'text'}
+                className={className}
+                label={label}
+                onChange={onChange}
+                placeholder={label}
+                defaultValue={value}
+            />
 
         </React.Fragment>
     )

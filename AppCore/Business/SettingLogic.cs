@@ -1,6 +1,8 @@
-﻿using AppCore.Controllers.commons;
+﻿using AppCore.Business.Commons;
+using AppCore.Controllers.commons;
 using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
+using AppCore.Models.VMModel;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -73,6 +75,27 @@ namespace AppCore.Business
                     return Task.FromResult(settingOption);
                 }
                 return Task.FromResult(setting);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
+        public Task<List<ListSettingVM>> GetLayoutSettingsAsync()
+        {
+            try
+            {
+                // Get all Settings
+                List<ListSettingVM> settings = new List<ListSettingVM>();
+                _logger.LogInformation("Get all option settings");
+                List<ListSettingVM> settingOptions = _uow.GetRepository<Setting>().GetByFilter(x => x.Type == GeneralSetting.SettingType.ToString()).Select(s => new ListSettingVM { Name = s.Name, Value = s.Value}).ToList();
+                if (settingOptions != null)
+                {
+                    return Task.FromResult(settingOptions);
+                }
+                return Task.FromResult(settings);
             }
             catch (Exception ex)
             {

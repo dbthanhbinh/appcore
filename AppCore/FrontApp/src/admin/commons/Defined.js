@@ -51,5 +51,5 @@ export const ContactDefined = {
     COMPANY_EMAIL: 'companyEmail',
     ZALO_MESSAGE: 'zaloMessage',
     PHONE_MESSAGE: 'phoneMessage',
-    FACEBOOK_MESSAGE: 'facebookMessage',
+    FACEBOOK_MESSAGE: 'facebookMessage'
 }

@@ -2,10 +2,11 @@ import React from 'react'
 import { Tab } from 'semantic-ui-react'
 import SeoSetting from './SeoSetting'
 import GeneralSetting from './GeneralSetting'
+import ContactSetting from './ContactSetting'
 
 const panes = [
-    { menuItem: 'GeneralSetting', render: () => <Tab.Pane><GeneralSetting /></Tab.Pane> },
-    { menuItem: 'Tab 2', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
+    { menuItem: 'General setting', render: () => <Tab.Pane><GeneralSetting /></Tab.Pane> },
+    { menuItem: 'Contact setting', render: () => <Tab.Pane><ContactSetting /></Tab.Pane> },
     { menuItem: 'Home Seo setting', render: (props) => <Tab.Pane><SeoSetting /></Tab.Pane> },
 ]
  const Setting = () => {    

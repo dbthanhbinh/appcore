@@ -41,5 +41,12 @@ namespace AppCore.Controllers
             var result = await _settingLogic.UpdateSetingOptionAsync(settingRequests);
             return Ok(new BaseResponse(result));
         }
+
+        [HttpGet("getLayoutSettings", Name = "GetLayoutSettings")]
+        public async Task<ActionResult> GetLayoutSettings()
+        {
+            var result = await _settingLogic.GetLayoutSettingsAsync();
+            return Ok(new BaseResponse(result));
+        }
     }
 }

@@ -8,13 +8,30 @@ import Footer from './Footer'
 import '../assets/index.scss'
 import { Helmet } from 'react-helmet'
 import { publicSetting } from '../../data/data'
+import SettingActions from '../../store/SettingActions'
+import Utils from '../../apis/utils'
 
 class Layout extends Component {
     constructor(props){
         super(props)
+        this.SettingActions = new SettingActions()
         this.configSeoDefault = publicSetting.seoInfomations
+
+        this.initLayoutData();
     }
 
+    initLayoutData(){
+        let payload = {
+            url: `Setting/getLayoutSettings`
+        }
+        this.SettingActions.detailItem(payload, (err, result)=> {
+            if(err) return
+            let resultData = Utils.getResApi(result)
+            console.log('=======ggg', resultData)
+            
+        })
+    }
+    
     render() {
         let headerInfomations = publicSetting.headerInfomations
         let navigationInfomations = publicSetting.navigationInfomations
