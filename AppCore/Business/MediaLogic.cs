@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppCore.Business
@@ -22,36 +23,56 @@ namespace AppCore.Business
             Logger = logger;
         }
 
-        public Uploaded UploadFile(IFormFile file)
+        public UploadedFull UploadFile(IFormFile file)
         {
             Logger.LogWarning("Begin upload file");
             FileLogic fileLogic = new FileLogic();
-            Uploaded uploaded = fileLogic.UploadFile(file);
+            UploadedFull uploaded = fileLogic.UploadFile(file);
             return uploaded;
         }
 
-        public async Task<Media> CreateMediaAsync(IFormFile file)
+        public Task<Media> CreateMediaAsync(IFormFile file)
         {
             try
             {
                 Media media = new Media();
+                List<Media> medias = new List<Media>();
                 if (file != null)
                 {
-                    Uploaded uploaded = this.UploadFile(file);
+                    UploadedFull uploadedRs = this.UploadFile(file);
                     Logger.LogWarning("Begin create media");
-                    if (uploaded != null)
+                    if (uploadedRs != null)
                     {
-                        media.Name = uploaded.FileName;
-                        media.SubName = uploaded.FileName;
-                        media.Path = uploaded.UrlPath;
-                        media.Size = uploaded.Length;
-                        media.Type = uploaded.ContentType;
+                        media.Name = uploadedRs.Uploaded.FileName;
+                        media.SubName = uploadedRs.Uploaded.FileName;
+                        media.Path = uploadedRs.Uploaded.UrlPath;
+                        media.Size = uploadedRs.Uploaded.Length;
+                        media.Type = uploadedRs.Uploaded.ContentType;
+                        media.ResizeType = "original";
                     }
-                    await _uow.GetRepository<Media>().AddAsync(media);
+                    medias.Add(media);
+
+                    if(uploadedRs.ResizeUploaded.Count() > 0)
+                    {
+                        foreach (Uploaded media1 in uploadedRs.ResizeUploaded)
+                        {
+                            medias.Add(new Media
+                            {
+                                Name = media1.FileName,
+                                SubName = media1.FileName,
+                                Path = media1.UrlPath,
+                                Size = media1.Length,
+                                Type = media1.ContentType,
+                                ResizeType = media1.ResizeType
+                            });
+                        }
+                    }
+                    //await _uow.GetRepository<Media>().AddAsync(media);
+                    _uow.GetRepository<Media>().AddRange(medias);
                     _uow.SaveChanges();
-                    return media;
+                    return Task.FromResult(media);
                 }
-                return media;
+                return Task.FromResult(media);
             }
             catch (Exception ex)
             {

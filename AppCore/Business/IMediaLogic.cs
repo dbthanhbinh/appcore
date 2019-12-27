@@ -9,7 +9,7 @@ namespace AppCore.Business
 {
     public interface IMediaLogic
     {
-        Uploaded UploadFile(IFormFile file);
+        UploadedFull UploadFile(IFormFile file);
         Task<Media> CreateMediaAsync(IFormFile file);
         Task<PagingResponse> GetAllMedia();
     }
