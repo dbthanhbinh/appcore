@@ -30,8 +30,8 @@ namespace AppCore.Controllers
         [HttpPost("updateGeneralSeting", Name = "UpdateGeneralSeting")]
         public async Task<ActionResult> UpdateGeneralSeting([FromBody] GeneralSettingRequests generalSettingRequests)
         {
-            //if(!GeneralSetting.SettingNames.Contains(generalSettingRequests.SettingName))
-            //    return Ok(new BaseResponse());
+            if (!GeneralSetting.SettingNames.Contains(generalSettingRequests.SettingName))
+                return Ok(new BaseResponse());
 
             SettingRequests settingRequests = new SettingRequests(generalSettingRequests)
             {
