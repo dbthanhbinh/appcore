@@ -1,5 +1,9 @@
 import React, { Component, Fragment } from 'react'
+// Redux process
 import _ from 'lodash'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { actionCreators } from '../../store/Setting'
 import { Container, Grid } from 'semantic-ui-react'
 import Navitem from './Nav'
 import Loading from '../commons/Loading'
@@ -16,7 +20,6 @@ class Layout extends Component {
     constructor(props){
         super(props)
         this.SettingActions = new SettingActions()
-
         this.state = {
             configLayoutSetting: {},
             configSeoDefault: {}
@@ -31,8 +34,7 @@ class Layout extends Component {
         }
         this.SettingActions.detailItem(payload, (err, result)=> {
             if(err) return
-            let resultData = Utils.getResApi(result)
-            // GeneralSeoSetting
+            let resultData = Utils.getResApi(result)// GeneralSeoSetting
             if(resultData && resultData.length > 0){
                 this.setState((prevState) => {
                     resultData.forEach(e => {
@@ -93,4 +95,13 @@ class Layout extends Component {
     }
 }
 
-export default Layout
+// export default Layout
+function mapStateToProps(state){
+    let { settingData } = state.settingData
+    return { settingData }
+}
+
+export default connect(
+    mapStateToProps,
+    dispatch => bindActionCreators(actionCreators, dispatch)
+)(Layout)
