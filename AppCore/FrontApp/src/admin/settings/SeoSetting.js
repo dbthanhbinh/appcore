@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import SeoForm from '../seos/SeoForm'
 import SeoModel from '../models/seo.model'
 import { Form } from 'semantic-ui-react'

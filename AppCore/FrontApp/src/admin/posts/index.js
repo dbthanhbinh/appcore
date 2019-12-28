@@ -55,11 +55,7 @@ class PostApp extends Component {
         })
 
         // Get all category
-        var payload = {
-            url: 'Category/getAllCategory',
-            body: {}
-        }
-        this.CategoryActions.getListItems(payload, (err, result)=> {
+        this.CategoryActions.getListItems({url: 'Category/getAllCategory', body: {}}, (err, result)=> {
             if(err) return
             let resultData = Utils.getResApi(result)
             resultData = Utils.sortList(resultData, 'desc')  // To sort list
@@ -67,11 +63,7 @@ class PostApp extends Component {
         })
 
         // Get all tags
-        var payload = {
-            url: 'Tag/getAllTag',
-            body: {}
-        }
-        this.TagActions.getListItems(payload, (err, result)=> {
+        this.TagActions.getListItems({url: 'Tag/getAllTag', body: {}}, (err, result)=> {
             if(err) return
             let resultData = Utils.getResApi(result)
             resultData = Utils.sortList(resultData, 'desc')  // To sort list

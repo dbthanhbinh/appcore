@@ -28,6 +28,6 @@ namespace AppCore.Business.Commons
         public static string SettingType { get { return "GeneralSetting"; } }
         public static string SeoSettingName { get { return "GeneralSeoSetting"; } }
 
-        public static string GeneralettingName { get { return "GeneralSetting"; } }
+        public static string GeneralSettingName { get { return "GeneralSetting"; } }
     }
 }

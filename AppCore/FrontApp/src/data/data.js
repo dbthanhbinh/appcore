@@ -29,7 +29,7 @@ export const publicSetting = {
         companyContactName: null,
         googleAnalyticsCode: null
     },
-    seoInfomations: {
+    GeneralSeoSetting: {
         seoTitle: 'Seo title',
         seoKeys: 'Seo key',
         seoDescription: 'Seo Descripttionss',

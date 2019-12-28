@@ -15,7 +15,7 @@ var ItemAppModel = {
         validators: []
       },
       email: {
-        label: 'email',
+        label: 'Email',
         value: null,
         validators: []
       },

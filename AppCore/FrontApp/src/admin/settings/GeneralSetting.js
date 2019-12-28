@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import BuildTextField from '../components/form/BuildTextField'
 import Model from '../models/generalSetting.model'
 import { Form } from 'semantic-ui-react'
@@ -103,6 +103,14 @@ class SeoSetting extends BaseSetting {
         let {model} = this.state
         return(
             <Form>
+                <Form.Field>
+                    <input type='file' name='file' id='file' onChange={this.handleOnChangeUpload} />
+                    <BuildTextField
+                        name={GeneralSettingDefined.WEB_SLOGAN}
+                        onChange={this.handleOnInputChange}
+                        modelField={model ? model[GeneralSettingDefined.WEB_SLOGAN] : null}
+                    />
+                </Form.Field>
                 <Form.Field>
                     <input type='file' name='file' id='file' onChange={this.handleOnChangeUpload} />
                     <BuildTextField

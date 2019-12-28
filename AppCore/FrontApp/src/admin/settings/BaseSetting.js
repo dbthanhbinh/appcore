@@ -1,6 +1,5 @@
-import React, {Component} from 'react'
+import React from 'react'
 import eventEmitter from '../../utils/eventEmitter'
-import { SeoDefined } from "../commons/Defined"
 import _ from 'lodash'
 import Utils from '../../apis/utils'
 import SettingActions from '../../store/SettingActions'
@@ -10,9 +9,8 @@ import {
     validatorModel,
     mappingModelDefaultData
 } from '../../utils/FormUtils'
-import { PureComponent } from 'react'
 
-class BaseSetting extends Component {
+class BaseSetting extends React.Component {
     constructor(props){
         super(props)
         this.SettingActions = new SettingActions()

@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom"
 import './styles/App.scss'
 // import { Route } from "react-router-dom"
 import WithAuthenticate from './routes/WithAuthenticate'
+import WithNoneAuthenticate from './routes/WithNoneAuthenticate'
 
 // For admin
 import ALayout from './admin/layouts/Layout'
@@ -14,19 +15,20 @@ import UnLayout from './admin/layouts/UnLayout'
 import Setting from './admin/settings'
 import PostApp from './admin/posts'
 import PostEditApp from './admin/posts/EditPostForm'
-import Category from './admin/categories'
-import Tags from './admin/tags'
+// import Category from './admin/categories'
+// import Tags from './admin/tags'
 import Login from './admin/users/Login'
-import Media from './admin/medias'
-import MenuApp from './admin/menus'
-import NotFound from './admin/components/notfound/404'
 import Register from './admin/users/Register'
+
+import Media from './admin/medias'
+// import MenuApp from './admin/menus'
+import NotFound from './admin/components/notfound/404'
 
 // For Frontend
 import FLayout from './frontend/layouts/Layout'
 import Home from './frontend/home'
-import About from './frontend/pages/About'
-import Contact from './frontend/pages/Contact'
+// import About from './frontend/pages/About'
+// import Contact from './frontend/pages/Contact'
 
 import { Cookies } from 'react-cookie'
 
@@ -57,7 +59,9 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
-          <WithAuthenticate exact path='/user/login' component={ Login } layout={ UnLayout }/>
+          <WithNoneAuthenticate exact path='/member/login' component={ Login } layout={ UnLayout }/>
+          <WithNoneAuthenticate exact path='/member/register' component={ Register } layout={ UnLayout }/>
+
           <WithAuthenticate exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/settings' component={ Setting } layout={ ALayout }/>

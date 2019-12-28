@@ -1,41 +1,53 @@
-import React, { Component, Fragment } from 'react'
-import { Form, Button } from 'semantic-ui-react'
-
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { actionCreators } from '../../store/User'
-
+import React from 'react'
+import { Form } from 'semantic-ui-react'
 import { withFormBehaviors } from '../components/form/form'
 import Utils from '../../apis/utils'
 import { Defined } from './Defined'
 import { addUser } from '../../store/UserActions'
 import Model from './Register.model'
 import _ from 'lodash'
+import {
+    getInputData,
+    setFieldValue,
+    validatorModel
+} from '../../utils/FormUtils'
+import BuildTextField from '../components/form/BuildTextField'
+import {BtnWithModalEvent} from '../components/form/BtnDefined'
 
-class register extends Component{
+class Register extends React.Component{
     constructor(props){
         super(props)
-        this.state = {}
+        let { models, isFormValid } = validatorModel(_.merge(Model.model()))
+        this.state = {
+            isBtnLoading: false,
+            currentRoute: 'member',
+            isFormValid: isFormValid,
+            model: models
+        }
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
     }
 
-    handleOnInputChange(e, data){
-        this.props.onInputChange(e, data)
+    handleOnInputChange = (e, data) => {
+        let { name, value } = getInputData(e, data)
+        this.setState((prevState)=>{
+            let { models, isFormValid } = setFieldValue(name, value, prevState)
+            return { model: models, isFormValid: isFormValid }
+        })
     }
 
     handleSubmitForm(e, data){
-        let {isFormValid, formData} = this.props
+        let {isFormValid, model} = this.state
         let payload = {}
         if(isFormValid){
             payload = {
-                url: 'User/createUser',
+                url: 'User/registerMember',
                 body: {
-                    FullName: formData[Defined.FULLNAME].value,
-                    Phone: formData[Defined.EMAil].value,
-                    Email: formData[Defined.PHONE].value,
-                    Password: formData[Defined.PASSWORD].value,
-                    RePassword: formData[Defined.REPASSWORD].value
+                    FullName: model[Defined.FULLNAME].value,
+                    Phone: model[Defined.PHONE].value,
+                    Email: model[Defined.EMAIl].value,
+                    Password: model[Defined.PASSWORD].value,
+                    RePassword: model[Defined.REPASSWORD].value
                 }
             }
             if(!_.isNil(payload) && !_.isEmpty(payload)){
@@ -49,46 +61,56 @@ class register extends Component{
     }
 
     render(){
-        let { formData } = this.props
-        let full_name = _.get(formData, `${ Defined.FULLNAME }.label`)
-        let phone = _.get(formData, `${ Defined.PHONE }.label`)
-        let email = _.get(formData, `${ Defined.EMAil }.label`)
-        let password = _.get(formData, `${ Defined.PASSWORD }.label`)
-        let rePassword = _.get(formData, `${ Defined.REPASSWORD }.label`)
+        let { model, isFormValid } = this.state
 
         return(
-            <Fragment>
+            <Form>
                 <h1>Register</h1>
-                <Form.Group>
-                    <Form.Control type='text' name={ Defined.FULLNAME } placeholder={ full_name } onChange={this.handleOnInputChange} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Control type='text' name={ Defined.PHONE } placeholder={ phone } onChange={this.handleOnInputChange} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Control type='email' name={ Defined.EMAil } placeholder={ email } onChange={this.handleOnInputChange} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Control type='password' name={ Defined.PASSWORD } placeholder={ password } onChange={this.handleOnInputChange} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Control type='password' name={ Defined.REPASSWORD } placeholder={ rePassword } onChange={this.handleOnInputChange} />
-                </Form.Group>
-                <Form.Group>
-                    <Button variant="primary" type="button" onClick={this.handleSubmitForm} > Đăng ký </Button>
-                </Form.Group>
-            </Fragment>
+                <Form.Field>
+                    <BuildTextField
+                        name={Defined.FULLNAME}
+                        onChange={this.handleOnInputChange}
+                        modelField={model[Defined.FULLNAME]}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        name={Defined.PHONE}
+                        onChange={this.handleOnInputChange}
+                        modelField={model[Defined.PHONE]}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        name={Defined.EMAIl}
+                        onChange={this.handleOnInputChange}
+                        modelField={model[Defined.EMAIl]}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        type='password'
+                        name={Defined.PASSWORD}
+                        onChange={this.handleOnInputChange}
+                        modelField={model[Defined.PASSWORD]}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BuildTextField
+                        type='password'
+                        name={Defined.REPASSWORD}
+                        onChange={this.handleOnInputChange}
+                        modelField={model[Defined.REPASSWORD]}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <BtnWithModalEvent 
+                        disabled={!isFormValid}
+                        onBtnEvent={this.handleSubmitForm} label={'Đăng ký'}
+                    />
+                </Form.Field>
+            </Form>
         )
     }
 }
-const Register = withFormBehaviors(register, Model)
-
-function mapStateToProps(state) {
-    let { users } = state.users
-    return { users }
-}
-
-export default connect(
-    mapStateToProps,
-    dispatch => bindActionCreators(actionCreators, dispatch)
-)(Register)
+export default withFormBehaviors(Register, null)
