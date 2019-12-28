@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import _ from 'lodash'
 import { Form } from 'semantic-ui-react'
 import { SeoDefined } from '../commons/Defined'
 import BuildTextField from '../components/form/BuildTextField'

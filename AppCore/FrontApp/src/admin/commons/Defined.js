@@ -39,6 +39,7 @@ export const MenuDefined = {
 }
 
 export const GeneralSettingDefined = {
+    WEB_SLOGAN: 'webSlogan',
     GOOGLEANALYTICCODE: 'googleAnalyticCode',
     COPYRIGHTTEXT: 'copyrightText'
 }

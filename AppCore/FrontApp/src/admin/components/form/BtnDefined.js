@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'lodash'
 import { Button } from 'semantic-ui-react'
 
 export const BtnAddNew = (props) => {
@@ -8,6 +7,6 @@ export const BtnAddNew = (props) => {
 }
 
 export const BtnWithModalEvent = (props) => {
-    let {onBtnEvent, label} = props
-    return <Button onClick={onBtnEvent} variant="primary">{label || 'Add new'}</Button>
+    let {onBtnEvent, label, disabled} = props
+    return <Button disabled={disabled} onClick={onBtnEvent} variant="primary">{label || 'Add new'}</Button>
 }

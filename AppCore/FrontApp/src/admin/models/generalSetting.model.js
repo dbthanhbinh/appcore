@@ -1,6 +1,11 @@
 var ItemAppModel = {
   model: function () {
     let modelFields = {
+      webSlogan: {
+        label: 'Web slogan',
+        value: '',
+        validators: []
+      },
       googleAnalyticCode: {
         label: 'Google analytic code',
         value: '',

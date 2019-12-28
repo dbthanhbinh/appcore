@@ -1,7 +1,7 @@
 export const Defined = {
     FULLNAME: 'fullName',
     PHONE: 'phone',
-    EMAil: 'email',
+    EMAIl: 'email',
     PASSWORD: 'password',
     REPASSWORD: 'rePassword'
 }

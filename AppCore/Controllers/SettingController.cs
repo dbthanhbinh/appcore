@@ -12,7 +12,7 @@ namespace AppCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SettingController : ControllerBase
+    public class SettingController : BaseController
     {
         private readonly ISettingLogic _settingLogic;
         public SettingController(ISettingLogic settingLogic)

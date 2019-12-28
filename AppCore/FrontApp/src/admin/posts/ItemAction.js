@@ -41,7 +41,7 @@ class ItemActions extends React.Component {
         } = this.props
         
         let disableItem = false
-        let title = '';
+        var title = null
         if(item.id === currentEditId){
             if (isEdit && isDelete)
             disableItem = true
@@ -49,7 +49,7 @@ class ItemActions extends React.Component {
         }
 
         return <Fragment>
-            <button onClick={!disableItem ? ()=>this.onHandleDeleteItem(item.id) : null } className={`ui ${isLoading ? 'loading' : ''} button ${disableItem ? 'disabled' : ''}`} >Del</button>
+            <button title={title} onClick={!disableItem ? ()=>this.onHandleDeleteItem(item.id) : null } className={`ui ${isLoading ? 'loading' : ''} button ${disableItem ? 'disabled' : ''}`} >Del</button>
             <a className={ disableItem ? 'disabled' : '' } href={`admin/${currentRoute}/edit/${item.id}`}>Edit</a>
         </Fragment>
     }

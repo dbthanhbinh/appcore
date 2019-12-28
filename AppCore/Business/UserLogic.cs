@@ -1,4 +1,5 @@
-﻿using AppCore.Helpers;
+﻿using AppCore.Controllers.commons;
+using AppCore.Helpers;
 using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
 using Microsoft.Extensions.Logging;
@@ -31,6 +32,67 @@ namespace AppCore.Business
             _uow = uow;
             _logger = logger;
             _appSettings = appSettings.Value;
+        }
+
+        public RegisterMemberValid CheckValidAttibutes(RegisterMemberReq registerMemberReq)
+        {
+            RegisterMemberValid registerMemberValid = new RegisterMemberValid {
+                IsValid = false,
+                Messages = null
+            };
+            List<string> Messages = new List<string>();
+            if (string.IsNullOrEmpty(registerMemberReq.FullName))
+            {
+                Messages.Add(UserValidMessages.FULL_NAME_NOT_NULL);
+            }
+            if (string.IsNullOrEmpty(registerMemberReq.Email))
+            {
+                Messages.Add(UserValidMessages.EMAIL_NOT_NULL);
+            }
+            if (string.IsNullOrEmpty(registerMemberReq.Phone))
+            {
+                Messages.Add(UserValidMessages.PHONE_NOT_NULL);
+            }
+            if (string.IsNullOrEmpty(registerMemberReq.Password))
+            {
+                Messages.Add(UserValidMessages.PASSWORD_NOT_NULL);
+            }
+            if (string.IsNullOrEmpty(registerMemberReq.RePassword))
+            {
+                Messages.Add(UserValidMessages.REPASSWORD_NOT_NULL);
+            }
+            if(Messages.Count() > 0)
+            {
+                registerMemberValid.Messages = Messages;
+            }
+            else
+            {
+                registerMemberValid.IsValid = true;
+            }
+            return registerMemberValid;
+        }
+
+        public async Task<User> RegisterMemberAsync(RegisterMemberReq registerMemberReq)
+        {
+            try
+            {
+                User userData = new User
+                {
+                    FullName = registerMemberReq.FullName,
+                    Phone = registerMemberReq.Phone,
+                    Email = registerMemberReq.Email,
+                    Password = registerMemberReq.Password
+                };
+                Task<bool> userCreate = _uow.GetRepository<User>().AddAsync(userData);
+                _uow.SaveChanges();
+                await Task.WhenAll(userCreate);
+                return userData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
         }
 
         public async Task<User> CreateUserAsync(User user)

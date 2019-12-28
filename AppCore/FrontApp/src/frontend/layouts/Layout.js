@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import _ from 'lodash'
 import { Container, Grid } from 'semantic-ui-react'
 import Navitem from './Nav'
 import Loading from '../commons/Loading'
@@ -6,17 +7,21 @@ import LSidebar from './LSidebar'
 import RSidebar from './RSidebar'
 import Footer from './Footer'
 import '../assets/index.scss'
-import { Helmet } from 'react-helmet'
 import { publicSetting } from '../../data/data'
 import SettingActions from '../../store/SettingActions'
 import Utils from '../../apis/utils'
+import HelmetSeo from './HelmetSeo'
 
 class Layout extends Component {
     constructor(props){
         super(props)
         this.SettingActions = new SettingActions()
-        this.configSeoDefault = publicSetting.seoInfomations
 
+        this.state = {
+            configLayoutSetting: {},
+            configSeoDefault: {}
+        }
+        this.configLayoutSetting = {}
         this.initLayoutData();
     }
 
@@ -27,20 +32,25 @@ class Layout extends Component {
         this.SettingActions.detailItem(payload, (err, result)=> {
             if(err) return
             let resultData = Utils.getResApi(result)
-            console.log('=======ggg', resultData)
-            
+            // GeneralSeoSetting
+            if(resultData && resultData.length > 0){
+                this.setState((prevState) => {
+                    resultData.forEach(e => {
+                        prevState.configLayoutSetting[e.name] = (e.value) ? JSON.parse(e.value) : null
+                    })
+                    return prevState.configLayoutSetting
+                })
+            }
         })
     }
     
     render() {
+        let {configLayoutSetting} = this.state
         let headerInfomations = publicSetting.headerInfomations
         let navigationInfomations = publicSetting.navigationInfomations
         return(
             <Fragment>
-                <Helmet>
-                    <title>{this.configSeoDefault.seoTitle}</title>
-                    <meta name="description" content={this.configSeoDefault.seoDescription} />
-                </Helmet>
+                <HelmetSeo configSeoDefault={_.get(configLayoutSetting, 'GeneralSeoSetting')} />
                 <Container>
                     <Grid>
                         <Grid.Row className='app-header'>

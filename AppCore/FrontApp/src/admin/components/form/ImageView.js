@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import { Image } from 'semantic-ui-react'
 const uploadedFolder = 'Uploads'
 const noImagePath = 'https://react.semantic-ui.com/images/wireframe/square-image.png'
