@@ -47,14 +47,14 @@ export default class LeftNav extends Component {
             <Menu.Header>Hosting</Menu.Header>
   
             <Menu.Menu>
-              <Menu.Item
-                name='shared'
-                active={activeItem === 'shared'}
+              <Menu.Item  as='a' href='/admin/settings'
+                name='Settings'
+                active={activeItem === 'admin-setting'}
                 onClick={this.handleItemClick}
               />
-              <Menu.Item
-                name='dedicated'
-                active={activeItem === 'dedicated'}
+              <Menu.Item  as='a' href='/admin/medias'
+                name='Media'
+                active={activeItem === 'admin-media'}
                 onClick={this.handleItemClick}
               />
             </Menu.Menu>

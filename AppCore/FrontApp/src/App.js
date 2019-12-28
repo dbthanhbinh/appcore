@@ -60,7 +60,7 @@ function App() {
           <WithAuthenticate exact path='/user/login' component={ Login } layout={ UnLayout }/>
           <WithAuthenticate exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout }/>
-          <WithAuthenticate exact path='/admin/setting' component={ Setting } layout={ ALayout }/>
+          <WithAuthenticate exact path='/admin/settings' component={ Setting } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/medias' component={ Media } layout={ ALayout }/>
 
           <WithAuthenticate exact path='/' component={ Home } layout={appLayout}/>
