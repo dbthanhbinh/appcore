@@ -15,3 +15,7 @@ export function deleteUser(payload, cb) {
 export function loginUser(payload, cb) {
     return new RestConnection().post(payload, cb)
 }
+
+export function logoutUser(payload, cb) {
+    return new RestConnection().get(payload, cb)
+}

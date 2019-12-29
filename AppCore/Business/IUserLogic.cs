@@ -1,5 +1,6 @@
 ﻿using AppCore.Controllers.commons;
 using AppCore.Models.DBModel;
+using AppCore.Models.VMModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,10 @@ namespace AppCore.Business
         Task<User> CreateUserAsync(User user);
         Task<User> RegisterMemberAsync(RegisterMemberReq registerMemberReq);
         IEnumerable<User> GetAll();
-        User Authenticate(string phone);
-        RegisterMemberValid CheckValidAttibutes(RegisterMemberReq registerMemberReq);
+        Task<UserDetailVM> GetUserById(Guid userId);
+        Task<PagingResponse> GetUsersWithPagingAsync(GetUsersReq getUsersReq);
+        User Authenticate(LoginReq loginReq);
+        UserMemberValid CheckValidRegisterAttibutes(RegisterMemberReq registerMemberReq);
+        UserMemberValid CheckValidProfileAttibutes(Guid UserId);
     }
 }

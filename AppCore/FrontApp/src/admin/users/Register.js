@@ -53,7 +53,7 @@ class Register extends React.Component{
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.setState(()=>({ isLoading: false }), ()=>{
                     addUser(payload, (result)=> { // For add user
-                        this.props.addItem(Utils.getResListApi(result))  // For add item to state
+                        //this.props.addItem(Utils.getResListApi(result))  // For add item to state
                     })
                 })
             }

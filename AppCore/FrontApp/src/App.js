@@ -19,6 +19,7 @@ import PostEditApp from './admin/posts/EditPostForm'
 // import Tags from './admin/tags'
 import Login from './admin/users/Login'
 import Register from './admin/users/Register'
+import Users from './admin/users'
 
 import Media from './admin/medias'
 // import MenuApp from './admin/menus'
@@ -61,6 +62,8 @@ function App() {
         <Switch>
           <WithNoneAuthenticate exact path='/member/login' component={ Login } layout={ UnLayout }/>
           <WithNoneAuthenticate exact path='/member/register' component={ Register } layout={ UnLayout }/>
+
+          <WithAuthenticate exact path='/admin/users' component={ Users } layout={ ALayout }/>
 
           <WithAuthenticate exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout }/>

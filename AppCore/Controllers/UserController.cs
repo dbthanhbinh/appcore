@@ -24,8 +24,15 @@ namespace AppCore.Controllers
         [HttpPost("loginUser", Name = "LoginUser")]
         public async Task<ActionResult> LoginUser([FromBody] User createUserReq)
         {
-            var result = await _userLogic.CreateUserAsync(createUserReq);
-            return Ok(new BaseResponse(result));
+            try
+            {
+                var result = await _userLogic.CreateUserAsync(createUserReq);
+                return Ok(new BaseResponse(result));
+            }
+            catch (Exception ex)
+            {
+                return Ok(this.BaseResponseApiErrorResult(ex));
+            }
         }
 
         [HttpGet]
@@ -35,11 +42,56 @@ namespace AppCore.Controllers
             return Ok(users);
         }
 
-        [HttpGet("userProfile/{userId}", Name = "UserProfile")]
-        public IActionResult UserProfile()
+        [HttpGet("getUsers/{pageSize}/{currentPage}", Name = "GetUsers")]
+        public ActionResult GetUsersWithPagingAsync(Int32 pageSize, Int32 currentPage)
         {
-            var users = _userLogic.GetAll();
-            return Ok(users);
+            try
+            {
+                GetUsersReq getUsersReq = new GetUsersReq
+                {
+                    PageSize = pageSize,
+                    CurrentPage = currentPage
+                };
+                var result = _userLogic.GetUsersWithPagingAsync(getUsersReq);
+                return Ok(new BaseResponse(result.Result.Data, result.Result.Paging));
+            }
+            catch (Exception ex)
+            {
+                return Ok(this.BaseResponseApiErrorResult(ex));
+            }
+        }
+
+        [HttpGet("userProfile/{userId}", Name = "UserProfile")]
+        public IActionResult UserProfile(Guid userId)
+        {
+            try
+            {
+                UserMemberValid userMemberValid = _userLogic.CheckValidProfileAttibutes(userId);
+                if(userMemberValid.IsValid == false)
+                {
+                    return Ok(new BaseResponse(userMemberValid));
+                }
+                var users = _userLogic.GetUserById(userId);
+                return Ok(users);
+            }
+            catch(Exception ex)
+            {
+                return Ok(this.BaseResponseApiErrorResult(ex));
+            }
+        }
+
+        [HttpGet("logoutUser", Name = "LogoutUser")]
+        public ActionResult LogoutUser()
+        {
+            try
+            {
+                HttpContext.Session.Clear();
+                return Ok(new BaseResponse());
+            }
+            catch (Exception ex)
+            {
+                return Ok(this.BaseResponseApiErrorResult(ex));
+            }
         }
 
         [AllowAnonymous]
@@ -48,10 +100,10 @@ namespace AppCore.Controllers
         {
             try
             {
-                RegisterMemberValid registerMemberValid = _userLogic.CheckValidAttibutes(registerMemberReq);
-                if (registerMemberValid.IsValid == false)
+                UserMemberValid userMemberValid = _userLogic.CheckValidRegisterAttibutes(registerMemberReq);
+                if (userMemberValid.IsValid == false)
                 {
-                    return Ok(new BaseResponse(registerMemberValid));
+                    return Ok(new BaseResponse(userMemberValid));
                 }
 
                 var result = await _userLogic.RegisterMemberAsync(registerMemberReq);
@@ -59,7 +111,7 @@ namespace AppCore.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new BaseResponse(null, ex.Message.ToString()));
+                return Ok(this.BaseResponseApiErrorResult(ex));
             }
         }
 
@@ -67,12 +119,19 @@ namespace AppCore.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]LoginReq loginReq)
         {
-            var user = _userLogic.Authenticate(loginReq.Phone);
+            try
+            {
+                var user = _userLogic.Authenticate(loginReq);
 
-            if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                if (user == null)
+                    return BadRequest(new { message = "Username or password is incorrect" });
 
-            return Ok(user);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return Ok(this.BaseResponseApiErrorResult(ex));
+            }
         }
 
     }

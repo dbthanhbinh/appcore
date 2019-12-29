@@ -9,6 +9,9 @@ namespace AppCore.Controllers.commons
 {
     public class BaseController : ControllerBase
     {
-
+        public BaseResponse BaseResponseApiErrorResult(Exception ex)
+        {
+            return new BaseResponse(ex.InnerException.Message.ToString());
+        }
     }
 }

@@ -1,10 +1,27 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { Input, Menu } from 'semantic-ui-react'
+import { logoutUser } from '../store/UserActions'
 
 export default class Navitem extends Component {
     state = { activeItem: 'home' }
 
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+    handleLogoutUser = (e) => {
+        let payload = {
+            url: 'User/logoutUser',
+            body: {}
+        }
+        if(!_.isNil(payload) && !_.isEmpty(payload)){
+            logoutUser(payload, (err, result)=> { // For add user
+                if(err) return
+                if(result){
+                    console.log('=====logout', result)
+                }
+            })
+        }
+    }
 
     render() {
         const { activeItem } = this.state
@@ -33,7 +50,7 @@ export default class Navitem extends Component {
             <Menu.Item
                 name='logout'
                 active={activeItem === 'logout'}
-                onClick={this.handleItemClick}
+                onClick={this.handleLogoutUser}
             />
             </Menu.Menu>
         </Menu>

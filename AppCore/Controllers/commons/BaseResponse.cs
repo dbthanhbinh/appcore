@@ -8,8 +8,9 @@ namespace AppCore.Controllers.commons
     public class BaseResponse
     {
         public string Success { get; set; } = "Success";
+        public string ApiResult { get; set; } = "";
         public string Message { get; set; } = "";
-        public object Data { get; set; }
+        public object Data { get; set; } = null;
         public object Paging { get; set; } = null;
         public int StatusCode { get; set; } = 200;
         public DateTime TimesTamp = DateTime.Now;
@@ -34,6 +35,12 @@ namespace AppCore.Controllers.commons
         public BaseResponse(object data, string message)
         {
             this.Data = data;
+            this.Message = message;
+        }
+
+        public BaseResponse(string message)
+        {
+            this.ApiResult = "Api error result";
             this.Message = message;
         }
 

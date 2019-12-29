@@ -2,6 +2,7 @@
 using AppCore.Helpers;
 using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
+using AppCore.Models.VMModel;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -34,9 +35,10 @@ namespace AppCore.Business
             _appSettings = appSettings.Value;
         }
 
-        public RegisterMemberValid CheckValidAttibutes(RegisterMemberReq registerMemberReq)
+        public UserMemberValid CheckValidRegisterAttibutes(RegisterMemberReq registerMemberReq)
         {
-            RegisterMemberValid registerMemberValid = new RegisterMemberValid {
+            UserMemberValid registerMemberValid = new UserMemberValid
+            {
                 IsValid = false,
                 Messages = null
             };
@@ -61,7 +63,35 @@ namespace AppCore.Business
             {
                 Messages.Add(UserValidMessages.REPASSWORD_NOT_NULL);
             }
-            if(Messages.Count() > 0)
+            if (!string.IsNullOrEmpty(registerMemberReq.RePassword) && !string.IsNullOrEmpty(registerMemberReq.Password) && !registerMemberReq.Password.Equals(registerMemberReq.RePassword))
+            {
+                Messages.Add(UserValidMessages.PASSWORD_DOES_NOT_MATCH);
+            }
+
+            if (Messages.Count() > 0)
+            {
+                registerMemberValid.Messages = Messages;
+            }
+            else
+            {
+                registerMemberValid.IsValid = true;
+            }
+            return registerMemberValid;
+        }
+
+        public UserMemberValid CheckValidProfileAttibutes(Guid UserId)
+        {
+            UserMemberValid registerMemberValid = new UserMemberValid
+            {
+                IsValid = false,
+                Messages = null
+            };
+            List<string> Messages = new List<string>();
+            if (UserId == null)
+            {
+                Messages.Add(UserValidMessages.USER_ID_NOT_NULL);
+            }
+            if (Messages.Count() > 0)
             {
                 registerMemberValid.Messages = Messages;
             }
@@ -81,7 +111,7 @@ namespace AppCore.Business
                     FullName = registerMemberReq.FullName,
                     Phone = registerMemberReq.Phone,
                     Email = registerMemberReq.Email,
-                    Password = registerMemberReq.Password
+                    Password = UserHelper.Hash(registerMemberReq.Password)
                 };
                 Task<bool> userCreate = _uow.GetRepository<User>().AddAsync(userData);
                 _uow.SaveChanges();
@@ -90,7 +120,7 @@ namespace AppCore.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                _logger.LogError(ex.InnerException.Message.ToString());
                 throw ex;
             }
         }
@@ -99,44 +129,56 @@ namespace AppCore.Business
         {
             try
             {
+                string hashed_password = UserHelper.Hash(user.Password);
+                user.Password = hashed_password;
                 Task<bool> userCreate = _uow.GetRepository<User>().AddAsync(user);
                 await Task.WhenAll(userCreate);
                 return user;
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex.Message.ToString());
+                _logger.LogError(ex.InnerException.Message.ToString());
                 throw ex;
             }
         }
         
-        public User Authenticate(string phone)
+        public User Authenticate(LoginReq loginReq)
         {
-            var user = _users.SingleOrDefault(x => x.Phone == phone);
-
-            // return null if user not found
-            if (user == null)
-                return null;
-
-            // authentication successful so generate jwt token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            try
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                string hashed_password = UserHelper.Hash(loginReq.Password);
+                var user = _uow.GetRepository<User>()
+                    .GetByFilter(u => u.Phone == loginReq.Phone && UserHelper.Verify(loginReq.Password, hashed_password))
+                    .FirstOrDefault();
+
+                // return null if user not found
+                if (user == null)
+                    return null;
+
+                // authentication successful so generate jwt token
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+                var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            user.Token = tokenHandler.WriteToken(token);
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim(ClaimTypes.Name, user.Id.ToString(), user.Phone.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                user.Token = tokenHandler.WriteToken(token);
 
-            // remove password before returning
-            // user.Password = null;
-
-            return user;
+                // remove password before returning
+                user.Password = null;
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.InnerException.Message.ToString());
+                throw ex;
+            }
         }
 
         public IEnumerable<User> GetAll()
@@ -147,5 +189,55 @@ namespace AppCore.Business
             });
         }
 
+        public async Task<PagingResponse> GetUsersWithPagingAsync(GetUsersReq getUsersReq)
+        {
+            try
+            {
+                int currentPage = getUsersReq.CurrentPage;
+                int pageSize = getUsersReq.PageSize;
+
+                List<UserDetailVM> result = null;
+                result = _uow.GetRepository<User>().GetAll()
+                    .Select(u => new UserDetailVM {
+                        FullName = u.FullName,
+                        Email = u.Email,
+                        Phone = u.Phone
+                    }).ToList();
+
+
+
+
+                var resultPg = PagingHelper<UserDetailVM>.GetPagingList(result, currentPage, pageSize);
+                await Task.FromResult(resultPg);
+                return resultPg;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.InnerException.Message.ToString());
+                throw ex;
+            }
+        }
+
+        public Task<UserDetailVM> GetUserById(Guid userId)
+        {
+            try
+            {
+                UserDetailVM userData = new UserDetailVM();
+                userData = _uow.GetRepository<User>()
+                    .GetByFilter(u => u.Id == userId)
+                    .Select(user => new UserDetailVM {
+                        FullName = user.FullName,
+                        Email = user.Email,
+                        Phone = user.Phone
+                    }).FirstOrDefault();
+
+                return Task.FromResult(userData);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.InnerException.Message.ToString());
+                throw ex;
+            }
+        }
     }
 }
