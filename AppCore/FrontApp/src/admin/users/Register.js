@@ -1,7 +1,6 @@
 import React from 'react'
 import { Form } from 'semantic-ui-react'
 import { withFormBehaviors } from '../components/form/form'
-import Utils from '../../apis/utils'
 import { Defined } from './Defined'
 import { addUser } from '../../store/UserActions'
 import Model from './Register.model'

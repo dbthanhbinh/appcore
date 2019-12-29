@@ -18,7 +18,7 @@ class login extends Component{
         super(props)
         this.state = {
             redirectToReferrer: false,
-            afterLogin: '/home'  // home page
+            afterLogin: '/'  // home page
         }
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
@@ -35,7 +35,7 @@ class login extends Component{
             payload = {
                 url: 'User/authenticate',
                 body: {
-                    Phone: '0909874825', //formData[Defined.PHONE].value,
+                    Phone: formData[Defined.PHONE].value,
                     Password: formData[Defined.PASSWORD].value
                 }
             }

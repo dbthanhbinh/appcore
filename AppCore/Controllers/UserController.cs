@@ -85,7 +85,6 @@ namespace AppCore.Controllers
         {
             try
             {
-                HttpContext.Session.Clear();
                 return Ok(new BaseResponse());
             }
             catch (Exception ex)

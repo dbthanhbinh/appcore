@@ -147,10 +147,15 @@ namespace AppCore.Business
             try
             {
                 string hashed_password = UserHelper.Hash(loginReq.Password);
+                //var user = _uow.GetRepository<User>()
+                //    .GetByFilter(u => u.Phone == loginReq.Phone && UserHelper.Verify(u.Password, hashed_password))
+                //    .FirstOrDefault();
+
                 var user = _uow.GetRepository<User>()
-                    .GetByFilter(u => u.Phone == loginReq.Phone && UserHelper.Verify(loginReq.Password, hashed_password))
+                    .GetByFilter(u => u.Phone == loginReq.Phone && (UserHelper.Verify(loginReq.Password, u.Password) == true))
                     .FirstOrDefault();
 
+                // UserHelper.Verify(loginReq.Password, hashed_password)
                 // return null if user not found
                 if (user == null)
                     return null;

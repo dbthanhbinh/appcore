@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { Input, Menu } from 'semantic-ui-react'
 import { logoutUser } from '../store/UserActions'
+import { withCookies } from 'react-cookie'
 
-export default class Navitem extends Component {
+class Navitem extends Component {
     state = { activeItem: 'home' }
 
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
     handleLogoutUser = (e) => {
+        let {cookies} = this.props
         let payload = {
             url: 'User/logoutUser',
             body: {}
@@ -17,7 +19,8 @@ export default class Navitem extends Component {
             logoutUser(payload, (err, result)=> { // For add user
                 if(err) return
                 if(result){
-                    console.log('=====logout', result)
+                    cookies.remove('MAP_cookies', { path: '/' })
+                    window.location.href = "/"
                 }
             })
         }
@@ -57,3 +60,5 @@ export default class Navitem extends Component {
         )
     }
 }
+
+export default withCookies(Navitem)
