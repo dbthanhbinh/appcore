@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,7 +16,7 @@ namespace AppCore.Models.DBModel
         public string Phone { get; set; }
 
         [Required]
-        [Index(IsUnique = true)]
+        //[Index(IsUnique = true)]
         public string Email { get; set; }
 
         [Required]

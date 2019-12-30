@@ -20,6 +20,7 @@ import PostEditApp from './admin/posts/EditPostForm'
 import Login from './admin/users/Login'
 import Register from './admin/users/Register'
 import Users from './admin/users'
+import Roles from './admin/roles'
 
 import Media from './admin/medias'
 // import MenuApp from './admin/menus'
@@ -64,6 +65,7 @@ function App() {
           <WithNoneAuthenticate exact path='/member/register' component={ Register } layout={ UnLayout }/>
 
           <WithAuthenticate exact path='/admin/users' component={ Users } layout={ ALayout }/>
+          <WithAuthenticate exact path='/admin/roles' component={ Roles } layout={ ALayout }/>
 
           <WithAuthenticate exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout }/>
