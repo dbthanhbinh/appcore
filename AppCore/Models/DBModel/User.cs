@@ -17,7 +17,7 @@ namespace AppCore.Models.DBModel
         public string Phone { get; set; }
 
         [Required]
-        [Index(IsUnique = true)]
+        //[Index(IsUnique = true)]
         public string Email { get; set; }
 
         [Required]
