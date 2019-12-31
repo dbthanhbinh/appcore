@@ -11,7 +11,5 @@ namespace AppCore.Models.DBModel
         public string Slug { get; set; }
         public string ObjectType { get; set; }
         public Guid ObjectId { get; set; }
-
-        public virtual Category Category { get; set; }
     }
 }

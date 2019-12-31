@@ -20,10 +20,6 @@ namespace AppCore.Models
             {
                 role.HasIndex(x => x.Slug).IsUnique(true);
             });
-
-
-            // =================================================
-            builder.Entity<Category>().HasOne(x => x.Seo);
         }
 
         DbSet<Post> Post { get; set; }

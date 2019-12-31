@@ -239,7 +239,7 @@ namespace AppCore.Business
                 var resultPg = PagingHelper<Post>.GetPagingList(result, currentPage, pageSize);
                 await Task.FromResult(resultPg);
                 List<ListPostDataVM> listPostDataVMs = new List<ListPostDataVM>();
-
+                
                 if (resultPg.Data != null)
                 {   
                     foreach (Post post in (List<Post>)resultPg.Data)
