@@ -15,7 +15,7 @@ import UnLayout from './admin/layouts/UnLayout'
 import Setting from './admin/settings'
 import PostApp from './admin/posts'
 import PostEditApp from './admin/posts/EditPostForm'
-// import Category from './admin/categories'
+import Category from './admin/categories'
 // import Tags from './admin/tags'
 import Login from './admin/users/Login'
 import Register from './admin/users/Register'
@@ -64,6 +64,9 @@ function App() {
           <WithNoneAuthenticate exact path='/member/register' component={ Register } layout={ UnLayout }/>
 
           <WithAuthenticate exact path='/admin/users' component={ Users } layout={ ALayout }/>
+
+          <WithAuthenticate exact path='/admin/categories' component={Category } layout={ ALayout } />
+          <WithAuthenticate exact path='/admin/categories/edit/:id' component={ Category } layout={ ALayout } />
 
           <WithAuthenticate exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout }/>

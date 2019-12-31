@@ -52,14 +52,14 @@ class CategoryForm extends React.Component{
                         />
                     </Form.Field>
                     <Form.Field>
-                        <DropdownWrapper
+                        {/* <DropdownWrapper
                             isEdit={isEdit}
                             currentCatId={currentEditId}
                             categoryList={listItems}
                             name='parentId'
                             parentId={parentIdValue}
                             onInputChange={onInputChange}
-                        />
+                        /> */}
                     </Form.Field>
                     <Form.Field>
                         <SeoForm
