@@ -173,9 +173,13 @@ namespace AppCore.Business
             try
             {
                 categoryWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll();
+
+                Category aa = _uow.GetRepository<Category>().Get(id);
+                var tamp = aa.Seos.ToList();
+
                 categoryWithEditVM.Category = _uow.GetRepository<Category>().Get(id);
                 IEnumerable<Seo> enumerable = _uow.GetRepository<Seo>().Get((x) => x.ObjectId == id);
-                categoryWithEditVM.Seo = enumerable.FirstOrDefault();
+                categoryWithEditVM.Seo = null; // enumerable.FirstOrDefault();
                 return await Task.FromResult(categoryWithEditVM);
             }
             catch (Exception ex)
