@@ -182,7 +182,7 @@ class Category extends Component{
                                 currentRoute={currentRoute}
                             />
                         </Grid.Column>
-                        <Grid.Column width={10}>
+                        {/* <Grid.Column width={10}>
                             <CategoryList
                                 isEdit={this.isEdit}
                                 isFormValid={isFormValid}
@@ -191,7 +191,7 @@ class Category extends Component{
                                 onDeleteItem={this.handleOnDeleteCategory}
                                 currentRoute={currentRoute}
                             />
-                        </Grid.Column>
+                        </Grid.Column> */}
                     </Grid.Row>
                 </Grid>
             </Fragment>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +12,7 @@ namespace AppCore.Models.DBModel
         public string Name { get; set; }
         public string Slug { get; set; }
         public Guid ?ParentId { get; set; } = Guid.Empty;
+        public virtual ICollection<Seo> Seos { get; set; }
         public string CreatedBy { get; set; }
     }
 }
