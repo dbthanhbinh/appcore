@@ -20,6 +20,13 @@ namespace AppCore.Models.Repository
             return _dbSet.ToList();
         }
 
+        public IEnumerable<T> GetAll(Func<IQueryable<T>, IQueryable<T>> includeMembers)
+        {
+            IQueryable<T> result = includeMembers(_dbSet);
+
+            return result.AsEnumerable();
+        }
+
         public Int32 CountTotalAll()
         {
             return _dbSet.ToList().Count();

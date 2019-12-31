@@ -92,7 +92,9 @@ namespace AppCore.Controllers
         public ActionResult getPostWithEdit(Guid id)
         {
             var result = _postLogic.GetPostWithEditAsync(id);
-            return Ok(new BaseResponse(result.Result));
+            // return Ok(new BaseResponse(result.Result));
+            //return Ok(new BaseResponse(result));
+            return Ok(result);
         }
     }
 }

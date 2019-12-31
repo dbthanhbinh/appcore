@@ -36,8 +36,9 @@ namespace AppCore.Models.Repository
         T Get(object id);
         IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
         List<T> GetAll();
+        IEnumerable<T> GetAll(Func<IQueryable<T>, IQueryable<T>> includeMembers);
         List<T> GetByFilter(Expression<Func<T, bool>> predicate);
-
+        
         Int32 CountTotalAll();
     }
 }

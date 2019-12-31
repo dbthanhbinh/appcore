@@ -10,15 +10,10 @@ namespace AppCore.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<Category>(role =>
+            builder.Entity<Post>(entity =>
             {
-                role.HasIndex(x => x.Slug).IsUnique(true);
-            });
-
-            builder.Entity<Role>(role =>
-            {
-                role.HasIndex(x => x.Slug).IsUnique(true);
+                entity.HasOne(d => d.Category).WithOne()
+                    .HasConstraintName("FK_Post_Category");
             });
         }
 

@@ -33,6 +33,7 @@ namespace AppCore.Models.VMModel
             CategoryId = post.CategoryId;
             CreatedBy = post.CreatedBy;
             Created = post.Created;
+            Category = post.Category;
         }
         public virtual Media Media { get; set; }
     }

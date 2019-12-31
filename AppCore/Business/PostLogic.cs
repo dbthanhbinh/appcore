@@ -3,6 +3,7 @@ using AppCore.Helpers;
 using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
 using AppCore.Models.VMModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
@@ -224,6 +225,8 @@ namespace AppCore.Business
 
                 List<Post> result = null;
                 result = _uow.GetRepository<Post>().GetAll();
+                var reports = _uow.GetRepository<Post>().GetAll(x =>
+                    x.Include(report => report.Category));
 
                 //List<ObjectMedia> objectMedias = _uow.GetRepository<ObjectMedia>().GetAll();
                 //List<Media> medias = _uow.GetRepository<Media>().GetAll();
@@ -236,14 +239,14 @@ namespace AppCore.Business
                 //             ).Distinct();
 
 
-                var resultPg = PagingHelper<Post>.GetPagingList(result, currentPage, pageSize);
+                var resultPg = PagingHelper<Post>.GetPagingList(reports.ToList(), currentPage, pageSize);
                 await Task.FromResult(resultPg);
                 List<ListPostDataVM> listPostDataVMs = new List<ListPostDataVM>();
                 
                 if (resultPg.Data != null)
                 {   
                     foreach (Post post in (List<Post>)resultPg.Data)
-                    {
+                    {   
                         //Media media = _uow.GetRepository<ObjectMedia>().GetByFilter(o => o.ObjectId == post.Id)
                         //    .Join(_uow.GetRepository<Media>().GetAll(), o=>o.MediaId, m=>m.Id, (o, p) => new Media { }).FirstOrDefault();
 
@@ -268,7 +271,7 @@ namespace AppCore.Business
             }
         }
 
-        public async Task<PostWithEditVM> GetPostWithEditAsync(Guid id)
+        public PostWithEditVM GetPostWithEditAsync(Guid id)
         {
             PostWithEditVM postWithEditVM = new PostWithEditVM();
             try
@@ -294,7 +297,7 @@ namespace AppCore.Business
                     }
                 }
                 
-                return await Task.FromResult(postWithEditVM);
+                return postWithEditVM;
             }
             catch (Exception ex)
             {
