@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppCore.Models.DBModel
 {
-    public class Role
+    public class Role : DbEntity
     {
         [Required]
         [DataType(DataType.Text)]

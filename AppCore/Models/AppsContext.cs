@@ -6,6 +6,26 @@ namespace AppCore.Models
     public class AppsContext : DbContext
     {
         public AppsContext(DbContextOptions<AppsContext> options) : base(options) {}
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Category>(role =>
+            {
+                role.HasIndex(x => x.Slug).IsUnique(true);
+            });
+
+            builder.Entity<Role>(role =>
+            {
+                role.HasIndex(x => x.Slug).IsUnique(true);
+            });
+
+
+            // =================================================
+            builder.Entity<Category>().HasOne(x => x.Seo);
+        }
+
         DbSet<Post> Post { get; set; }
         DbSet<Category> Category { get; set; }
         DbSet<Media> Media { get; set; }
@@ -18,5 +38,6 @@ namespace AppCore.Models
         DbSet<Menu> Menu { get; set; }
         DbSet<Page> Page { get; set; }
         DbSet<Setting> Setting { get; set; }
+        DbSet<Role> Role { get; set; }
     }
 }
