@@ -10,8 +10,10 @@ namespace AppCore.Models.DBModel
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }
+        [Required]
         public string Slug { get; set; }
         public Guid ?ParentId { get; set; } = Guid.Empty;
         public string CreatedBy { get; set; }
+        public Seo Seo { get; set; }
     }
 }

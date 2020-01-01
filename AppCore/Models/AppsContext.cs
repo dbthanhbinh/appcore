@@ -12,9 +12,17 @@ namespace AppCore.Models
             base.OnModelCreating(builder);
             builder.Entity<Post>(entity =>
             {
+                entity.HasOne(s => s.Seo).WithOne()
+                       .HasConstraintName("FK_Post_Seo");
                 entity.HasOne(d => d.Category).WithOne()
                     .HasConstraintName("FK_Post_Category");
             });
+
+            //builder.Entity<Category>( cat =>
+            //{   
+            //    cat.HasOne(s => s.Seo).WithOne()
+            //        .HasConstraintName("FK_Category");
+            //});
         }
 
         DbSet<Post> Post { get; set; }

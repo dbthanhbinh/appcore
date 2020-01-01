@@ -1,12 +1,13 @@
 ﻿using AppCore.Business.Commons;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppCore.Models.DBModel
 {
     public class Post : DbEntity
-    {
+    {   
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }
@@ -17,5 +18,6 @@ namespace AppCore.Models.DBModel
         public Guid? CategoryId { get; set; }
         public string CreatedBy { get; set; }
         public Category Category { get; set; }
+        public Seo Seo { get; set; }
     }
 }

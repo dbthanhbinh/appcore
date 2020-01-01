@@ -37,7 +37,8 @@ namespace AppCore.Migrations
 
                     b.Property<Guid?>("ParentId");
 
-                    b.Property<string>("Slug");
+                    b.Property<string>("Slug")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -209,7 +210,8 @@ namespace AppCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId")
+                        .IsUnique();
 
                     b.ToTable("Post");
                 });
@@ -242,6 +244,8 @@ namespace AppCore.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid?>("CategoryId");
+
                     b.Property<DateTime>("Created");
 
                     b.Property<bool>("IsActive");
@@ -252,6 +256,8 @@ namespace AppCore.Migrations
 
                     b.Property<string>("ObjectType");
 
+                    b.Property<Guid?>("PostId");
+
                     b.Property<string>("SeoDescription");
 
                     b.Property<string>("SeoKeys");
@@ -261,6 +267,12 @@ namespace AppCore.Migrations
                     b.Property<string>("Slug");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId")
+                        .IsUnique();
+
+                    b.HasIndex("PostId")
+                        .IsUnique();
 
                     b.ToTable("Seo");
                 });
@@ -368,9 +380,22 @@ namespace AppCore.Migrations
             modelBuilder.Entity("AppCore.Models.DBModel.Post", b =>
                 {
                     b.HasOne("AppCore.Models.DBModel.Category", "Category")
-                        .WithMany("Post")
-                        .HasForeignKey("CategoryId")
+                        .WithOne()
+                        .HasForeignKey("AppCore.Models.DBModel.Post", "CategoryId")
                         .HasConstraintName("FK_Post_Category");
+                });
+
+            modelBuilder.Entity("AppCore.Models.DBModel.Seo", b =>
+                {
+                    b.HasOne("AppCore.Models.DBModel.Category")
+                        .WithOne("Seo")
+                        .HasForeignKey("AppCore.Models.DBModel.Seo", "CategoryId")
+                        .HasConstraintName("FK_Category_Seo");
+
+                    b.HasOne("AppCore.Models.DBModel.Post")
+                        .WithOne("Seo")
+                        .HasForeignKey("AppCore.Models.DBModel.Seo", "PostId")
+                        .HasConstraintName("FK_Post_Seo");
                 });
 #pragma warning restore 612, 618
         }

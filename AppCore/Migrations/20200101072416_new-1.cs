@@ -3,10 +3,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppCore.Migrations
 {
-    public partial class category3 : Migration
+    public partial class new1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Category",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Slug = table.Column<string>(nullable: false),
+                    ParentId = table.Column<Guid>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Category", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Media",
                 columns: table => new
@@ -123,26 +141,6 @@ namespace AppCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seo",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    Modified = table.Column<DateTime>(nullable: false),
-                    SeoTitle = table.Column<string>(nullable: true),
-                    SeoKeys = table.Column<string>(nullable: true),
-                    SeoDescription = table.Column<string>(nullable: true),
-                    Slug = table.Column<string>(nullable: true),
-                    ObjectType = table.Column<string>(nullable: true),
-                    ObjectId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Seo", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Setting",
                 columns: table => new
                 {
@@ -213,6 +211,84 @@ namespace AppCore.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Post",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    PostType = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<Guid>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Post", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Post_Category",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Seo",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    SeoTitle = table.Column<string>(nullable: true),
+                    SeoKeys = table.Column<string>(nullable: true),
+                    SeoDescription = table.Column<string>(nullable: true),
+                    Slug = table.Column<string>(nullable: true),
+                    ObjectType = table.Column<string>(nullable: true),
+                    ObjectId = table.Column<Guid>(nullable: false),
+                    PostId = table.Column<Guid>(nullable: true),
+                    CategoryId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Category_Seo",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Post_Seo",
+                        column: x => x.PostId,
+                        principalTable: "Post",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Post_CategoryId",
+                table: "Post",
+                column: "CategoryId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seo_CategoryId",
+                table: "Seo",
+                column: "CategoryId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seo_PostId",
+                table: "Seo",
+                column: "PostId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -249,6 +325,12 @@ namespace AppCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Post");
+
+            migrationBuilder.DropTable(
+                name: "Category");
         }
     }
 }

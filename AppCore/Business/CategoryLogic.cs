@@ -43,32 +43,48 @@ namespace AppCore.Business
                 reqData.Slug = SlugName;
                 reqData.ParentId = reqData.ParentId ?? Guid.Empty;
 
+                Guid categoryId = new Guid();
                 Category categoryData = new Category
                 {
+                    Id = categoryId,
                     Name = reqData.Name,
                     ParentId = reqData.ParentId,
-                    Slug = reqData.Slug
+                    Slug = reqData.Slug,
+                    Seo = new Seo
+                    {
+                        SeoTitle = reqData.SeoTitle,
+                        SeoKeys = reqData.SeoKeys,
+                        SeoDescription = reqData.SeoDescription,
+                        CategoryId = categoryId
+                    }
                 };
                 Task<bool> categoryCreated = _uow.GetRepository<Category>().AddAsync(categoryData);
 
-                // Created seo
-                Logger.LogInformation("Create new seo");
-                Task<Seo> seoCreated = null;
-                Seo seoData = new Seo
-                {
-                    SeoTitle = reqData.SeoTitle,
-                    SeoKeys = reqData.SeoKeys,
-                    SeoDescription = reqData.SeoDescription,
-                    ObjectId = categoryData.Id
-                };
-                seoCreated = _seoLogic.CreateSeoAsync(seoData);
+                //// Created seo
+                //Logger.LogInformation("Create new seo");
+                //Task<Seo> seoCreated = null;
+                //Seo seoData = new Seo
+                //{
+                //    SeoTitle = reqData.SeoTitle,
+                //    SeoKeys = reqData.SeoKeys,
+                //    SeoDescription = reqData.SeoDescription,
+                //    ObjectId = categoryData.Id
+                //};
+                //seoCreated = _seoLogic.CreateSeoAsync(seoData);
+
+                //_uow.SaveChanges();
+                //await Task.WhenAll(categoryCreated, seoCreated);
+
+                //createdCategoryVM.categoryData = categoryData;
+                //createdCategoryVM.seoData = seoData;
+                //return await Task.FromResult(createdCategoryVM);
+
 
                 _uow.SaveChanges();
-                await Task.WhenAll(categoryCreated, seoCreated);
-
+                await Task.WhenAll(categoryCreated);
                 createdCategoryVM.categoryData = categoryData;
-                createdCategoryVM.seoData = seoData;
                 return await Task.FromResult(createdCategoryVM);
+
             }
             catch (Exception ex)
             {
@@ -97,22 +113,27 @@ namespace AppCore.Business
                 }
                 category.Slug = SlugName;
 
+                var seoData = category.Seo;
+                seoData.SeoTitle = categoryData.SeoTitle;
+                seoData.SeoKeys = categoryData.SeoKeys;
+                seoData.SeoDescription = categoryData.SeoDescription;
+
+                category.Seo = seoData;
                 _uow.GetRepository<Category>().Update(category);
-                
 
-                // Update seo
-                Logger.LogInformation("Update seo");
-                var qr = _uow.GetRepository<Seo>();
-                IEnumerable<Seo> enumerable = qr.Get((x) => x.ObjectId == categoryData.Id);
+                //// Update seo
+                //Logger.LogInformation("Update seo");
+                //var qr = _uow.GetRepository<Seo>();
+                //IEnumerable<Seo> enumerable = qr.Get((x) => x.ObjectId == categoryData.Id);
 
-                var seoData = enumerable.FirstOrDefault();
-                if(seoData != null)
-                {
-                    seoData.SeoTitle = categoryData.SeoTitle;
-                    seoData.SeoKeys = categoryData.SeoKeys;
-                    seoData.SeoDescription = categoryData.SeoDescription;
-                    qr.Update(seoData);
-                }
+                //var seoData = enumerable.FirstOrDefault();
+                //if(seoData != null)
+                //{
+                //    seoData.SeoTitle = categoryData.SeoTitle;
+                //    seoData.SeoKeys = categoryData.SeoKeys;
+                //    seoData.SeoDescription = categoryData.SeoDescription;
+                //    qr.Update(seoData);
+                //}
 
                 _uow.SaveChanges();
                 return await Task.FromResult(category);
@@ -174,7 +195,7 @@ namespace AppCore.Business
             {
                 categoryWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll();
 
-                Category aa = _uow.GetRepository<Category>().Get(id);
+                Category aa = _uow.GetRepository<Category>().Get(id).Include(Seo);
                 categoryWithEditVM.Category = _uow.GetRepository<Category>().Get(id);
 
 
