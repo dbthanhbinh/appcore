@@ -16,6 +16,7 @@ namespace AppCore.Controllers.commons
 
     public class ReqUpdateSeo
     {
+        public Guid Id { get; set; }
         public Guid ObjectId { get; set; }
         // For Seo
         public virtual string SeoTitle { get; set; }

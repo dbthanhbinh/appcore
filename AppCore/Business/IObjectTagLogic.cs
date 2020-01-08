@@ -12,6 +12,6 @@ namespace AppCore.Business
         Task<List<ObjectTag>> CreateObjectTagsAsync(List<Guid> listTags, Guid objectId, string objectType);
         List<ObjectTag> GetObjectTagsFilterByObjectId(Guid objectId);
         List<ObjectTag> GetObjectTagsManyToManyAsync(List<Guid> listTags, Guid objectId, string objectType);
-        Task<List<ObjectTagItem>> UpdateObjectTagsBusinessAsync(string listTags, string listHiddenTags, Guid objectId, string objectType);
+        void UpdateObjectTagsBusinessAsync(string listTags, string listHiddenTags, Guid objectId, string objectType, out List<ObjectTag> objectTags);
     }
 }

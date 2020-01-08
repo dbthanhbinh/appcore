@@ -140,40 +140,74 @@ namespace AppCore.Business
                 _logger.LogInformation("Update post business");
                 if (reqUpdatePostBusiness != null)
                 {
-                    // Update data for post.
-                    ReqUpdatePost reqUpdatePost = new ReqUpdatePost
-                    {
-                        Id = reqUpdatePostBusiness.Id,
-                        Name = reqUpdatePostBusiness.Name,
-                        Content = reqUpdatePostBusiness.Content,
-                        CategoryId = reqUpdatePostBusiness.CategoryId,
-                        File = reqUpdatePostBusiness.File
-                    };
-                    Task<Post> postUpdated = this.UpdatePostAsync(reqUpdatePost);
+                    Post postData = _uow.GetRepository<Post>()
+                    .GetWithRelated(a => a.Id == reqUpdatePostBusiness.Id, null, "Seo")
+                    .FirstOrDefault();
 
-                    // Update Object Media (feature image)
-                    Task<UpdatedPostBusinessObjectMediaVM> objectMediaUpdated = _objectMediaLogic.ObjectMediaUpdatePostBusinessAsync(reqUpdatePostBusiness.File, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType, "thumbnail");
+                    postData.Name = reqUpdatePostBusiness.Name;
+                    postData.Content = reqUpdatePostBusiness.Content;
+                    postData.CategoryId = reqUpdatePostBusiness.CategoryId;
 
-
-                    // Update seo data
-                    ReqUpdateSeo reqUpdateSeo = new ReqUpdateSeo
-                    {
-                        ObjectId = reqUpdatePostBusiness.Id,
-                        SeoTitle = reqUpdatePostBusiness.SeoTitle,
-                        SeoKeys = reqUpdatePostBusiness.SeoKeys,
-                        SeoDescription = reqUpdatePostBusiness.SeoDescription
-                    };
-                    Task<Seo> seoUpdated = _seoLogic.UpdateSeoAsync(reqUpdateSeo);
+                    postData.Seo.SeoTitle = reqUpdatePostBusiness.SeoTitle;
+                    postData.Seo.SeoKeys = reqUpdatePostBusiness.SeoKeys;
+                    postData.Seo.SeoDescription = reqUpdatePostBusiness.SeoDescription;
 
                     // Updated Tag list (ObjectTag)
-                    Task<List<ObjectTagItem>> objectTagUpdated = _objectTagLogic.UpdateObjectTagsBusinessAsync(reqUpdatePostBusiness.TagList, reqUpdatePostBusiness.TagListHidden, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType);
+                    _objectTagLogic.UpdateObjectTagsBusinessAsync(
+                        reqUpdatePostBusiness.TagList,
+                        reqUpdatePostBusiness.TagListHidden,
+                        reqUpdatePostBusiness.Id,
+                        reqUpdatePostBusiness.PostType,
+                        out List<ObjectTag> objectTags
+                    );
+                    postData.ObjectTags = objectTags;
 
-                    await Task.WhenAll(postUpdated, seoUpdated, objectMediaUpdated, objectTagUpdated);
+                    //Seo seoData = postData.Seo;
+                    //ReqUpdateSeo reqUpdateSeo = new ReqUpdateSeo
+                    //{
+                    //    Id = seoData.Id,
+                    //    ObjectId = reqUpdatePostBusiness.Id,
+                    //    SeoTitle = reqUpdatePostBusiness.SeoTitle,
+                    //    SeoKeys = reqUpdatePostBusiness.SeoKeys,
+                    //    SeoDescription = reqUpdatePostBusiness.SeoDescription
+                    //};
 
-                    resUpdatePostBusiness.PostUpdated = postUpdated.Result;
-                    resUpdatePostBusiness.SeoUpdated = seoUpdated.Result;
-                    resUpdatePostBusiness.ObjectTagUpdated = objectTagUpdated.Result;
-                    resUpdatePostBusiness.ObjectMediaUpdated = objectMediaUpdated.Result;
+                    //// Update data for post.
+                    //ReqUpdatePost reqUpdatePost = new ReqUpdatePost
+                    //{
+                    //    Id = reqUpdatePostBusiness.Id,
+                    //    Name = reqUpdatePostBusiness.Name,
+                    //    Content = reqUpdatePostBusiness.Content,
+                    //    CategoryId = reqUpdatePostBusiness.CategoryId,
+                    //    File = reqUpdatePostBusiness.File
+                    //};
+                    //Task<Post> postUpdated = this.UpdatePostAsync(reqUpdatePost);
+
+                    // Update Object Media (feature image)
+                    // Task<UpdatedPostBusinessObjectMediaVM> objectMediaUpdated = _objectMediaLogic.ObjectMediaUpdatePostBusinessAsync(reqUpdatePostBusiness.File, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType, "thumbnail");
+
+
+                    //// Update seo data
+                    //Seo seoData = postData.Seo;
+                    //ReqUpdateSeo reqUpdateSeo = new ReqUpdateSeo
+                    //{   
+                    //    Id = seoData.Id,
+                    //    ObjectId = reqUpdatePostBusiness.Id,
+                    //    SeoTitle = reqUpdatePostBusiness.SeoTitle,
+                    //    SeoKeys = reqUpdatePostBusiness.SeoKeys,
+                    //    SeoDescription = reqUpdatePostBusiness.SeoDescription
+                    //};
+                    //Task<Seo> seoUpdated = _seoLogic.UpdateSeoAsync(reqUpdateSeo);
+
+                    //await Task.WhenAll(postUpdated, seoUpdated, objectMediaUpdated, objectTagUpdated);
+
+                    //resUpdatePostBusiness.PostUpdated = postUpdated.Result;
+                    //resUpdatePostBusiness.SeoUpdated = seoUpdated.Result;
+                    //resUpdatePostBusiness.ObjectTagUpdated = objectTagUpdated.Result;
+                    //resUpdatePostBusiness.ObjectMediaUpdated = objectMediaUpdated.Result;
+
+                    _uow.GetRepository<Post>().Update(postData);
+                    _uow.SaveChanges();
                 }
                 
                 return resUpdatePostBusiness;
@@ -289,7 +323,9 @@ namespace AppCore.Business
                 postWithEditVM.TagList = _uow.GetRepository<Tag>().GetAll(); // Get all taglist
                 //postWithEditVM.Post = _uow.GetRepository<Post>().Get(id);  // Get post object data
 
-                postWithEditVM.Post = _uow.GetRepository<Post>().GetWithRelated(a => a.Id == id, null, "Seo,Category,ObjectTags").FirstOrDefault();  // Get post object data
+                postWithEditVM.Post = _uow.GetRepository<Post>()
+                    .GetWithRelated(a => a.Id == id, null, "Seo,Category,ObjectTags")
+                    .FirstOrDefault();  // Get post object data
                 
                 List<Guid> objectGuids = _uow.GetRepository<ObjectMedia>().GetByFilter(m => m.ObjectId == id).Select(s => s.MediaId).ToList();
                 if(objectGuids.Count > 0)

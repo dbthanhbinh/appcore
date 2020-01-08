@@ -57,10 +57,13 @@ namespace AppCore.Business
                 Logger.LogWarning("UpdatePostBusiness Object Media");
                 Task<Media> mediaCreated = _mediaLogic.CreateMediaAsync(File);
                 //Task.WaitAll(mediaCreated);
-                UpdatedPostBusinessObjectMediaVM objectMediaUpdatedInfo = null;
+                UpdatedPostBusinessObjectMediaVM objectMediaUpdatedInfo = new UpdatedPostBusinessObjectMediaVM();
                 if (mediaCreated.Result.Id != null && mediaCreated.Result.Name != null && mediaCreated.Result.Size > 0)
                 {
-                    ObjectMedia objectMediaInfo = _uow.GetRepository<ObjectMedia>().GetByFilter(om => om.ObjectId == objectId && om.ObjectType == objectType && om.MediaType == mediaType).FirstOrDefault();
+                    ObjectMedia objectMediaInfo = _uow.GetRepository<ObjectMedia>()
+                        .GetByFilter(om => om.ObjectId == objectId && om.ObjectType == objectType && om.MediaType == mediaType)
+                        .FirstOrDefault();
+
                     if(objectMediaInfo != null)
                     {
                         objectMediaInfo.MediaId = mediaCreated.Result.Id;

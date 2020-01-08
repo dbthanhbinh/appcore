@@ -34,7 +34,7 @@ namespace AppCore.Controllers
         }
 
         /**
-         * Create new Post 
+         * Update Post 
          */
         [HttpPost("updatePostBusiness", Name = "UpdatePostBusinessAsync")]
         public async Task<ActionResult> UpdatePostBusinessAsync([FromForm] ReqUpdatePostBusiness reqData)
@@ -44,7 +44,7 @@ namespace AppCore.Controllers
         }
 
         /**
-         * Update Post 
+         * Create Post 
          */
         [HttpPost("createPost", Name = "CreatePostAsync")]
         public async Task<ActionResult> CreatePostAsync([FromForm] ReqCreatePost reqData)
@@ -92,8 +92,6 @@ namespace AppCore.Controllers
         public ActionResult getPostWithEdit(Guid id)
         {
             var result = _postLogic.GetPostWithEditAsync(id);
-            // return Ok(new BaseResponse(result.Result));
-            //return Ok(new BaseResponse(result));
             return Ok(result);
         }
     }

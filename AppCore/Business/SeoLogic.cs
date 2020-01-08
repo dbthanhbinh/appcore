@@ -105,7 +105,7 @@ namespace AppCore.Business
                 Seo seoObj = new Seo();
                 if (seoData != null)
                 {
-                    seoObj = _uow.GetRepository<Seo>().GetByFilter((x) => x.ObjectId == seoData.ObjectId).FirstOrDefault();
+                    seoObj = _uow.GetRepository<Seo>().GetByFilter((x) => x.Id == seoData.Id).FirstOrDefault();
                     seoObj.SeoTitle = seoData.SeoTitle;
                     seoObj.SeoDescription = seoData.SeoDescription;
                     seoObj.SeoKeys = seoData.SeoKeys;

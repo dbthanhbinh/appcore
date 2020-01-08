@@ -82,7 +82,10 @@ namespace AppCore.Business
             {
                 // Update category
                 Logger.LogInformation("Update category");
-                Category category = _uow.GetRepository<Category>().GetWithRelated(a => a.Id == categoryData.Id, null, "Seo").FirstOrDefault();
+                Category category = _uow.GetRepository<Category>()
+                    .GetWithRelated(a => a.Id == categoryData.Id, null, "Seo")
+                    .FirstOrDefault();
+
                 category.Name = categoryData.Name;
                 category.ParentId = categoryData.ParentId ?? Guid.Empty;
 
