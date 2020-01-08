@@ -195,7 +195,7 @@ namespace AppCore.Business
             {
                 categoryWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll();
 
-                Category aa = _uow.GetRepository<Category>().Get(id).Include(Seo);
+                Category aa = _uow.GetRepository<Category>().Get(id);
                 categoryWithEditVM.Category = _uow.GetRepository<Category>().Get(id);
 
 
