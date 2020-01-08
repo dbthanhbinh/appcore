@@ -46,26 +46,40 @@ namespace AppCore.Business
                 CreatedPostVM postVM = new CreatedPostVM();
                 // Created Post
                 _logger.LogWarning("Begin create post");
-                Post postData = new Post();
-                postData.Name = reqData.Name;
-                postData.CategoryId = reqData.CategoryId;
-                postData.Content = reqData.Content;
-                Task<bool> postCreated = _uow.GetRepository<Post>().AddAsync(postData);
-                await Task.WhenAll(postCreated);
-
-                // Created seo
-                Task<Seo> seoCreated = null;
-                if (reqData.SeoTitle != null || reqData.SeoKeys != null || reqData.SeoDescription != null)
+                Guid newId = new Guid();
+                Post postData = new Post
                 {
-                    Seo seoDb = new Seo
+                    Id = newId,
+                    Name = reqData.Name,
+                    CategoryId = reqData.CategoryId,
+                    Content = reqData.Content,
+                    Seo = new Seo
                     {
                         SeoTitle = reqData.SeoTitle,
                         SeoKeys = reqData.SeoKeys,
                         SeoDescription = reqData.SeoDescription,
-                        ObjectId = postData.Id
-                    };
-                    seoCreated = _seoLogic.CreateSeoAsync(seoDb);
-                }
+                        ObjectId = newId
+                    }
+                };
+
+
+
+                Task<bool> postCreated = _uow.GetRepository<Post>().AddAsync(postData);
+                await Task.WhenAll(postCreated);
+
+                // Created seo
+                //Task<Seo> seoCreated = null;
+                //if (reqData.SeoTitle != null || reqData.SeoKeys != null || reqData.SeoDescription != null)
+                //{
+                //    Seo seoDb = new Seo
+                //    {
+                //        SeoTitle = reqData.SeoTitle,
+                //        SeoKeys = reqData.SeoKeys,
+                //        SeoDescription = reqData.SeoDescription,
+                //        ObjectId = postData.Id
+                //    };
+                //    seoCreated = _seoLogic.CreateSeoAsync(seoDb);
+                //}
 
                 // Created Object Post media
                 Task<ObjectMedia> objectMediaCreated = _objectMediaLogic.CreateObjectMediaAsync(reqData.File, postData.Id, reqData.PostType, "thumbnail");
@@ -280,6 +294,9 @@ namespace AppCore.Business
                 postWithEditVM.TagList = _uow.GetRepository<Tag>().GetAll(); // Get all taglist
                 postWithEditVM.PostTagList = _uow.GetRepository<ObjectTag>().GetByFilter((x) => x.ObjectId == id);
                 postWithEditVM.Post = _uow.GetRepository<Post>().Get(id);  // Get post object data
+
+                Post postData = _uow.GetRepository<Post>().GetWithRelated(a => a.Id == id, null, "Seo,Category").FirstOrDefault();  // Get post object data
+                
                 IEnumerable<Seo> enumerable = _uow.GetRepository<Seo>().Get((x) => x.ObjectId == id);
                 postWithEditVM.Seo = enumerable.FirstOrDefault(); // Get Post SEO object data
 

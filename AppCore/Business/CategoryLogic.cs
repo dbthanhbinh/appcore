@@ -44,10 +44,10 @@ namespace AppCore.Business
                 reqData.Slug = SlugName;
                 reqData.ParentId = reqData.ParentId ?? Guid.Empty;
 
-                Guid categoryId = new Guid();
+                Guid newId = new Guid();
                 Category categoryData = new Category
                 {
-                    Id = categoryId,
+                    Id = newId,
                     Name = reqData.Name,
                     ParentId = reqData.ParentId,
                     Slug = reqData.Slug,
@@ -56,10 +56,8 @@ namespace AppCore.Business
                         SeoTitle = reqData.SeoTitle,
                         SeoKeys = reqData.SeoKeys,
                         SeoDescription = reqData.SeoDescription,
-                        ObjectId = categoryId,
-                        CategoryId = categoryId,
-                        PostId = new Guid()
-            }
+                        ObjectId = newId
+                    }
                 };
                 Task<bool> categoryCreated = _uow.GetRepository<Category>().AddAsync(categoryData);
                 _uow.SaveChanges();

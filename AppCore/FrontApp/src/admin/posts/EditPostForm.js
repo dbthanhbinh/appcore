@@ -69,14 +69,13 @@ class EditPostForm extends Component {
             }
             this.PostActions.detailItemWithEdit(payload, (err, result)=> {
                 if(err) return
-                let resultData = Utils.getResApi(result)
-                
+                let resultData = result
                 // Mapping data
                 this.setState((prevState)=>{
                     let keysFromSeoModel = pickKeysFromModel(SeoModel.model())
                     let keysFromPostModel = pickKeysFromModel(PostModel.model())
                     let postData = _.pick(_.get(resultData, 'post'), keysFromPostModel)
-                    let seoData = _.pick(_.get(resultData, 'seo'), keysFromSeoModel)
+                    let seoData = _.pick(_.get(resultData, 'post.seo'), keysFromSeoModel)
                     let result = _.merge(postData, seoData)
                     let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
                     return { 
