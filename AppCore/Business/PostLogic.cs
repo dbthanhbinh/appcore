@@ -225,8 +225,8 @@ namespace AppCore.Business
 
                 List<Post> result = null;
                 result = _uow.GetRepository<Post>().GetAll();
-                var reports = _uow.GetRepository<Post>().GetAll(x =>
-                    x.Include(report => report.Category));
+                //var reports = _uow.GetRepository<Post>().GetAll(x =>
+                //    x.Include(report => report.Category));
 
                 //List<ObjectMedia> objectMedias = _uow.GetRepository<ObjectMedia>().GetAll();
                 //List<Media> medias = _uow.GetRepository<Media>().GetAll();
@@ -239,7 +239,7 @@ namespace AppCore.Business
                 //             ).Distinct();
 
 
-                var resultPg = PagingHelper<Post>.GetPagingList(reports.ToList(), currentPage, pageSize);
+                var resultPg = PagingHelper<Post>.GetPagingList(result, currentPage, pageSize);
                 await Task.FromResult(resultPg);
                 List<ListPostDataVM> listPostDataVMs = new List<ListPostDataVM>();
                 

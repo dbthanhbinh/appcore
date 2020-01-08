@@ -16,7 +16,6 @@ namespace AppCore.Models.DBModel
         public string PostType { get; set; } = PostTypes.Default;
         public string CreatedBy { get; set; }
         public Guid? CategoryId { get; set; }
-        public virtual Category Category { get; set; }        
 
         public virtual Seo Seo { get; set; }
     }
