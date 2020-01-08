@@ -14,6 +14,7 @@ namespace AppCore.Models.DBModel
         public string Slug { get; set; }
         public Guid ?ParentId { get; set; } = Guid.Empty;
         public string CreatedBy { get; set; }
-        public Seo Seo { get; set; }
+
+        public virtual Seo Seo { get; set; }
     }
 }

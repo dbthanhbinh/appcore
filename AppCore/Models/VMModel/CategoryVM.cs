@@ -20,6 +20,5 @@ namespace AppCore.Models.VMModel
     {
         public Category Category { get; set; }
         public List<Category> CategoryList { get; set; }
-        public Seo Seo { get; set; }
     }
 }

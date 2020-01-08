@@ -38,7 +38,12 @@ namespace AppCore.Models.Repository
         List<T> GetAll();
         IEnumerable<T> GetAll(Func<IQueryable<T>, IQueryable<T>> includeMembers);
         List<T> GetByFilter(Expression<Func<T, bool>> predicate);
-        
-        Int32 CountTotalAll();
+        IEnumerable<T> GetWithRelated(
+            Expression<Func<T, bool>> filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = "");
+
+
+            Int32 CountTotalAll();
     }
 }
