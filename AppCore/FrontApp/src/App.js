@@ -16,7 +16,7 @@ import Setting from './admin/settings'
 import PostApp from './admin/posts'
 import PostEditApp from './admin/posts/EditPostForm'
 import Category from './admin/categories'
-// import Tags from './admin/tags'
+import Tags from './admin/tags'
 import Login from './admin/users/Login'
 import Register from './admin/users/Register'
 import Users from './admin/users'
@@ -77,6 +77,8 @@ function App() {
           <WithAuthenticate exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/settings' component={ Setting } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/medias' component={ Media } layout={ ALayout }/>
+
+          <WithAuthenticate exact path='/admin/tags' component={Tags } layout={ ALayout } />
 
           <WithAuthenticate exact path='/' component={ Home } layout={appLayout}/>
           <Route exact render={ () => NotFound } /> */}

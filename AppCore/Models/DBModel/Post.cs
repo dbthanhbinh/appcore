@@ -17,7 +17,11 @@ namespace AppCore.Models.DBModel
         public string CreatedBy { get; set; }
         public Guid? CategoryId { get; set; }
 
+        // One to One
         public virtual Category Category { get; set; }
         public virtual Seo Seo { get; set; }
+
+        // Many to Many
+        public ICollection<ObjectTag> ObjectTags { get; set; }
     }
 }

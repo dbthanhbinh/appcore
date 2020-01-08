@@ -10,5 +10,8 @@ namespace AppCore.Models.DBModel
         public string Name { get; set; }
         public string Slug { get; set; }
         public virtual string Type { get; set; } = "general";
+
+        // Many to Many
+        public ICollection<ObjectTag> ObjectTags { get; set; }
     }
 }

@@ -67,6 +67,33 @@ namespace AppCore.Business
             }
         }
 
+        // Get tag list Many to Many
+        public List<ObjectTag> GetObjectTagsManyToManyAsync(List<Guid> listTags, Guid objectId, string objectType)
+        {
+            try
+            {
+                _logger.LogWarning("Create Object Tag");
+                List<ObjectTag> objectTags = new List<ObjectTag>();
+                foreach (var tagId in listTags)
+                {
+                    ObjectTag objectTag = new ObjectTag
+                    {
+                        TagId = tagId,
+                        ObjectId = objectId,
+                        ObjectType = objectType
+                    };
+                    objectTags.Add(objectTag);
+                }
+
+                return objectTags;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
         public void DeleteListObjectTagsBusinessAsync(List<Guid> listTags, Guid objectId, string objectType)
         {
             try

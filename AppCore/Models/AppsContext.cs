@@ -10,6 +10,17 @@ namespace AppCore.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<ObjectTag>()
+                .HasKey(bc => new { bc.ObjectId, bc.TagId });
+            builder.Entity<ObjectTag>()
+                .HasOne(bc => bc.Post)
+                .WithMany(b => b.ObjectTags)
+                .HasForeignKey(bc => bc.ObjectId);
+            builder.Entity<ObjectTag>()
+                .HasOne(bc => bc.Tag)
+                .WithMany(c => c.ObjectTags)
+                .HasForeignKey(bc => bc.TagId);
         }
 
         DbSet<Post> Post { get; set; }

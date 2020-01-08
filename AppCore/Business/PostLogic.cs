@@ -47,6 +47,14 @@ namespace AppCore.Business
                 // Created Post
                 _logger.LogWarning("Begin create post");
                 Guid newId = new Guid();
+                List<ObjectTag> objectTags = null;
+                if (!string.IsNullOrEmpty(reqData.TagList))
+                {
+                    List<Guid> tagListIds = new List<Guid>();
+                    tagListIds = reqData.TagList.ToString().Split(",").Select(x => Guid.Parse(x)).ToList();
+                    objectTags = _objectTagLogic.GetObjectTagsManyToManyAsync(tagListIds, newId, reqData.PostType);
+                }
+
                 Post postData = new Post
                 {
                     Id = newId,
@@ -59,7 +67,8 @@ namespace AppCore.Business
                         SeoKeys = reqData.SeoKeys,
                         SeoDescription = reqData.SeoDescription,
                         ObjectId = newId
-                    }
+                    },
+                    ObjectTags = objectTags
                 };
 
 
@@ -67,32 +76,18 @@ namespace AppCore.Business
                 Task<bool> postCreated = _uow.GetRepository<Post>().AddAsync(postData);
                 await Task.WhenAll(postCreated);
 
-                // Created seo
-                //Task<Seo> seoCreated = null;
-                //if (reqData.SeoTitle != null || reqData.SeoKeys != null || reqData.SeoDescription != null)
-                //{
-                //    Seo seoDb = new Seo
-                //    {
-                //        SeoTitle = reqData.SeoTitle,
-                //        SeoKeys = reqData.SeoKeys,
-                //        SeoDescription = reqData.SeoDescription,
-                //        ObjectId = postData.Id
-                //    };
-                //    seoCreated = _seoLogic.CreateSeoAsync(seoDb);
-                //}
-
                 // Created Object Post media
                 Task<ObjectMedia> objectMediaCreated = _objectMediaLogic.CreateObjectMediaAsync(reqData.File, postData.Id, reqData.PostType, "thumbnail");
                 _uow.SaveChanges();
                 await Task.WhenAll(objectMediaCreated);
 
                 // Create tag object
-                if(!string.IsNullOrEmpty(reqData.TagList))
-                {
-                    List<Guid> tagListIds = new List<Guid>();
-                    tagListIds = reqData.TagList.ToString().Split(",").Select(x => Guid.Parse(x)).ToList();
-                    await _objectTagLogic.CreateObjectTagsAsync(tagListIds, postData.Id, reqData.PostType);
-                }
+                //if(!string.IsNullOrEmpty(reqData.TagList))
+                //{
+                //    List<Guid> tagListIds = new List<Guid>();
+                //    tagListIds = reqData.TagList.ToString().Split(",").Select(x => Guid.Parse(x)).ToList();
+                //    await _objectTagLogic.CreateObjectTagsAsync(tagListIds, postData.Id, reqData.PostType);
+                //}
 
                 postVM.postData = postData;
                 postVM.mediaData = null;
@@ -292,14 +287,10 @@ namespace AppCore.Business
             {
                 postWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll(); // Get all category
                 postWithEditVM.TagList = _uow.GetRepository<Tag>().GetAll(); // Get all taglist
-                postWithEditVM.PostTagList = _uow.GetRepository<ObjectTag>().GetByFilter((x) => x.ObjectId == id);
-                postWithEditVM.Post = _uow.GetRepository<Post>().Get(id);  // Get post object data
+                //postWithEditVM.Post = _uow.GetRepository<Post>().Get(id);  // Get post object data
 
-                Post postData = _uow.GetRepository<Post>().GetWithRelated(a => a.Id == id, null, "Seo,Category").FirstOrDefault();  // Get post object data
+                postWithEditVM.Post = _uow.GetRepository<Post>().GetWithRelated(a => a.Id == id, null, "Seo,Category,ObjectTags").FirstOrDefault();  // Get post object data
                 
-                IEnumerable<Seo> enumerable = _uow.GetRepository<Seo>().Get((x) => x.ObjectId == id);
-                postWithEditVM.Seo = enumerable.FirstOrDefault(); // Get Post SEO object data
-
                 List<Guid> objectGuids = _uow.GetRepository<ObjectMedia>().GetByFilter(m => m.ObjectId == id).Select(s => s.MediaId).ToList();
                 if(objectGuids.Count > 0)
                 {

@@ -78,13 +78,14 @@ class EditPostForm extends Component {
                     let seoData = _.pick(_.get(resultData, 'post.seo'), keysFromSeoModel)
                     let result = _.merge(postData, seoData)
                     let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
+                    let objectTags = _.get(resultData, 'post.objectTags')
                     return { 
                         model: models,
                         isFormValid,
                         postEditData: resultData,
-                        postTagList: _.get(resultData, 'postTagList'),
-                        tagListHidden: this.getCurrentPostTagList(_.get(resultData, 'postTagList')),
-                        postTagDefaultValues: this.getCurrentPostTagList(_.get(resultData, 'postTagList')),
+                        postTagList: objectTags,
+                        tagListHidden: this.getCurrentPostTagList(objectTags),
+                        postTagDefaultValues: this.getCurrentPostTagList(objectTags),
                         mediaThumbnal: _.get(resultData, 'mediaThumbnal')
                     }
                 })
