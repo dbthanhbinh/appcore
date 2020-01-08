@@ -14,10 +14,10 @@ namespace AppCore.Models.DBModel
         public string Content { get; set; }
         public string Status { get; set; } = PostStatus.Publish;
         public string PostType { get; set; } = PostTypes.Default;
-
-        public Guid? CategoryId { get; set; }
         public string CreatedBy { get; set; }
-        public Category Category { get; set; }
-        public Seo Seo { get; set; }
+        public Guid? CategoryId { get; set; }
+        public virtual Category Category { get; set; }        
+
+        public virtual Seo Seo { get; set; }
     }
 }

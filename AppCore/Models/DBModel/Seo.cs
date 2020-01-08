@@ -16,5 +16,8 @@ namespace AppCore.Models.DBModel
         [ForeignKey("Category")]
         public Guid CategoryId { get; set; }
         public virtual Category Category { get; set; }
+
+        [ForeignKey("Post")]
+        public Guid PostId { get; set; }
     }
 }

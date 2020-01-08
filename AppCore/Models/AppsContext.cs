@@ -10,16 +10,9 @@ namespace AppCore.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //builder.Entity<Post>(entity =>
-            //{
-            //    entity.HasOne(s => s.Seo).WithOne()
-            //           .HasConstraintName("FK_Post_Seo");
-            //    entity.HasOne(d => d.Category).WithOne()
-            //        .HasConstraintName("FK_Post_Category");
-            //});
         }
 
-        //DbSet<Post> Post { get; set; }
+        DbSet<Post> Post { get; set; }
         DbSet<Category> Category { get; set; }
         DbSet<Media> Media { get; set; }
         DbSet<ObjectMedia> ObjectMedia { get; set; }

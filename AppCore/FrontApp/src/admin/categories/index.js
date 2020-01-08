@@ -60,13 +60,13 @@ class Category extends Component{
                 
                 // Mapping data
                 this.setState((prevState)=>{
-                    let data = resultData
                     let keysFromSeoModel = pickKeysFromModel(SeoModel.model())
                     let keysFromCatModel = pickKeysFromModel(CategoryModel.model())
-                    let categoryData = _.pick(_.get(data, 'category'), keysFromCatModel)
-                    let result = _.merge(categoryData)
+                    let categoryData = _.pick(_.get(resultData, 'category'), keysFromCatModel)
+                    let seoData = _.pick(_.get(resultData, 'category.seo'), keysFromSeoModel)
+                    let result = _.merge(categoryData, seoData)
                     let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
-                    this.props.detailCategoryWithEdit(data)
+                    this.props.detailCategoryWithEdit(resultData)
                     return { model: models, isFormValid }
                 })
             })

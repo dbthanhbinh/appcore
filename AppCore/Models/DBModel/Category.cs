@@ -16,5 +16,7 @@ namespace AppCore.Models.DBModel
         public string CreatedBy { get; set; }
 
         public virtual Seo Seo { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }

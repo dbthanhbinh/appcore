@@ -64,7 +64,7 @@ class CategoryForm extends React.Component{
                     <Form.Field>
                         <SeoForm
                             model={model}
-                            seoData={ _.get(detailData, 'seo') }
+                            //seoData={ _.get(detailData, 'category.seo') }
                             onInputChange = {onInputChange} />
                     </Form.Field>
                     <Form.Field>

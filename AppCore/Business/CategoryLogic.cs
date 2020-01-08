@@ -57,8 +57,9 @@ namespace AppCore.Business
                         SeoKeys = reqData.SeoKeys,
                         SeoDescription = reqData.SeoDescription,
                         ObjectId = categoryId,
-                        CategoryId = categoryId
-                    }
+                        CategoryId = categoryId,
+                        PostId = new Guid()
+            }
                 };
                 Task<bool> categoryCreated = _uow.GetRepository<Category>().AddAsync(categoryData);
                 _uow.SaveChanges();
@@ -83,7 +84,7 @@ namespace AppCore.Business
             {
                 // Update category
                 Logger.LogInformation("Update category");
-                Category category = _uow.GetRepository<Category>().Get(categoryData.Id);
+                Category category = _uow.GetRepository<Category>().GetWithRelated(a => a.Id == categoryData.Id, null, "Seo").FirstOrDefault();
                 category.Name = categoryData.Name;
                 category.ParentId = categoryData.ParentId ?? Guid.Empty;
 
@@ -93,11 +94,13 @@ namespace AppCore.Business
                     SlugName = StringHelper.GenerateSlug(categoryData.Slug);
                 }
                 category.Slug = SlugName;
+
                 var seoData = category.Seo;
                 seoData.SeoTitle = categoryData.SeoTitle;
                 seoData.SeoKeys = categoryData.SeoKeys;
                 seoData.SeoDescription = categoryData.SeoDescription;
                 category.Seo = seoData;
+
                 _uow.GetRepository<Category>().Update(category);
                 _uow.SaveChanges();
                 return await Task.FromResult(category);
