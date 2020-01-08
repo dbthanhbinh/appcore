@@ -10,7 +10,7 @@ namespace AppCore.Controllers
 {
     [EnableCors("AllowAllCors")]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class PostController : BaseController
     {
