@@ -63,6 +63,15 @@ namespace AppCore.Controllers
             return Ok(new BaseResponse());
         }
 
+
+        [HttpGet("getPostWithEdit/{id}", Name = "GetPostWithEdit")]
+        public ActionResult getPostWithEdit(Guid id)
+        {
+            var result = _postLogic.GetPostWithEditAsync(id);
+            return Ok(result);
+        }
+
+        // ======================For FrontEnd==========================================
         /*
          * Get all post
          */
@@ -88,11 +97,5 @@ namespace AppCore.Controllers
             return Ok(new BaseResponse(result.Result.Data, result.Result.Paging));
         }
 
-        [HttpGet("getPostWithEdit/{id}", Name = "GetPostWithEdit")]
-        public ActionResult getPostWithEdit(Guid id)
-        {
-            var result = _postLogic.GetPostWithEditAsync(id);
-            return Ok(result);
-        }
     }
 }
