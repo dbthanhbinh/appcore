@@ -12,6 +12,7 @@ namespace AppCore.Models.VMModel
 
     public class UpdatedPostBusinessObjectMediaVM :  ObjectMedia
     {
+        public UpdatedPostBusinessObjectMediaVM() { }
         public UpdatedPostBusinessObjectMediaVM(ObjectMedia objectMedia)
         {
             Id = objectMedia.Id;

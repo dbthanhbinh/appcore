@@ -4,6 +4,7 @@ using AppCore.Models.DBModel;
 using AppCore.Models.Repository;
 using AppCore.Models.UnitOfWork;
 using AppCore.Models.VMModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -43,32 +44,27 @@ namespace AppCore.Business
                 reqData.Slug = SlugName;
                 reqData.ParentId = reqData.ParentId ?? Guid.Empty;
 
+                Guid newId = new Guid();
                 Category categoryData = new Category
                 {
+                    Id = newId,
                     Name = reqData.Name,
                     ParentId = reqData.ParentId,
-                    Slug = reqData.Slug
+                    Slug = reqData.Slug,
+                    Seo = new Seo
+                    {
+                        SeoTitle = reqData.SeoTitle,
+                        SeoKeys = reqData.SeoKeys,
+                        SeoDescription = reqData.SeoDescription,
+                        ObjectId = newId
+                    }
                 };
                 Task<bool> categoryCreated = _uow.GetRepository<Category>().AddAsync(categoryData);
-
-                // Created seo
-                Logger.LogInformation("Create new seo");
-                Task<Seo> seoCreated = null;
-                Seo seoData = new Seo
-                {
-                    SeoTitle = reqData.SeoTitle,
-                    SeoKeys = reqData.SeoKeys,
-                    SeoDescription = reqData.SeoDescription,
-                    ObjectId = categoryData.Id
-                };
-                seoCreated = _seoLogic.CreateSeoAsync(seoData);
-
                 _uow.SaveChanges();
-                await Task.WhenAll(categoryCreated, seoCreated);
 
                 createdCategoryVM.categoryData = categoryData;
-                createdCategoryVM.seoData = seoData;
                 return await Task.FromResult(createdCategoryVM);
+
             }
             catch (Exception ex)
             {
@@ -86,7 +82,10 @@ namespace AppCore.Business
             {
                 // Update category
                 Logger.LogInformation("Update category");
-                Category category = _uow.GetRepository<Category>().Get(categoryData.Id);
+                Category category = _uow.GetRepository<Category>()
+                    .GetWithRelated(a => a.Id == categoryData.Id, null, "Seo")
+                    .FirstOrDefault();
+
                 category.Name = categoryData.Name;
                 category.ParentId = categoryData.ParentId ?? Guid.Empty;
 
@@ -97,23 +96,13 @@ namespace AppCore.Business
                 }
                 category.Slug = SlugName;
 
+                var seoData = category.Seo;
+                seoData.SeoTitle = categoryData.SeoTitle;
+                seoData.SeoKeys = categoryData.SeoKeys;
+                seoData.SeoDescription = categoryData.SeoDescription;
+                category.Seo = seoData;
+
                 _uow.GetRepository<Category>().Update(category);
-                
-
-                // Update seo
-                Logger.LogInformation("Update seo");
-                var qr = _uow.GetRepository<Seo>();
-                IEnumerable<Seo> enumerable = qr.Get((x) => x.ObjectId == categoryData.Id);
-
-                var seoData = enumerable.FirstOrDefault();
-                if(seoData != null)
-                {
-                    seoData.SeoTitle = categoryData.SeoTitle;
-                    seoData.SeoKeys = categoryData.SeoKeys;
-                    seoData.SeoDescription = categoryData.SeoDescription;
-                    qr.Update(seoData);
-                }
-
                 _uow.SaveChanges();
                 return await Task.FromResult(category);
             }
@@ -167,20 +156,18 @@ namespace AppCore.Business
         /*
          * Get list all category with edit data
          */
-        public async Task<CategoryWithEditVM> GetCategoriesWithEditAsync(Guid id)
+        public CategoryWithEditVM GetCategoriesWithEditAsync(Guid id)
         {
             CategoryWithEditVM categoryWithEditVM = new CategoryWithEditVM();
             try
             {
                 categoryWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll();
-
-                Category aa = _uow.GetRepository<Category>().Get(id);
-                var tamp = aa.Seos.ToList();
-
-                categoryWithEditVM.Category = _uow.GetRepository<Category>().Get(id);
-                IEnumerable<Seo> enumerable = _uow.GetRepository<Seo>().Get((x) => x.ObjectId == id);
-                categoryWithEditVM.Seo = null; // enumerable.FirstOrDefault();
-                return await Task.FromResult(categoryWithEditVM);
+                Category categoryData = _uow.GetRepository<Category>().GetWithRelated(a => a.Id == id, null, "Seo").FirstOrDefault();
+                if(categoryData != null)
+                {
+                    categoryWithEditVM.Category = categoryData;
+                }
+                return categoryWithEditVM;
             }
             catch (Exception ex)
             {

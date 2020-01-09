@@ -16,7 +16,7 @@ namespace AppCore.Business
         Task<Category> GetCategoryAsync(Guid id);
         Task<Category> DeleteCategoryAsync(ReqDeleteCategory reqDeleteCategory);
 
-        Task<CategoryWithEditVM> GetCategoriesWithEditAsync(Guid id);
+        CategoryWithEditVM GetCategoriesWithEditAsync(Guid id);
         Task<PagingResponse> FilterCategoryWithPagingAsync(ReqFilterCategory reqFilterCategory);
     }
 }

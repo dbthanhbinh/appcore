@@ -23,7 +23,7 @@ const PostList = (props) => {
                         <th className='admin-postlist-thumb'>Image</th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>CategoryId</th>
+                        <th>Category</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -38,7 +38,7 @@ const PostList = (props) => {
                                     </td>
                                     <td>{ item.name }</td>
                                     <td>Otto</td>
-                                    <td>fff</td>
+                                    <td>{item.category ? item.category.name : null}</td>
                                     <td>
                                     <ItemActions
                                         currentRoute={currentRoute}

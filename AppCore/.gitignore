@@ -184,6 +184,8 @@ orleans.codegen.cs
 
 /node_modules
 
+Migrations/
+
 # RIA/Silverlight projects
 Generated_Code/
 

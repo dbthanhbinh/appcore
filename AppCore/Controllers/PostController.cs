@@ -10,7 +10,7 @@ namespace AppCore.Controllers
 {
     [EnableCors("AllowAllCors")]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class PostController : BaseController
     {
@@ -34,7 +34,7 @@ namespace AppCore.Controllers
         }
 
         /**
-         * Create new Post 
+         * Update Post 
          */
         [HttpPost("updatePostBusiness", Name = "UpdatePostBusinessAsync")]
         public async Task<ActionResult> UpdatePostBusinessAsync([FromForm] ReqUpdatePostBusiness reqData)
@@ -44,7 +44,7 @@ namespace AppCore.Controllers
         }
 
         /**
-         * Update Post 
+         * Create Post 
          */
         [HttpPost("createPost", Name = "CreatePostAsync")]
         public async Task<ActionResult> CreatePostAsync([FromForm] ReqCreatePost reqData)
@@ -63,6 +63,15 @@ namespace AppCore.Controllers
             return Ok(new BaseResponse());
         }
 
+
+        [HttpGet("getPostWithEdit/{id}", Name = "GetPostWithEdit")]
+        public ActionResult getPostWithEdit(Guid id)
+        {
+            var result = _postLogic.GetPostWithEditAsync(id);
+            return Ok(result);
+        }
+
+        // ======================For FrontEnd==========================================
         /*
          * Get all post
          */
@@ -88,11 +97,5 @@ namespace AppCore.Controllers
             return Ok(new BaseResponse(result.Result.Data, result.Result.Paging));
         }
 
-        [HttpGet("getPostWithEdit/{id}", Name = "GetPostWithEdit")]
-        public ActionResult getPostWithEdit(Guid id)
-        {
-            var result = _postLogic.GetPostWithEditAsync(id);
-            return Ok(new BaseResponse(result.Result));
-        }
     }
 }

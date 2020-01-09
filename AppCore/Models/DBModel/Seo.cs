@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppCore.Models.DBModel
@@ -10,8 +11,7 @@ namespace AppCore.Models.DBModel
         public string SeoDescription { get; set; }
         public string Slug { get; set; }
         public string ObjectType { get; set; }
+        [ForeignKey("Category, Post")]
         public Guid ObjectId { get; set; }
-
-        public virtual Category Category { get; set; }
     }
 }
