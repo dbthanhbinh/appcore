@@ -42,6 +42,7 @@ namespace AppCore.Controllers
             return Ok(new BaseResponse(result));
         }
 
+        // ================================= Process for frontend =================================
         [HttpGet("getLayoutSettings", Name = "GetLayoutSettings")]
         public async Task<ActionResult> GetLayoutSettings()
         {

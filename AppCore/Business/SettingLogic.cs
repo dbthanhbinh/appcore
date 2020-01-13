@@ -83,17 +83,20 @@ namespace AppCore.Business
             }
         }
 
-        public Task<List<ListSettingVM>> GetLayoutSettingsAsync()
+
+
+        // ================================= Process for frontend =================================
+        public Task<LayoutSettingsVM> GetLayoutSettingsAsync()
         {
             try
             {
                 // Get all Settings
-                List<ListSettingVM> settings = new List<ListSettingVM>();
+                LayoutSettingsVM settings = new LayoutSettingsVM();
                 _logger.LogInformation("Get all option settings");
                 List<ListSettingVM> settingOptions = _uow.GetRepository<Setting>().GetByFilter(x => x.Type == GeneralSetting.SettingType.ToString()).Select(s => new ListSettingVM { Name = s.Name, Value = s.Value}).ToList();
                 if (settingOptions != null)
                 {
-                    return Task.FromResult(settingOptions);
+                    settings.ThemeInfomation = settingOptions;
                 }
                 return Task.FromResult(settings);
             }

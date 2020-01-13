@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AppCore.Business;
 using AppCore.Controllers.commons;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppCore.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TagController : BaseController
@@ -16,6 +19,7 @@ namespace AppCore.Controllers
         private readonly ITagLogic _tagLogic;
         public TagController(ITagLogic tagLogic)
         {
+            var ctx = HttpContext;
             _tagLogic = tagLogic;
         }
 

@@ -1,4 +1,6 @@
 export const publicSetting = {
+    themeName: 'Default',
+    themeVersion: '1.0',
     headerInfomations: {
         logo: {
             

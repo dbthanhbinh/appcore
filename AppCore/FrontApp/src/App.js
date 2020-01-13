@@ -80,7 +80,7 @@ function App() {
 
           <WithAuthenticate exact path='/admin/tags' component={Tags } layout={ ALayout } />
 
-          <WithAuthenticate exact path='/' component={ Home } layout={appLayout}/>
+          <WithAuthenticate exact path='/' component={ Home } layout={FLayout}/>
           <Route exact render={ () => NotFound } /> */}
         </Switch>
       </BrowserRouter>
