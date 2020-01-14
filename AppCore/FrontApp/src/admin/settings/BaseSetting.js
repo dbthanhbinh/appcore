@@ -16,6 +16,7 @@ class BaseSetting extends React.Component {
         this.SettingActions = new SettingActions()
         this.state = {}
         this.settingName = null
+        this.AutoLoad = 'No'
         this.handleSubmitFormSupper = this.handleSubmitFormSupper.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
     }

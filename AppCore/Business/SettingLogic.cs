@@ -86,19 +86,23 @@ namespace AppCore.Business
 
 
         // ================================= Process for frontend =================================
-        public Task<LayoutSettingsVM> GetLayoutSettingsAsync()
+        public LayoutSettingsVM GetLayoutSettingsAsync()
         {
             try
             {
                 // Get all Settings
                 LayoutSettingsVM settings = new LayoutSettingsVM();
                 _logger.LogInformation("Get all option settings");
-                List<ListSettingVM> settingOptions = _uow.GetRepository<Setting>().GetByFilter(x => x.Type == GeneralSetting.SettingType.ToString()).Select(s => new ListSettingVM { Name = s.Name, Value = s.Value}).ToList();
+                List<ListSettingVM> settingOptions = _uow.GetRepository<Setting>()
+                    .GetByFilter(x => x.IsActive == true && x.Type == GeneralSetting.SettingType.ToString())
+                    .Select(s => new ListSettingVM { Name = s.Name, Value = s.Value})
+                    .ToList();
+
                 if (settingOptions != null)
                 {
                     settings.ThemeInfomation = settingOptions;
                 }
-                return Task.FromResult(settings);
+                return settings;
             }
             catch (Exception ex)
             {

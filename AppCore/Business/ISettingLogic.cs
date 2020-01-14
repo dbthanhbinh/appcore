@@ -12,6 +12,8 @@ namespace AppCore.Business
     {
         Task<Setting> UpdateSetingOptionAsync(SettingRequests settingRequests);
         Task<Setting> GetSetingOptionAsync(string settingName);
-        Task<LayoutSettingsVM> GetLayoutSettingsAsync();
+
+        // ========================================
+        LayoutSettingsVM GetLayoutSettingsAsync();
     }
 }

@@ -5,11 +5,19 @@ import { Grid } from 'semantic-ui-react'
 class Home extends React.Component {
     render(){
         return(
-            <React.Fragment>
-                <Grid.Row>
-                    {/* <SimCard /> */}
-                </Grid.Row>
-            </React.Fragment>
+            <Grid.Row  columns={3} className='app-main-body'>
+                <Grid.Column width={3}>
+                    {/* <LSidebar /> */}
+                </Grid.Column>
+                <Grid.Column width={10} className='main-contents'>
+                    <Grid.Row>
+                        {/* <SimCard /> */}
+                    </Grid.Row>
+                </Grid.Column>
+                <Grid.Column  width={3}>
+                    {/* <RSidebar /> */}
+                </Grid.Column>
+            </Grid.Row>
         )
     }
 }

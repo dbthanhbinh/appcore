@@ -20,6 +20,7 @@ class SeoSetting extends BaseSetting {
             isFormValid: isFormValid
         }
         this.settingName = 'GeneralSeoSetting'
+        this.AutoLoad = 'Yes'
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
     }
 
@@ -36,6 +37,8 @@ class SeoSetting extends BaseSetting {
             payload = {
                 url: 'Setting/updateGeneralSeting',
                 body: {
+                    settingName: this.settingName,
+                    autoLoad: this.AutoLoad,
                     Value: JSON.stringify(seoFormData),
                     CustomValue: null
                 }

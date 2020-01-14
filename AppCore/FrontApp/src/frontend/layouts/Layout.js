@@ -30,14 +30,16 @@ class Layout extends Component {
 
     initLayoutData(){
         let payload = {
-            url: `Setting/getLayoutSettings`
+            url: `Rest/getLayoutSettings`
         }
         this.SettingActions.detailItem(payload, (err, result)=> {
             if(err) return
-            let resultData = Utils.getResApi(result)// GeneralSeoSetting
-            if(resultData && resultData.length > 0){
+            let resultData = Utils.getResApi(result) // GeneralSeoSetting
+            let themeInfomation = _.get(resultData, 'themeInfomation')
+            if(themeInfomation && themeInfomation.length > 0){
+                
                 this.setState((prevState) => {
-                    resultData.forEach(e => {
+                    themeInfomation.forEach(e => {
                         prevState.configLayoutSetting[e.name] = (e.value) ? JSON.parse(e.value) : null
                     })
                     return prevState.configLayoutSetting
@@ -55,7 +57,32 @@ class Layout extends Component {
                 <HelmetSeo configSeoDefault={_.get(configLayoutSetting, 'GeneralSeoSetting')} />
                 <Container>
                     <Grid>
-                        
+                        <Grid.Row className='app-header'>
+                            <Grid.Column>
+                                {
+                                    headerInfomations && headerInfomations.bannerHeader && headerInfomations.bannerHeader.src
+                                    ? <img src={headerInfomations.bannerHeader.src} alt='' />
+                                    : null
+                                }
+                                
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row className='app-nav'>
+                            <Grid.Column md={12}><Navitem navigation={navigationInfomations.navigation}/></Grid.Column>
+                        </Grid.Row>
+
+
+                        {this.props.children}
+
+
+                        <Grid.Row className='app-footer'>
+                            <Grid.Column>
+                                <Footer
+                                    companyInfomations = { publicSetting.companyInfomations }
+                                    socialNetworkInfomations = { publicSetting.socialNetworkInfomations }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
                     </Grid>
                 </Container>
                 <Loading />

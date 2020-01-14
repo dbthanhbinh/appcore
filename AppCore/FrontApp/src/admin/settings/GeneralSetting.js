@@ -62,6 +62,7 @@ class SeoSetting extends BaseSetting {
             isFormValid: isFormValid
         }
         this.settingName = 'GeneralSetting'
+        this.AutoLoad = 'Yes'
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
         this.handleOnChangeUpload = this.handleOnChangeUpload.bind(this)
     }
@@ -80,6 +81,7 @@ class SeoSetting extends BaseSetting {
         let {isFormValid} = this.props
         let { model } = this.state
         let formData = {
+            webSlogan: model[GeneralSettingDefined.WEB_SLOGAN].value,
             googleAnalyticCode: model[GeneralSettingDefined.GOOGLEANALYTICCODE].value,
             copyrightText: model[GeneralSettingDefined.COPYRIGHTTEXT].value
         }
@@ -89,6 +91,7 @@ class SeoSetting extends BaseSetting {
                 url: 'Setting/updateGeneralSeting',
                 body: {
                     settingName: this.settingName,
+                    autoLoad: this.AutoLoad,
                     Value: JSON.stringify(formData),
                     CustomValue: null
                 }
@@ -104,7 +107,7 @@ class SeoSetting extends BaseSetting {
         return(
             <Form>
                 <Form.Field>
-                    <input type='file' name='file' id='file' onChange={this.handleOnChangeUpload} />
+                    {/* <input type='file' name='file' id='file' onChange={this.handleOnChangeUpload} /> */}
                     <BuildTextField
                         name={GeneralSettingDefined.WEB_SLOGAN}
                         onChange={this.handleOnInputChange}
@@ -112,7 +115,7 @@ class SeoSetting extends BaseSetting {
                     />
                 </Form.Field>
                 <Form.Field>
-                    <input type='file' name='file' id='file' onChange={this.handleOnChangeUpload} />
+                    {/* <input type='file' name='file' id='file' onChange={this.handleOnChangeUpload} /> */}
                     <BuildTextField
                         name={GeneralSettingDefined.GOOGLEANALYTICCODE}
                         onChange={this.handleOnInputChange}

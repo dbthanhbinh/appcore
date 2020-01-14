@@ -54,3 +54,10 @@ export const ContactDefined = {
     PHONE_MESSAGE: 'phoneMessage',
     FACEBOOK_MESSAGE: 'facebookMessage'
 }
+
+export const LayoutDefined = {
+    HOME_LAYOUT: 'homeLayout',
+    PAGE_LAYOUT: 'pageLayout',
+    POST_LAYOUT: 'postLayout',
+    ARCHIVE_LAYOUT: 'archiveLayout'
+}

@@ -38,15 +38,12 @@ namespace AppCore.Controllers
                 Type = GeneralSetting.SettingType
             };
 
-            var result = await _settingLogic.UpdateSetingOptionAsync(settingRequests);
-            return Ok(new BaseResponse(result));
-        }
+            if (generalSettingRequests.AutoLoad != null)
+            {
+                settingRequests.AutoLoad = generalSettingRequests.AutoLoad;
+            }
 
-        // ================================= Process for frontend =================================
-        [HttpGet("getLayoutSettings", Name = "GetLayoutSettings")]
-        public async Task<ActionResult> GetLayoutSettings()
-        {
-            var result = await _settingLogic.GetLayoutSettingsAsync();
+            var result = await _settingLogic.UpdateSetingOptionAsync(settingRequests);
             return Ok(new BaseResponse(result));
         }
     }

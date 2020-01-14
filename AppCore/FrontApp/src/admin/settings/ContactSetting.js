@@ -22,7 +22,8 @@ class ContactSetting extends BaseSetting {
             model: models,
             isFormValid: isFormValid
         }
-        this.settingName = 'GeneralSetting'
+        this.settingName = 'ContactSetting'
+        this.AutoLoad = 'Yes'
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
     }
 
@@ -45,6 +46,7 @@ class ContactSetting extends BaseSetting {
                 url: 'Setting/updateGeneralSeting',
                 body: {
                     settingName: this.settingName,
+                    autoLoad: this.AutoLoad,
                     Value: JSON.stringify(formData),
                     CustomValue: null
                 }
