@@ -14,6 +14,7 @@ namespace AppCore.Controllers.commons
     {
         public string Name { get; set; }
         public string Slug { get; set; }
+        public Guid UserId { get; set; }
         public virtual string Type { get; set; }
     }
 
@@ -27,5 +28,6 @@ namespace AppCore.Controllers.commons
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Slug { get; set; }
+        public Guid UserId { get; set; }
     }
 }

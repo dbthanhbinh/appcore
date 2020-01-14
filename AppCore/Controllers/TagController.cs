@@ -18,14 +18,13 @@ namespace AppCore.Controllers
     {
         private readonly ITagLogic _tagLogic;
         public TagController(ITagLogic tagLogic)
-        {
-            var ctx = HttpContext;
+        {   
             _tagLogic = tagLogic;
         }
 
         [HttpGet("getAllTag", Name = "GetAllTag")]
         public ActionResult GetAllTag()
-        {
+        {   
             object a = _tagLogic.GetAll();
             return Ok(new BaseResponse(a));
         }
@@ -33,6 +32,7 @@ namespace AppCore.Controllers
         [HttpPost("createTag", Name = "CreateTagAsync")]
         public async Task<ActionResult> CreateTagAsync([FromBody] ReqCreateTag tag)
         {
+            tag.UserId = UserId;
             var result = await _tagLogic.CreateTagAsync(tag);
             return Ok(new BaseResponse(result));
         }

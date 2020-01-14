@@ -44,9 +44,11 @@ namespace AppCore.Business
                 }
                 
                 Tag tagData = new Tag
-                {
+                {   
                     Name = reqData.Name,
-                    Slug = reqData.Slug
+                    Slug = reqData.Slug,
+                    CreatedBy = reqData.UserId,
+                    ModifiedBy = reqData.UserId
                 };
                 Task<bool> tagCreated = _uow.GetRepository<Tag>().AddAsync(tagData);
                 _uow.SaveChanges();
@@ -77,6 +79,7 @@ namespace AppCore.Business
                     SlugName = StringHelper.GenerateSlug(tagData.Slug);
                 }
                 tag.Slug = SlugName;
+                tag.ModifiedBy = tagData.UserId;
 
                 _uow.GetRepository<Tag>().Update(tag);
                 _uow.SaveChanges();
