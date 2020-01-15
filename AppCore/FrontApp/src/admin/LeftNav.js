@@ -20,29 +20,6 @@ export default class LeftNav extends Component {
               />
             </Menu.Menu>
           </Menu.Item>
-  
-          <Menu.Item>
-            <Menu.Header>CMS Solutions</Menu.Header>
-  
-            <Menu.Menu>
-              <Menu.Item
-                name='rails'
-                active={activeItem === 'rails'}
-                onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                name='python'
-                active={activeItem === 'python'}
-                onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                name='php'
-                active={activeItem === 'php'}
-                onClick={this.handleItemClick}
-              />
-            </Menu.Menu>
-          </Menu.Item>
-  
           <Menu.Item>
             <Menu.Header>Hosting</Menu.Header>
   
