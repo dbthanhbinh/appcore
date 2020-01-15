@@ -12,11 +12,11 @@ namespace AppCore.Business
     {
         Task<User> CreateUserAsync(User user);
         Task<User> RegisterMemberAsync(RegisterMemberReq registerMemberReq);
-        IEnumerable<User> GetAll();
         Task<UserDetailVM> GetUserById(Guid userId);
         Task<PagingResponse> GetUsersWithPagingAsync(GetUsersReq getUsersReq);
         User Authenticate(LoginReq loginReq);
         UserMemberValid CheckValidRegisterAttibutes(RegisterMemberReq registerMemberReq);
         UserMemberValid CheckValidProfileAttibutes(Guid UserId);
+        void LogOutAsyn();
     }
 }

@@ -9,27 +9,60 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppCore.Controllers.commons
 {
-    [Authorize]
     public class BaseController : ControllerBase
     {
         protected Guid UserId
         {
             get
             {
-                var ctx = HttpContext;
                 var userData = HttpContext.User.Claims;
-                var name_u = userData.Where(c => c.Type == ClaimTypes.Name).SingleOrDefault();
-                if (name_u != null)
-                    return new Guid(name_u.Value);
+                var claimData = userData.Where(c => c.Type == ClaimTypes.Name).SingleOrDefault();
+                if (claimData != null)
+                    return new Guid(claimData.Value);
                 else
                     return new Guid();
             }
         }
 
-        public BaseController()
+        protected string UserRole
         {
-            
+            get
+            {
+                var userData = HttpContext.User.Claims;
+                var claimData = userData.Where(c => c.Type == ClaimTypes.Role).SingleOrDefault();
+                if (claimData != null)
+                    return claimData.Value;
+                else
+                    return null;
+            }
         }
+
+        protected string UserPhone
+        {
+            get
+            {
+                var userData = HttpContext.User.Claims;
+                var claimData = userData.Where(c => c.Type == "Phone").SingleOrDefault();
+                if (claimData != null)
+                    return claimData.Value;
+                else
+                    return null;
+            }
+        }
+
+        protected string UserEmail
+        {
+            get
+            {
+                var userData = HttpContext.User.Claims;
+                var claimData = userData.Where(c => c.Type == ClaimTypes.Email).SingleOrDefault();
+                if (claimData != null)
+                    return claimData.Value;
+                else
+                    return null;
+            }
+        }
+
         public BaseResponse BaseResponseApiErrorResult(Exception ex)
         {
             return new BaseResponse(ex.InnerException.Message.ToString());

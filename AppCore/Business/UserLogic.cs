@@ -22,11 +22,6 @@ namespace AppCore.Business
         public ILogger<UserLogic> _logger { get; }
 
         private readonly AppSettings _appSettings;
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private readonly List<User> _users = new List<User>
-        {
-            new User { Id = new Guid(), FullName = "Test Full name", Phone = "0909874825", Email = "leotrinh86@gmail.com"}
-        };
 
         public UserLogic(IUnitOfWork uow, ILogger<UserLogic> logger, IOptions<AppSettings> appSettings)
         {
@@ -169,6 +164,7 @@ namespace AppCore.Business
                     {
                         new Claim(ClaimTypes.Name, user.Id.ToString()),
                         new Claim(ClaimTypes.Email, user.Email.ToString()),
+                        new Claim(ClaimTypes.Role, "SupperAdmin"),
                         new Claim("Phone", user.Phone.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddDays(7),
@@ -188,12 +184,21 @@ namespace AppCore.Business
             }
         }
 
-        public IEnumerable<User> GetAll()
+        public void LogOutAsyn()
         {
-            // return users without passwords
-            return _users.Select(x => {
-                return x;
-            });
+            try
+            {
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]{}),
+                    Expires = DateTime.UtcNow.AddDays(7)
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.InnerException.Message.ToString());
+                throw ex;
+            }
         }
 
         public async Task<PagingResponse> GetUsersWithPagingAsync(GetUsersReq getUsersReq)

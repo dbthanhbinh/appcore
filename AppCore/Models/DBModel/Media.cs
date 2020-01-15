@@ -15,7 +15,6 @@ namespace AppCore.Models.DBModel
         public string Type { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }
-        public string CreatedBy { get; set; }
         public string ResizeType { get; set; }
     }
 }

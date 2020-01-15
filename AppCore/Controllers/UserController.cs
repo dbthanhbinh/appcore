@@ -34,14 +34,7 @@ namespace AppCore.Controllers
                 return Ok(this.BaseResponseApiErrorResult(ex));
             }
         }
-
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var users = _userLogic.GetAll();
-            return Ok(users);
-        }
-
+        
         [HttpGet("getUsers/{pageSize}/{currentPage}", Name = "GetUsers")]
         public ActionResult GetUsersWithPagingAsync(Int32 pageSize, Int32 currentPage)
         {
@@ -85,7 +78,8 @@ namespace AppCore.Controllers
         {
             try
             {
-                return Ok(new BaseResponse());
+                _userLogic.LogOutAsyn();
+                return Ok();
             }
             catch (Exception ex)
             {

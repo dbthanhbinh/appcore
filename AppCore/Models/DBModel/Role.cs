@@ -12,6 +12,5 @@ namespace AppCore.Models.DBModel
         [DataType(DataType.Text)]
         public string Name { get; set; }
         public string Slug { get; set; }
-        public string CreatedBy { get; set; }
     }
 }

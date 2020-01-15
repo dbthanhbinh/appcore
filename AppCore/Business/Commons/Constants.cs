@@ -41,4 +41,31 @@ namespace AppCore.Business.Commons
 
         public static string GeneralSettingName { get { return "GeneralSetting"; } }
     }
+
+    public class AdminMenuItem
+    {
+        public string Name { get; set; }
+        public string Href { get; set; } = "#";
+        public string DisplayName { get; set; } = null;
+        public bool Active { get; set; } = false;
+    }
+
+    public class AdminMenus
+    {
+        public AdminMenus()
+        {
+            List<AdminMenuItem> adminMenuItems = new List<AdminMenuItem>();
+            adminMenuItems.Add(new AdminMenuItem { Name = "Posts", DisplayName = "Posts" });
+            adminMenuItems.Add(new AdminMenuItem { Name = "Pages", DisplayName = "Pages" });
+            adminMenuItems.Add(new AdminMenuItem { Name = "Tags", DisplayName = "Tags" });
+            adminMenuItems.Add(new AdminMenuItem { Name = "Categories", DisplayName = "Categories" });
+            adminMenuItems.Add(new AdminMenuItem { Name = "Users", DisplayName = "Users" });
+            adminMenuItems.Add(new AdminMenuItem { Name = "Settings", DisplayName = "Settings" });
+        }
+    }
+
+    public static class GroupRoles
+    {
+        public static string[] SettingNames = { "SupperAdmin", "Admin", "Editor", "Author", "Member" };
+    }
 }
