@@ -55,9 +55,9 @@ namespace AppCore.Business.Commons
         public AdminMenus()
         {
             List<AdminMenuItem> adminMenuItems = new List<AdminMenuItem>();
-            adminMenuItems.Add(new AdminMenuItem { Name = "Posts", DisplayName = "Posts" });
-            adminMenuItems.Add(new AdminMenuItem { Name = "Pages", DisplayName = "Pages" });
-            adminMenuItems.Add(new AdminMenuItem { Name = "Tags", DisplayName = "Tags" });
+            adminMenuItems.Add(new AdminMenuItem { Name = AdminControllers.PageNameCtr, DisplayName = AdminControllers.PostLabelCtr });
+            adminMenuItems.Add(new AdminMenuItem { Name = AdminControllers.PageNameCtr, DisplayName = AdminControllers.PageLabelCtr });
+            adminMenuItems.Add(new AdminMenuItem { Name = AdminControllers.TagNameCtr, DisplayName = AdminControllers.TagLabelCtr });
             adminMenuItems.Add(new AdminMenuItem { Name = "Categories", DisplayName = "Categories" });
             adminMenuItems.Add(new AdminMenuItem { Name = "Users", DisplayName = "Users" });
             adminMenuItems.Add(new AdminMenuItem { Name = "Settings", DisplayName = "Settings" });
@@ -66,6 +66,24 @@ namespace AppCore.Business.Commons
 
     public static class GroupRoles
     {
-        public static string[] SettingNames = { "SupperAdmin", "Admin", "Editor", "Author", "Member" };
+        public static string[] SettingNames = { SupperAdmin, Admin, Editor, Author, Member };
+
+        public static string SupperAdmin { get { return "SupperAdmin"; } }
+        public static string Admin { get { return "Admin"; } }
+        public static string Editor { get { return "Editor"; } }
+        public static string Author { get { return "Author"; } }
+        public static string Member { get { return "Member"; } }
+    }
+
+    public static class AdminControllers
+    {
+        public static string PostNameCtr { get { return "Posts"; } }
+        public static string PostLabelCtr { get { return "Posts"; } }
+
+        public static string PageNameCtr { get { return "Pages"; } }
+        public static string PageLabelCtr { get { return "Pages"; } }
+
+        public static string TagNameCtr { get { return "Tags"; } }
+        public static string TagLabelCtr { get { return "Tags"; } }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AppCore.Controllers.commons;
+﻿using AppCore.Business.Commons;
+using AppCore.Controllers.commons;
 using AppCore.Helpers;
 using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
@@ -16,10 +17,7 @@ namespace AppCore.Business
         private readonly IUnitOfWork _uow;
         public ILogger<MenuLogic> Logger { get; }
 
-        public MenuLogic(
-            IUnitOfWork uow,
-            ILogger<MenuLogic> logger
-        )
+        public MenuLogic( IUnitOfWork uow, ILogger<MenuLogic> logger)
         {
             _uow = uow;
             Logger = logger;
@@ -166,6 +164,26 @@ namespace AppCore.Business
                 Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
+        }
+
+        public void GetAdminMenus(string role)
+        {
+            if(string.Equals(role.ToLower(), GroupRoles.SupperAdmin.ToLower()))
+            {
+                var adminMenus = new AdminMenus();
+                if(adminMenus != null)
+                {
+                    //foreach (AdminMenuItem adminMenuItem in adminMenus)
+                    //{
+
+                    //}
+                }
+            }
+            else if (string.Equals(role.ToLower(), GroupRoles.Admin.ToLower()))
+            {
+
+            }
+
         }
     }
 }
