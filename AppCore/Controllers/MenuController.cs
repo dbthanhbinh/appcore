@@ -81,5 +81,11 @@ namespace AppCore.Controllers
             var result = _menuLogic.GetMenuWithEditAsync(id);
             return Ok(new BaseResponse(result));
         }
+
+        // For admin menus
+        public ActionResult GetAdminMenus()
+        {
+            return null;
+        }
     }
 }
