@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using AppCore.Models.DBModel;
+using AppCore.Models.VMModel;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,22 +14,36 @@ namespace AppCore.Models.Repository
         void Add(T entity);
         void Add(params T[] entities);
         void Add(IEnumerable<T> entities);
-
+        void AddRange(IEnumerable<T> entities);
+        Task<bool> AddAsync(T entity);
+        void AddAsync(params T[] entities);
+        void AddAsync(IEnumerable<T> entities);
 
         void Delete(T entity);
         void Delete(object id);
         void Delete(params T[] entities);
         void Delete(IEnumerable<T> entities);
-        void DeletePostAsync(T entity);
+        void DeleteAsync(T entity);
+        void DeleteRange(params T[] entities);
+
+        void DeleteRange(IEnumerable<T> entities);
 
 
         void Update(T entity);
         void Update(params T[] entities);
         void Update(IEnumerable<T> entities);
 
-        IEnumerable<T> Get();
+        T Get(object id);
+        IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
         List<T> GetAll();
+        IEnumerable<T> GetAll(Func<IQueryable<T>, IQueryable<T>> includeMembers);
+        List<T> GetByFilter(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> GetWithRelated(
+            Expression<Func<T, bool>> filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = "");
 
-        Task<bool> AddAsync(T entity);
+
+            Int32 CountTotalAll();
     }
 }

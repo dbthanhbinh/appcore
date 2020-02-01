@@ -11,10 +11,10 @@ namespace AppCore.Models.DBModel
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }
-
+        public string SubName { get; set; } // alt for image or sub name for document
         public string Type { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }
-        public string CreatedBy { get; set; }
+        public string ResizeType { get; set; }
     }
 }

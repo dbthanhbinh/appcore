@@ -1,0 +1,59 @@
+// For header
+
+// For left sidebar
+  
+  // For right sidebar
+  .right-side-bar {}
+  
+  
+  // For main content
+  .main-contents {}
+
+  .modal-dialog {
+    max-width: 90vw !important;
+  }
+
+.pagination-section {
+  .pagination {
+    padding: 0;
+    margin: 0;
+    .page-item {
+      list-style: none;
+      display: inline-block;
+
+      a {
+        
+      }
+      &.active {
+        a {
+          font-weight: bold;
+        }
+      }
+      .item:last-child {
+        border-radius: 0;
+      }
+    }
+  }
+}
+
+.ui.table {
+  thead {
+    th.admin-postlist-thumb {
+      width: 150px;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  td {
+    .admin-postlist-thumb {
+      width: 150px;
+      margin: 0;
+      padding: 0;
+      img.image {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  }
+}

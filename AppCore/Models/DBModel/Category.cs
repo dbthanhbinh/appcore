@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppCore.Models.DBModel
 {
@@ -7,6 +10,9 @@ namespace AppCore.Models.DBModel
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }
-        public string CreatedBy { get; set; }
+        [Required]
+        public string Slug { get; set; }
+        public Guid ?ParentId { get; set; } = Guid.Empty;
+        public virtual Seo Seo { get; set; }
     }
 }

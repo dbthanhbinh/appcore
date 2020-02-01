@@ -10,7 +10,7 @@ namespace AppCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MediaController : ControllerBase
+    public class MediaController : BaseController
     {
         private readonly IMediaLogic _mediaLogic;
         public MediaController(IMediaLogic mediaLogic)
@@ -34,10 +34,22 @@ namespace AppCore.Controllers
         }
 
         [HttpPost("createMedia", Name = "CreateMedia")]
-        public ActionResult CreateMedia()
+        public ActionResult CreateMedia(IFormFile file)
         {
-            var result = _mediaLogic.CreateMedia();
+            var result = _mediaLogic.CreateMediaAsync(file);
             return Ok(new BaseResponse(result));
+        }
+
+        /*
+         * Get all media
+         */
+        [HttpGet("getAllMedia", Name = "GetAllMedia")]
+        public async Task<ActionResult> GetAllMedia()
+        {
+            // My test open excel
+            PagingResponse result = null;
+            result = await _mediaLogic.GetAllMedia();
+            return Ok(new BaseResponse(result.Data, result.Paging));
         }
     }
 }

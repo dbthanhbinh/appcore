@@ -1,0 +1,13 @@
+.ui.form {
+    .field {
+        .field-invalid {
+            border-color: #ff0000;
+        }
+
+        .field-invalid-message {
+            color: #ff0000;
+            font-style: italic;
+            font-size: 80%;
+        }
+    }
+}

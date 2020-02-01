@@ -1,0 +1,30 @@
+.tags-options {
+    display: block;
+    position: relative;
+    max-width: 400px;
+    margin: 0;
+    padding: 0;
+
+    .tags-input-options {
+        border: 1px solid teal;
+        .input-small {
+            width: 100px;
+        }
+        span {
+            padding: 3px 10px;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            margin: 0 3px;
+            line-height: 22px;
+            display: inline-block;
+        }
+    }
+
+    .tags-dropdown-options {
+        border: 1px solid teal;
+        display: none;
+        &.open {
+            display: block;
+        }
+    }
+}

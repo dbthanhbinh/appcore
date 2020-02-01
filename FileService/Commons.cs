@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FileService
 {
     public class Commons
-    {
+    {   
         // Check allow file types
         public bool AllowMimeTypesFile()
         {
@@ -18,6 +19,20 @@ namespace FileService
         public IDictionary<string, string> GetImageMime()
         {
             return Configs.ImageMimeDictionary;
+        }
+
+        public bool CheckImageTypeForResize(string FileName)
+        {   
+            string ext = System.IO.Path.GetExtension(FileName).ToLower();
+            if (Configs.ImageTypes.Contains(ext))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
 
         // Get Uploaded folder
@@ -55,7 +70,7 @@ namespace FileService
 
         public string GetExtensionFileName()
         {
-            return DateTime.Now.ToString("yyyyMMddHmmssff");
+            return DateTime.Now.ToString("yyMMddHmmssff");
         }
 
         // Create new fileName if is Exists

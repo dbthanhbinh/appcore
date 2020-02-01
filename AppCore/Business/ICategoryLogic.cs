@@ -1,5 +1,6 @@
 ﻿using AppCore.Controllers.commons;
 using AppCore.Models.DBModel;
+using AppCore.Models.VMModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,13 @@ namespace AppCore.Business
 {
     public interface ICategoryLogic
     {
-        Task<Category> CreateCategoryAsync(Category category);
+        Task<CreatedCategoryVM> CreateCategoryAsync(ReqCreateCategory category);
+        Task<Category> UpdateCategoryAsync(UpdateCategoryReq category);
         List<Category> GetAllCategoryAsync();
-        //void DeleteCategoryAsync(ReqDeleteCategory reqDeleteCategory);
+        Task<Category> GetCategoryAsync(Guid id);
+        Task<Category> DeleteCategoryAsync(ReqDeleteCategory reqDeleteCategory);
+
+        CategoryWithEditVM GetCategoriesWithEditAsync(Guid id);
+        Task<PagingResponse> FilterCategoryWithPagingAsync(ReqFilterCategory reqFilterCategory);
     }
 }
