@@ -3,12 +3,24 @@ import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 import LoadingItem from '../commons/LoadingItem'
 import { getDefaultEmptyGuid } from '../../utils/commons'
+import Pagination from '../../helpers/PaginationPost'
 
 /**
  * Input: items: [] => array of list item
  * @param {*} props 
  * Output: render list of Item as listgroup item
  */
+
+const RenderTableRowNotFoundRecord = () => {
+    return (
+        <React.Fragment>
+            <Table.Row>
+                <Table.Cell>Not found record!</Table.Cell>
+            </Table.Row>
+        </React.Fragment>
+    )
+}
+
 const RenderListItem = (props) => {
     let { listItems, parentId, char, currentRoute, currentEditId, isEdit, onDeleteItem} = props
     if(_.isEmpty(listItems)) return null
@@ -77,11 +89,11 @@ class ItemList extends React.Component{
     }
 
     render(){
-        let { listItems, currentRoute, currentEditId, isEdit, onDeleteItem } = this.props
+        let { listItems, currentRoute, currentEditId, isEdit, onDeleteItem, pagination, paginationPath, onGotoPage } = this.props
         let { isLoading } = this.state
         return(
             isLoading ? <LoadingItem />
-            : (listItems && !_.isEmpty(listItems)) && <Fragment>
+            : <Fragment>
                 <Table striped>
                     <Table.Header>
                         <Table.Row>
@@ -93,7 +105,7 @@ class ItemList extends React.Component{
                     </Table.Header>
                     <Table.Body>
                         {
-                            <RenderListItem
+                            (listItems && !_.isEmpty(listItems)) ? <RenderListItem
                                 listItems={listItems}
                                 parentId={getDefaultEmptyGuid()}
                                 char=''
@@ -101,10 +113,19 @@ class ItemList extends React.Component{
                                 currentEditId={currentEditId}
                                 isEdit={isEdit}
                                 onDeleteItem={onDeleteItem}
-                            />
+                            /> : <RenderTableRowNotFoundRecord />
                         }
                     </Table.Body>
                 </Table>
+                {
+                    pagination && pagination.totalRecords > pagination.pageSize
+                    ? <Pagination
+                        paginationPath={paginationPath}
+                        pagination={pagination}
+                        onGotoPage={onGotoPage}
+                    /> : null
+
+                }
             </Fragment>
         )
     }

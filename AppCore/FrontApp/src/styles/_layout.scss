@@ -22,12 +22,15 @@
       display: inline-block;
 
       a {
-        padding: 5px 10px;
+        
       }
       &.active {
         a {
           font-weight: bold;
         }
+      }
+      .item:last-child {
+        border-radius: 0;
       }
     }
   }

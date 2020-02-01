@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AppCore.Business;
 using AppCore.Controllers.commons;
 using AppCore.Models.DBModel;
+using AppCore.Models.VMModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -94,7 +95,14 @@ namespace AppCore.Controllers
         [HttpGet("getCategoriesWithEdit/{id}", Name = "GetCategoriesWithEdit")]
         public ActionResult GetCategoriesWithEdit(Guid id)
         {
-            var result = _categoryLogic.GetCategoriesWithEditAsync(id);
+            CategoryWithEditVM result = _categoryLogic.GetCategoriesWithEditAsync(id);
+            ReqFilterCategory reqFilterCategory = new ReqFilterCategory
+            {
+                PageSize = 5,
+                CurrentPage = 1
+            };
+            var result2 = _categoryLogic.FilterCategoryWithPagingAsync(reqFilterCategory);
+            result.CategoryList = result2.Result;
             return Ok(new BaseResponse(result));
         }
     }

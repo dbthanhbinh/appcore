@@ -11,6 +11,8 @@ import CategoryList from './ItemList'
 import CategoryForm from './CategoryForm'
 import Utils from '../../apis/utils'
 import {
+    resetModelDefaultData,
+    initValidatorModel,
     getInputData,
     setFieldValue,
     validatorModel,
@@ -28,13 +30,15 @@ class Category extends Component{
     constructor(props){
         super(props)
         this.CategoryActions = new CategoryActions()
-        let { models, isFormValid } = validatorModel(_.merge(CategoryModel.model(), SeoModel.model()))
+        let { models, isFormValid } = initValidatorModel(_.merge(CategoryModel.model(), SeoModel.model()))
         this.state = {
             isBtnLoading: false,
             currentRoute: 'categories',
             isFormValid: isFormValid,
             model: models
         }
+        this.pagination = Utils.resetPagination()
+        this.paginationPath = '/admin/categories/paging'
         this.isEdit = false
         this.currentEditId = null        
         this.handleOnDeleteCategory = this.handleOnDeleteCategory.bind(this)
@@ -45,6 +49,8 @@ class Category extends Component{
 
     componentDidMount(){
         // For Edit case
+        let currentPage = this.pagination.currentPage
+        
         let payload = {}
         let { model } = this.state
         let id = _.get(this.props, 'match.params.id')
@@ -66,7 +72,17 @@ class Category extends Component{
                     let seoData = _.pick(_.get(resultData, 'category.seo'), keysFromSeoModel)
                     let result = _.merge(categoryData, seoData)
                     let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
-                    this.props.detailCategoryWithEdit(resultData)
+
+                    let categoryList = _.get(resultData, 'categoryList')
+                    if(categoryList){
+                        let {data, paging} = categoryList
+                        this.props.detailCategoryWithEdit({
+                            category: categoryData,
+                            seo: seoData,
+                            categoryList: data
+                        })
+                        this.pagination = Utils.mapPaginationValue(paging)
+                    }
                     return { model: models, isFormValid }
                 })
             })
@@ -74,17 +90,31 @@ class Category extends Component{
         
         // For get all case
         if(!this.isEdit) {
-            payload = {
-                url: 'Category/getAllCategory',
-                body: {}
-            }
-            this.CategoryActions.getListItems(payload, (err, result)=> {
-                if(err) return
-                let resultData = Utils.getResApi(result)
-                resultData = Utils.sortList(resultData, 'desc')  // To sort list
-                this.props.fetchCategory(resultData)
-            })
+            this.filterCategoryWithPaging(currentPage)
         }
+    }
+
+    filterCategoryWithPaging = (currentPage) => {
+        this.CategoryActions = new CategoryActions()
+        let pageSize = this.pagination.pageSize
+        let payload = {
+            url: `Category/filterCategoryWithPaging/${pageSize}/${currentPage}`,
+            body: {}
+        }
+        this.CategoryActions.getListItems(payload, (err, result)=> {
+            if(err) return
+            let {data, paging} = result ? Utils.getResTaskApi(result) : null
+            if(data){
+                let resultData = Utils.sortList(data, 'desc')  // To sort list
+                this.props.fetchCategory(resultData)
+                this.pagination = Utils.mapPaginationValue(paging)
+                this.setState({isLoading: false})
+            }
+        })
+    }
+
+    handleOnGotoPage = (page) => {
+        this.filterCategoryWithPaging(page)
     }
 
     handleOnInputChange = (e, data) => {
@@ -116,6 +146,11 @@ class Category extends Component{
                     if(err) return
                     let categoryData = _.get(Utils.getResApi(result), 'categoryData')
                     if(result) this.props.addCategory(categoryData)
+
+                    this.setState((prevState)=>{
+                        let { models, isFormValid } = initValidatorModel(resetModelDefaultData(_.merge(CategoryModel.model(), SeoModel.model())))
+                        return { model: models, isFormValid }
+                    })
                 })
             }
         }
@@ -189,6 +224,9 @@ class Category extends Component{
                                 listItems={categoryList}
                                 onDeleteItem={this.handleOnDeleteCategory}
                                 currentRoute={currentRoute}
+                                paginationPath={this.paginationPath}
+                                pagination={this.pagination}
+                                onGotoPage = {this.handleOnGotoPage}
                             />
                         </Grid.Column>
                     </Grid.Row>

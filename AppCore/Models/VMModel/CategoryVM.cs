@@ -19,6 +19,6 @@ namespace AppCore.Models.VMModel
     public class CategoryWithEditVM
     {
         public Category Category { get; set; }
-        public List<Category> CategoryList { get; set; }
+        public object CategoryList { get; set; }
     }
 }

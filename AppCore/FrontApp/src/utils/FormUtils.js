@@ -22,7 +22,6 @@ export function getEditorData(e){
 
 export function setFieldValue(name, value, obj){
     obj.model[name].value = value
-    // let { models, isFormValid } = validatorModel(obj.model)
     return validatorModel(obj.model)
 }
 
@@ -54,18 +53,11 @@ export function resetModelDefaultData(rawModel){
 }
 
 export function initValidatorModel(rawModel){
-    let models = rawModel ? rawModel.model.bind(this)() : {}
+    let models = rawModel ? rawModel : {}
     if(models){
         Object.keys(models).forEach((key) => {
             models[key].isValid = true
             models[key].message = null
-
-            models[key].validators.forEach((item) => {
-                if(item.compare === 'required' && _.isEmpty(models[key].value)){
-                    models[key].isValid = false
-                    models[key].message = item.message
-                }
-            })
         })
     }
     let _valid = _.some(models, { 'isValid': false }) || false ;
@@ -113,6 +105,7 @@ export function validatorModelAfterChangeField(rawModel){
     return models
 }
 
+// Append Data to form before excu post form data to API
 export function appendFormData(body) {
     let formData = new FormData()
     if(body && _.isObject(body) && !_.isEmpty(body)) {

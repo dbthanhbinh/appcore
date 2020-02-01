@@ -161,7 +161,7 @@ namespace AppCore.Business
             CategoryWithEditVM categoryWithEditVM = new CategoryWithEditVM();
             try
             {
-                categoryWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll();
+                // categoryWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll();
                 Category categoryData = _uow.GetRepository<Category>().GetWithRelated(a => a.Id == id, null, "Seo").FirstOrDefault();
                 if(categoryData != null)
                 {
