@@ -31,7 +31,7 @@ namespace AppCore.Business
             return uploaded;
         }
 
-        public Task<Media> CreateMediaAsync(IFormFile file)
+        public Task<Media> CreateMediaAsync(Guid userId, IFormFile file)
         {
             try
             {
@@ -49,6 +49,8 @@ namespace AppCore.Business
                         media.Size = uploadedRs.Uploaded.Length;
                         media.Type = uploadedRs.Uploaded.ContentType;
                         media.ResizeType = "original";
+                        media.CreatedBy = userId;
+                        media.ModifiedBy = userId;
                     }
                     medias.Add(media);
 
@@ -63,7 +65,9 @@ namespace AppCore.Business
                                 Path = media1.UrlPath,
                                 Size = media1.Length,
                                 Type = media1.ContentType,
-                                ResizeType = media1.ResizeType
+                                ResizeType = media1.ResizeType,
+                                CreatedBy = userId,
+                                ModifiedBy = userId
                             });
                         }
                     }

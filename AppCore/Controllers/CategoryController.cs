@@ -29,7 +29,8 @@ namespace AppCore.Controllers
         [HttpPost("createCategory", Name = "CreateCategory")]
         public async Task<ActionResult> CreateCategoryAsync([FromBody] ReqCreateCategory category)
         {
-            var result = await _categoryLogic.CreateCategoryAsync(category);
+            Guid userId = UserId;
+            var result = await _categoryLogic.CreateCategoryAsync(userId, category);
             return Ok(new BaseResponse(result));
         }
 
@@ -40,7 +41,8 @@ namespace AppCore.Controllers
         [HttpPost("updateCategory", Name = "UpdateCategory")]
         public async Task<ActionResult> UpdateCategoryAsync([FromBody] UpdateCategoryReq category)
         {
-            var result = await _categoryLogic.UpdateCategoryAsync(category);
+            Guid userId = UserId;
+            var result = await _categoryLogic.UpdateCategoryAsync(userId, category);
             return Ok(new BaseResponse(result));
         }
 

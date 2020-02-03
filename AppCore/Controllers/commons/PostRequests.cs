@@ -27,7 +27,7 @@ namespace AppCore.Controllers.commons
         public Guid Id { get; set; }
     }
 
-    public class ReqCreatePost {
+    public class CreatePostReq {
         public string Name { get; set; }
         public string Content { get; set; }
         public Guid? CategoryId { get; set; }
@@ -38,11 +38,12 @@ namespace AppCore.Controllers.commons
         public virtual string SeoDescription { get; set; }
 
         public virtual IFormFile File { get; set; }
-        public virtual string PostType { get; set; } = "Post";
+        public virtual string PostType { get; set; } = "post";
     }
 
-    public class ReqFilterPost
+    public class FilterPostReq
     {
+        public virtual string PostType { get; set; } = "post";
         public virtual int CurrentPage { get; set; } = 1;
         public virtual int PageSize { get; set; } = 10;
     }
@@ -54,7 +55,7 @@ namespace AppCore.Controllers.commons
         public string Content { get; set; }
         public Guid? CategoryId { get; set; }
         public virtual IFormFile File { get; set; }
-        public virtual string PostType { get; set; } = "Post";
+        public virtual string PostType { get; set; } = "post";
     }
 
     public class ReqUpdatePostBusiness
@@ -71,7 +72,7 @@ namespace AppCore.Controllers.commons
         public virtual string SeoDescription { get; set; }
 
         public virtual IFormFile File { get; set; }
-        public virtual string PostType { get; set; } = "Post";
+        public virtual string PostType { get; set; } = "post";
     }
 
     public class ResUpdatePostBusiness

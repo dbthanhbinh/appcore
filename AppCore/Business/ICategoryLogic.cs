@@ -10,8 +10,8 @@ namespace AppCore.Business
 {
     public interface ICategoryLogic
     {
-        Task<CreatedCategoryVM> CreateCategoryAsync(ReqCreateCategory category);
-        Task<Category> UpdateCategoryAsync(UpdateCategoryReq category);
+        Task<CreatedCategoryVM> CreateCategoryAsync(Guid userId, ReqCreateCategory category);
+        Task<Category> UpdateCategoryAsync(Guid userId, UpdateCategoryReq category);
         List<Category> GetAllCategoryAsync();
         Task<Category> GetCategoryAsync(Guid id);
         Task<Category> DeleteCategoryAsync(ReqDeleteCategory reqDeleteCategory);

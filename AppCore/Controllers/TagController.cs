@@ -44,6 +44,7 @@ namespace AppCore.Controllers
         [HttpPost("updateTag", Name = "UpdateTag")]
         public async Task<ActionResult> UpdateTagAsync([FromBody] UpdateTagReq tag)
         {
+            tag.UserId = UserId;
             var result = await _tagLogic.UpdateTagAsync(tag);
             return Ok(new BaseResponse(result));
         }

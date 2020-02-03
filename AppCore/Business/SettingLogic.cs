@@ -22,7 +22,7 @@ namespace AppCore.Business
             _logger = logger;
         }
 
-        public Task<Setting> UpdateSetingOptionAsync(SettingRequests settingRequests)
+        public Task<Setting> UpdateSetingOptionAsync(Guid userId, SettingRequests settingRequests)
         {
             try
             {
@@ -36,6 +36,7 @@ namespace AppCore.Business
                     {
                         updateSetting.Value = settingRequests.Value;
                         updateSetting.CustomValue = settingRequests.CustomValue;
+                        updateSetting.ModifiedBy = userId;
 
                         _uow.GetRepository<Setting>().Update(updateSetting);
                         _uow.SaveChanges();
@@ -47,6 +48,8 @@ namespace AppCore.Business
                         setting.Value = settingRequests.Value;
                         setting.Type = settingRequests.Type;
                         setting.CustomValue = settingRequests.CustomValue;
+                        setting.CreatedBy = userId;
+                        setting.ModifiedBy = userId;
 
                         _uow.GetRepository<Setting>().Add(setting);
                         _uow.SaveChanges();

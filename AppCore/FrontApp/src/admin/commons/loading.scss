@@ -18,4 +18,8 @@
         position: relative;
         top: 43%;
     }
+
+    .ui.centered.inline.loader.active {
+        top: 40% !important;
+    }
 }

@@ -9,7 +9,16 @@ import {  Grid } from 'semantic-ui-react'
 import TagList from './ItemList'
 import TagForm from './TagForm'
 import Utils from '../../apis/utils'
-import { getInputData, setFieldValue, mappingModelDefaultData, validatorModel, resetModelDefaultData, pickKeysFromModel }
+import {
+    initValidatorModel,
+    getInputData,
+    setFieldValue,
+    mappingModelDefaultData,
+    validatorModel,
+    resetModelDefaultData,
+    pickKeysFromModel
+}
+
 from '../../utils/FormUtils'
 import TagModel from '../models/addTag.model'
 import { TagDefined } from '../commons/Defined'
@@ -20,8 +29,9 @@ class Tag extends Component{
     constructor(props){
         super(props)
         this.TagActions = new TagActions()
-        let { models, isFormValid } = validatorModel(TagModel.model())
+        let { models, isFormValid } = initValidatorModel(TagModel.model())
         this.state = {
+            isLoading: false,
             currentRoute: 'tags',
             isFormValid: isFormValid,
             model: models
@@ -32,8 +42,6 @@ class Tag extends Component{
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleOnUpdateTag = this.handleOnUpdateTag.bind(this)
     }
-
-    
 
     componentDidMount(){
         // For Edit case
@@ -101,6 +109,8 @@ class Tag extends Component{
     }
 
     handleOnCreateTag(e, data){
+        this.setState({isLoading: true})
+
         let { model } = this.state
         let {isFormValid} = this.props
         isFormValid = true
@@ -121,7 +131,7 @@ class Tag extends Component{
                     
                     this.setState((prevState)=>{
                         let { models, isFormValid } = validatorModel(resetModelDefaultData(TagModel.model()))
-                        return { model: models, isFormValid }
+                        return { model: models, isFormValid, isLoading: false }
                     })
                 })
             }
@@ -130,6 +140,7 @@ class Tag extends Component{
 
     handleOnUpdateTag(id){
         if(!id) return
+        this.setState({isLoading: true})
         let { model } = this.state
         let payload = {
             url: 'Tag/updateTag',
@@ -142,14 +153,18 @@ class Tag extends Component{
         if(!_.isNil(payload) && !_.isEmpty(payload)){
             this.TagActions.updateItem(payload, (err, result)=> {
                 if(err) return
-                if(result) this.props.updateTag(Utils.getResApi(result))
+                if(result)
+                    this.props.updateTag(Utils.getResApi(result))
+                this.setState((prevState)=>{
+                    return { isLoading: false }
+                })
             })
         }
     }
 
     render(){
         let { tagData } = this.props
-        let { currentRoute, model } = this.state
+        let { currentRoute, model, isLoading } = this.state
         let tagList = _.get(tagData, 'tagList')
         let detailData = _.get(tagData, 'detailData')
         let catId = _.get(detailData, 'tag.id')
@@ -159,6 +174,7 @@ class Tag extends Component{
                     <Grid.Row columns={2}>
                         <Grid.Column width={6}>
                             <TagForm
+                                isLoading={isLoading}
                                 isEdit={ this.isEdit }
                                 currentEditId={catId}
                                 model={ model }

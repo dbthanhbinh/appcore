@@ -10,7 +10,7 @@ namespace AppCore.Business
 {
     public interface ISettingLogic
     {
-        Task<Setting> UpdateSetingOptionAsync(SettingRequests settingRequests);
+        Task<Setting> UpdateSetingOptionAsync(Guid userId, SettingRequests settingRequests);
         Task<Setting> GetSetingOptionAsync(string settingName);
 
         // ========================================

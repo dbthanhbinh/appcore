@@ -42,8 +42,8 @@ namespace AppCore.Controllers
             {
                 settingRequests.AutoLoad = generalSettingRequests.AutoLoad;
             }
-
-            var result = await _settingLogic.UpdateSetingOptionAsync(settingRequests);
+            Guid userId = UserId;
+            var result = await _settingLogic.UpdateSetingOptionAsync(userId, settingRequests);
             return Ok(new BaseResponse(result));
         }
     }

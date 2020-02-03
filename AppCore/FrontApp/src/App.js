@@ -73,12 +73,13 @@ function App() {
           <WithAuthenticate exact path='/admin/categories' component={Category } layout={ ALayout } />
           <WithAuthenticate exact path='/admin/categories/edit/:id' component={ Category } layout={ ALayout } />
 
-          <WithAuthenticate exact path='/admin/posts' component={ PostApp } layout={ ALayout }/>
-          <WithAuthenticate exact path='/admin/posts/edit/:id' component={ PostEditApp } layout={ ALayout }/>
+          <WithAuthenticate exact path='/admin/articles' component={ PostApp } layout={ ALayout }/>
+          <WithAuthenticate exact path='/admin/articles/edit/:id' component={ PostEditApp } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/settings' component={ Setting } layout={ ALayout }/>
           <WithAuthenticate exact path='/admin/medias' component={ Media } layout={ ALayout }/>
 
           <WithAuthenticate exact path='/admin/tags' component={Tags } layout={ ALayout } />
+          <WithAuthenticate exact path='/admin/tags/edit/:id' component={Tags } layout={ ALayout } />
 
           <WithAuthenticate exact path='/' component={ Home } layout={FLayout}/>
           <Route exact render={ () => NotFound } /> */}

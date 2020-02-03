@@ -6,9 +6,7 @@ import BuildTextField from '../components/form/BuildTextField'
 class TagForm extends React.Component{
     constructor(props){
         super(props)
-        this.state = {
-            isLoading: false
-        }
+        this.state = {}
     }
 
     render(){
@@ -18,7 +16,8 @@ class TagForm extends React.Component{
             model,
             onInputChange,
             onUpdateTag,
-            onCreateTag
+            onCreateTag,
+            isLoading
         } = this.props
         return(
             <Fragment>
@@ -39,7 +38,10 @@ class TagForm extends React.Component{
                         />
                     </Form.Field>
                     <Form.Field>
-                        <Button variant="primary" onClick={ isEdit ? () => onUpdateTag(currentEditId) : onCreateTag }>
+                        <Button variant="primary"
+                            loading={isLoading}
+                            disabled={isLoading}
+                            onClick={ isEdit ? () => onUpdateTag(currentEditId) : onCreateTag }>
                             Save Changes
                         </Button>
                     </Form.Field>

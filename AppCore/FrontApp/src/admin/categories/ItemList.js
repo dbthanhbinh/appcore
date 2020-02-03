@@ -37,7 +37,7 @@ const RenderListItem = (props) => {
             <React.Fragment key={item.id}>
                 {
                     <Table.Row>
-                        <Table.Cell>no</Table.Cell>
+                        <Table.Cell>{i}</Table.Cell>
                         <Table.Cell>{char}  {item.name}</Table.Cell>
                         <Table.Cell>{item.slug}</Table.Cell>
                         <Table.Cell>

@@ -30,6 +30,7 @@ namespace AppCore.Business.Commons
     public static class PostTypes
     {
         public static string Default { get { return "post"; } }
+        public static string[] AllowPostTypes = { "page", "post", "news" };
     }
 
     public static class GeneralSetting

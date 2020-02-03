@@ -15,15 +15,17 @@ import TagActions from '../../store/TagActions'
 class PostApp extends Component {
     constructor(props){
         super(props)
+        this.postType = 'post'
         this.PostActions = new PostActions()
         this.CategoryActions = new CategoryActions()
         this.TagActions = new TagActions()
 
         this.pagination = Utils.resetPagination()
-        this.paginationPath = '/admin/posts/paging'
+        this.paginationPath = `/admin/${this.postType}/paging`
+
         this.state = {
             isLoading: false,
-            currentRoute: 'posts'
+            currentRoute: this.postType
         }
         this.isEditId = false
     }
@@ -35,13 +37,18 @@ class PostApp extends Component {
         var payload = null
         let paging = _.get(this.props, 'match.params.paging')
         let page = _.get(this.props, 'match.params.page')
+        let postType = _.get(this.props, 'match.params.posttype')
+        if(postType) {
+            this.postType = postType
+        }
+
         if(paging === 'paging' && page){
             pageSize = 5
             currentPage = page
         }
         
         payload = {
-            url: `Post/filterPosts/${pageSize}/${currentPage}`,
+            url: `Post/filterArticles/${this.postType}/${pageSize}/${currentPage}`,
             body: {}
         }
         this.PostActions.getListItems(payload, (err, result)=> {

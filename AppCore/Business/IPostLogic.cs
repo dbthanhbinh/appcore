@@ -10,11 +10,11 @@ namespace AppCore.Business
 {
     public interface IPostLogic : IBaseLogic<Post>
     {
-        Task<CreatedPostVM> CreatePostAsync(ReqCreatePost postData);
+        Task<CreatedPostVM> CreatePostAsync(Guid userId, CreatePostReq createPostReq);
         Task<Post> UpdatePostAsync(ReqUpdatePost reqUpdatePost);
-        Task<ResUpdatePostBusiness> UpdatePostBusinessAsync(ReqUpdatePostBusiness reqUpdatePostBusiness);
+        Task<ResUpdatePostBusiness> UpdatePostBusinessAsync(Guid userId, ReqUpdatePostBusiness reqUpdatePostBusiness);
         Task<bool> DeletePostAsync(ReqDeletePost reqDelete);
-        Task<PagingResponse> FilterPostsWithPagingAsync(ReqFilterPost reqFilterPost);
+        Task<PagingResponse> FilterPostsWithPagingAsync(FilterPostReq filterPostReq);
         PostWithEditVM GetPostWithEditAsync(Guid id);
     }
 }

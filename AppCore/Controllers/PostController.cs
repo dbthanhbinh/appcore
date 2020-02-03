@@ -39,7 +39,8 @@ namespace AppCore.Controllers
         [HttpPost("updatePostBusiness", Name = "UpdatePostBusinessAsync")]
         public async Task<ActionResult> UpdatePostBusinessAsync([FromForm] ReqUpdatePostBusiness reqData)
         {
-            var result = await _postLogic.UpdatePostBusinessAsync(reqData);
+            Guid userId = this.UserId;
+            var result = await _postLogic.UpdatePostBusinessAsync(userId, reqData);
             return Ok(new BaseResponse(result));
         }
 
@@ -47,9 +48,10 @@ namespace AppCore.Controllers
          * Create Post 
          */
         [HttpPost("createPost", Name = "CreatePostAsync")]
-        public async Task<ActionResult> CreatePostAsync([FromForm] ReqCreatePost reqData)
+        public async Task<ActionResult> CreatePostAsync([FromForm] CreatePostReq createPostReq)
         {
-            var result = await _postLogic.CreatePostAsync(reqData);
+            Guid userId = this.UserId;
+            var result = await _postLogic.CreatePostAsync(userId, createPostReq);
             return Ok(new BaseResponse(result));
         }
 
@@ -85,15 +87,16 @@ namespace AppCore.Controllers
         /**
          * Get FilterPostsWithPagingAsync list all category from data base
          */
-        [HttpGet("filterPosts/{pageSize}/{currentPage}", Name = "FilterPosts")]
-        public ActionResult FilterPostsWithPagingAsync(Int32 pageSize, Int32 currentPage)
+        [HttpGet("filterArticles/{postType}/{pageSize}/{currentPage}", Name = "FilterPosts")]
+        public ActionResult FilterPostsWithPagingAsync(string postType, Int32 pageSize, Int32 currentPage)
         {
-            ReqFilterPost reqFilterPost = new ReqFilterPost
+            FilterPostReq filterPostReq = new FilterPostReq
             {
                 PageSize = pageSize,
-                CurrentPage = currentPage
+                CurrentPage = currentPage,
+                PostType = postType
             };
-            var result = _postLogic.FilterPostsWithPagingAsync(reqFilterPost);
+            var result = _postLogic.FilterPostsWithPagingAsync(filterPostReq);
             return Ok(new BaseResponse(result.Result.Data, result.Result.Paging));
         }
 

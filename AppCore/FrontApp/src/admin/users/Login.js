@@ -78,7 +78,7 @@ class login extends Component{
         </Fragment>
     }
 }
-const Login = withFormBehaviors(login, Model)
+const Login = withFormBehaviors(login, Model.model())
 
 function mapStateToProps(state) {
     let { userData } = state.userData

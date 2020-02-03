@@ -13,13 +13,12 @@ import {BtnAddNew} from '../components/form/BtnDefined'
 class CategoryForm extends React.Component{
     constructor(props){
         super(props)
-        this.state = {
-            isLoading: false
-        }
+        this.state = {}
     }
 
-    render(){
+    render() {
         let {
+            isLoading,
             currentRoute,
             detailData,
             isEdit,
@@ -69,7 +68,8 @@ class CategoryForm extends React.Component{
                     </Form.Field>
                     <Form.Field>
                         <Button variant="primary"
-                            disabled={!isFormValid}
+                            loading={isLoading}
+                            disabled={isLoading}
                             onClick={isEdit ? () => onUpdateCategory(currentEditId) : onCreateCategory} >
                             Save Changes
                         </Button>

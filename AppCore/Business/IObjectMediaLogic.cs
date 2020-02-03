@@ -8,7 +8,7 @@ namespace AppCore.Business
 {
     public interface IObjectMediaLogic
     {
-        Task<ObjectMedia> CreateObjectMediaAsync(IFormFile File, Guid objectId, string objectType, string mediaType);
-        Task<UpdatedPostBusinessObjectMediaVM> ObjectMediaUpdatePostBusinessAsync(IFormFile File, Guid objectId, string objectType, string mediaType);
+        Task<ObjectMedia> CreateObjectMediaAsync(Guid userId, IFormFile File, Guid objectId, string objectType, string mediaType);
+        Task<UpdatedPostBusinessObjectMediaVM> ObjectMediaUpdatePostBusinessAsync(IFormFile File, Guid objectId, string objectType, string mediaType, Guid userId);
     }
 }

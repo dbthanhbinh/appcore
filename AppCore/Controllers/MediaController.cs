@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using FileService;
 using AppCore.Controllers.commons;
 using System.Collections;
+using System;
 
 namespace AppCore.Controllers
 {
@@ -36,7 +37,8 @@ namespace AppCore.Controllers
         [HttpPost("createMedia", Name = "CreateMedia")]
         public ActionResult CreateMedia(IFormFile file)
         {
-            var result = _mediaLogic.CreateMediaAsync(file);
+            Guid userId = this.UserId;
+            var result = _mediaLogic.CreateMediaAsync(userId, file);
             return Ok(new BaseResponse(result));
         }
 

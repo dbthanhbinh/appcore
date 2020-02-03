@@ -6,12 +6,13 @@ import { withFormBehaviors } from '../components/form/form'
 import FieldFile from '../components/form/FieldFile'
 import PostActions from '../../store/PostActions'
 import CategoryActions from '../../store/CategoryActions'
-import Utils from '../../apis/utils'
 import { PostDefined, SeoDefined } from "../commons/Defined"
 import DropdownWrapper from '../components/form/DropdownWrapper'
 import SeoForm from '../seos/SeoForm'
 import PostModel from '../models/addPost.model'
+import TagListModel from '../models/objectTag.model'
 import SeoModel from '../models/seo.model'
+import eventEmitter from '../../utils/eventEmitter'
 import {
     adapterMapingDropdownOption,
     getInputData,
@@ -31,7 +32,7 @@ class EditPostForm extends Component {
         super(props)
         this.PostActions = new PostActions()
         this.CategoryActions = new CategoryActions()
-        let { models, isFormValid } = validatorModel(_.merge(PostModel.model(), SeoModel.model()))
+        let { models, isFormValid } = validatorModel(_.merge(PostModel.model(), SeoModel.model(), TagListModel.model()))
         this.isEditId = null
         this.isEditAble = false
         this.state = {
@@ -52,7 +53,6 @@ class EditPostForm extends Component {
         this.handleOnEditorChange = this.handleOnEditorChange.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleOnMultipleDropChange = this.handleOnMultipleDropChange.bind(this)
-        // this.handleSubmitUpdateForm = this.handleSubmitUpdateForm.bind(this)
         this.handleRemoveThumbnail = this.handleRemoveThumbnail.bind(this)
     }
 
@@ -61,6 +61,8 @@ class EditPostForm extends Component {
         let payload = null
         let id = _.get(this.props, 'match.params.id')        
         if(id) {
+            eventEmitter.emit('handle-submit-form-data', { isLoading: true })
+
             this.isEditId = id
             this.isEditAble = true
             let { model } = this.state
@@ -74,11 +76,16 @@ class EditPostForm extends Component {
                 this.setState((prevState)=>{
                     let keysFromSeoModel = pickKeysFromModel(SeoModel.model())
                     let keysFromPostModel = pickKeysFromModel(PostModel.model())
+                    let keysFromObjectTagModel = pickKeysFromModel(TagListModel.model())
+
                     let postData = _.pick(_.get(resultData, 'post'), keysFromPostModel)
                     let seoData = _.pick(_.get(resultData, 'post.seo'), keysFromSeoModel)
-                    let result = _.merge(postData, seoData)
+                    let objectTags = _.get(resultData, 'post.objectTags', keysFromObjectTagModel)
+
+                    let result = _.merge(postData, seoData, {tagList: this.getCurrentPostTagList(objectTags)})
                     let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
-                    let objectTags = _.get(resultData, 'post.objectTags')
+
+                    eventEmitter.emit('handle-submit-form-data', { isLoading: false })
                     return { 
                         model: models,
                         isFormValid,
@@ -154,7 +161,7 @@ class EditPostForm extends Component {
                     SeoDescription: model[SeoDefined.SEODESCRIPTION].value
                 }
             }
-            // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
+            eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.PostActions.updateItemWithForm(payload, (err, result)=> {
                     if(err) return
@@ -166,8 +173,8 @@ class EditPostForm extends Component {
                             isRemovedThumbnail: false
                         }
                     })
+                    eventEmitter.emit('handle-submit-form-data', { isLoading: false })
                 })
-                // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
             }
         }
     }

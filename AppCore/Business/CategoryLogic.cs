@@ -33,7 +33,7 @@ namespace AppCore.Business
         /*
          * Create new Category
          */
-        public async Task<CreatedCategoryVM> CreateCategoryAsync(ReqCreateCategory reqData)
+        public async Task<CreatedCategoryVM> CreateCategoryAsync(Guid userId, ReqCreateCategory reqData)
         {
             try
             {
@@ -51,12 +51,16 @@ namespace AppCore.Business
                     Name = reqData.Name,
                     ParentId = reqData.ParentId,
                     Slug = reqData.Slug,
+                    CreatedBy = userId,
+                    ModifiedBy = userId,
                     Seo = new Seo
                     {
                         SeoTitle = reqData.SeoTitle,
                         SeoKeys = reqData.SeoKeys,
                         SeoDescription = reqData.SeoDescription,
-                        ObjectId = newId
+                        ObjectId = newId,
+                        CreatedBy = userId,
+                        ModifiedBy = userId
                     }
                 };
                 Task<bool> categoryCreated = _uow.GetRepository<Category>().AddAsync(categoryData);
@@ -76,7 +80,7 @@ namespace AppCore.Business
         /*
          * Update Category
          */
-        public async Task<Category> UpdateCategoryAsync(UpdateCategoryReq categoryData)
+        public async Task<Category> UpdateCategoryAsync(Guid userId, UpdateCategoryReq categoryData)
         {
             try
             {
@@ -101,6 +105,7 @@ namespace AppCore.Business
                 seoData.SeoKeys = categoryData.SeoKeys;
                 seoData.SeoDescription = categoryData.SeoDescription;
                 category.Seo = seoData;
+                category.ModifiedBy = userId;
 
                 _uow.GetRepository<Category>().Update(category);
                 _uow.SaveChanges();

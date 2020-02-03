@@ -24,13 +24,13 @@ namespace AppCore.Business
         }
 
 
-        public async Task<ObjectMedia> CreateObjectMediaAsync(IFormFile File, Guid objectId, string objectType, string mediaType)
+        public async Task<ObjectMedia> CreateObjectMediaAsync(Guid userId, IFormFile File, Guid objectId, string objectType, string mediaType)
         {
             try
             {
                 Logger.LogWarning("Create Object Media");
                 // Created Media
-                Task<Media> mediaCreated = _mediaLogic.CreateMediaAsync(File);
+                Task<Media> mediaCreated = _mediaLogic.CreateMediaAsync(userId, File);
                 Task.WaitAll(mediaCreated);
 
                 ObjectMedia objectMedia = new ObjectMedia
@@ -38,7 +38,9 @@ namespace AppCore.Business
                     MediaId = mediaCreated.Result.Id,
                     ObjectId = objectId,
                     ObjectType = objectType,
-                    MediaType = mediaType
+                    MediaType = mediaType,
+                    CreatedBy = userId,
+                    ModifiedBy = userId
                 };
                 await _uow.GetRepository<ObjectMedia>().AddAsync(objectMedia);
                 return objectMedia;
@@ -50,12 +52,12 @@ namespace AppCore.Business
             }
         }
 
-        public Task<UpdatedPostBusinessObjectMediaVM> ObjectMediaUpdatePostBusinessAsync(IFormFile File, Guid objectId, string objectType, string mediaType)
+        public Task<UpdatedPostBusinessObjectMediaVM> ObjectMediaUpdatePostBusinessAsync(IFormFile File, Guid objectId, string objectType, string mediaType, Guid userId)
         {
             try
             {
                 Logger.LogWarning("UpdatePostBusiness Object Media");
-                Task<Media> mediaCreated = _mediaLogic.CreateMediaAsync(File);
+                Task<Media> mediaCreated = _mediaLogic.CreateMediaAsync(userId, File);
                 //Task.WaitAll(mediaCreated);
                 UpdatedPostBusinessObjectMediaVM objectMediaUpdatedInfo = new UpdatedPostBusinessObjectMediaVM();
                 if (mediaCreated.Result.Id != null && mediaCreated.Result.Name != null && mediaCreated.Result.Size > 0)
@@ -67,6 +69,7 @@ namespace AppCore.Business
                     if(objectMediaInfo != null)
                     {
                         objectMediaInfo.MediaId = mediaCreated.Result.Id;
+                        objectMediaInfo.ModifiedBy = userId;
                         _uow.GetRepository<ObjectMedia>().Update(objectMediaInfo);
                         _uow.SaveChanges();
                         objectMediaUpdatedInfo = new UpdatedPostBusinessObjectMediaVM(objectMediaInfo);

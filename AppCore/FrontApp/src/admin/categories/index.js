@@ -32,7 +32,7 @@ class Category extends Component{
         this.CategoryActions = new CategoryActions()
         let { models, isFormValid } = initValidatorModel(_.merge(CategoryModel.model(), SeoModel.model()))
         this.state = {
-            isBtnLoading: false,
+            isLoading: false,
             currentRoute: 'categories',
             isFormValid: isFormValid,
             model: models
@@ -126,6 +126,8 @@ class Category extends Component{
     }
 
     handleOnCreateCategory(e, data){
+        this.setState({isLoading: true})
+
         let { model, isFormValid } = this.state
         let payload = {}
         if(isFormValid){
@@ -149,7 +151,7 @@ class Category extends Component{
 
                     this.setState((prevState)=>{
                         let { models, isFormValid } = initValidatorModel(resetModelDefaultData(_.merge(CategoryModel.model(), SeoModel.model())))
-                        return { model: models, isFormValid }
+                        return { model: models, isFormValid, isLoading: false }
                     })
                 })
             }
@@ -158,6 +160,8 @@ class Category extends Component{
 
     handleOnUpdateCategory(id){
         if(!id) return
+        this.setState({isLoading: true})
+
         let { model } = this.state
         let payload = {
             url: 'Category/updateCategory',
@@ -176,6 +180,10 @@ class Category extends Component{
             this.CategoryActions.updateItem(payload, (err, result)=> {
                 if(err) return
                 if(result) this.props.updateCategory(Utils.getResApi(result))
+
+                this.setState((prevState)=>{
+                    return { isLoading: false }
+                })
             })
         }
     }
@@ -195,7 +203,7 @@ class Category extends Component{
     }
 
     render(){
-        let { currentRoute, model, isFormValid } = this.state
+        let { currentRoute, model, isFormValid, isLoading } = this.state
         let { categoryData } = this.props
         let { categoryList, detailData } = categoryData
         return (
@@ -204,6 +212,7 @@ class Category extends Component{
                     <Grid.Row columns={2}>
                         <Grid.Column width={6}>
                             <CategoryForm
+                                isLoading={isLoading}
                                 isFormValid={isFormValid}
                                 isEdit={ this.isEdit }
                                 currentEditId={this.currentEditId}

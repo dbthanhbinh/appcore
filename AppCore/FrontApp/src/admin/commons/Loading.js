@@ -28,7 +28,9 @@ class Loading extends Component {
     render(){
         let { isShow } = this.state
         return(
-            isShow && <div className='page-loading-overlay'><Loader animation="border" variant="primary" /></div>
+            isShow && <div className='page-loading-overlay'>
+                <Loader active inline='centered' />
+            </div>
         )
     }
 }    
