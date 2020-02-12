@@ -91,13 +91,15 @@ class Tag extends Component{
         this.TagActions.getListItems(payload, (err, result)=> {
             if(err) return
             let resultData = Utils.getResApi(result)
+            let {paging} = result
             resultData = Utils.sortList(resultData, 'desc')  // To sort list
+            this.pagination = Utils.mapPaginationValue(paging)
             this.props.fetchTag(resultData)
         })
     }
 
     handleOnGotoPage = (page) => {
-        this.filterCategoryWithPaging(page)
+        this.filterTagsWithPaging(page)
     }
 
     handleOnInputChange = (e, data) => {

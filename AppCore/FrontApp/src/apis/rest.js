@@ -15,6 +15,7 @@ class RestConnection{
         this._conf = {
             headers: new Headers({
                 'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': '*',
                 'Content-type': 'application/json',
                 'Accept': 'application/json',
                 Authorization: this.bearerToken,
