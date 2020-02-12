@@ -23,7 +23,7 @@ class Pagination extends Component {
   constructor(props) {
     super(props)
     const { totalRecords, pageLimit, pageNeighbours, currentPage } = props.pagination
-    this.pageLimit = typeof pageLimit === 'number' ? pageLimit : 5
+    this.pageLimit = typeof pageLimit === 'number' ? pageLimit : 25
     this.totalRecords = typeof totalRecords === 'number' ? totalRecords : 0
 
     // pageNeighbours can be: 0, 1 or 2

@@ -24,7 +24,7 @@ class Pagination extends Component {
     super(props)
     console.log('======f', props)
     const { totalRecords, pageLimit, pageNeighbours } = props
-    this.pageLimit = (pageLimit && typeof pageLimit === 'number') ? pageLimit : 5
+    this.pageLimit = (pageLimit && typeof pageLimit === 'number') ? pageLimit : 25
     this.totalRecords = (totalRecords && typeof totalRecords === 'number') ? totalRecords : 0
 
     // pageNeighbours can be: 0, 1 or 2

@@ -47,9 +47,6 @@ class Navitem extends Component {
             onClick={this.handleItemClick}
             />
             <Menu.Menu position='right'>
-            <Menu.Item>
-                <Input icon='search' placeholder='Search...' />
-            </Menu.Item>
             <Menu.Item
                 name='logout'
                 active={activeItem === 'logout'}

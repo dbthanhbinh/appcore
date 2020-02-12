@@ -52,17 +52,19 @@ namespace AppCore.Business
             }
         }
 
-        public Task<UpdatedPostBusinessObjectMediaVM> ObjectMediaUpdatePostBusinessAsync(IFormFile File, Guid objectId, string objectType, string mediaType, Guid userId)
+        public Task<Media> ObjectMediaUpdatePostBusinessAsync(IFormFile File, Guid objectId, string objectType, string mediaType, Guid userId)
         {
+            Media mediaCreatedInfo = new Media();
             try
             {
                 Logger.LogWarning("UpdatePostBusiness Object Media");
                 Task<Media> mediaCreated = _mediaLogic.CreateMediaAsync(userId, File);
-                //Task.WaitAll(mediaCreated);
-                UpdatedPostBusinessObjectMediaVM objectMediaUpdatedInfo = new UpdatedPostBusinessObjectMediaVM();
+                Task.WaitAll(mediaCreated);
+                mediaCreatedInfo = mediaCreated.Result;
                 if (mediaCreated.Result.Id != null && mediaCreated.Result.Name != null && mediaCreated.Result.Size > 0)
                 {
-                    ObjectMedia objectMediaInfo = _uow.GetRepository<ObjectMedia>()
+                    ObjectMedia objectMediaInfo = new ObjectMedia();
+                    objectMediaInfo = _uow.GetRepository<ObjectMedia>()
                         .GetByFilter(om => om.ObjectId == objectId && om.ObjectType == objectType && om.MediaType == mediaType)
                         .FirstOrDefault();
 
@@ -72,18 +74,16 @@ namespace AppCore.Business
                         objectMediaInfo.ModifiedBy = userId;
                         _uow.GetRepository<ObjectMedia>().Update(objectMediaInfo);
                         _uow.SaveChanges();
-                        objectMediaUpdatedInfo = new UpdatedPostBusinessObjectMediaVM(objectMediaInfo);
                     }
                 }
-                objectMediaUpdatedInfo.MediaInfo = mediaCreated.Result;
-                return Task.FromResult(objectMediaUpdatedInfo);
-
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
+
+            return Task.FromResult(mediaCreatedInfo);
         }
 
     }

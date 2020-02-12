@@ -13,7 +13,7 @@ import {
 class BaseSetting extends React.Component {
     constructor(props){
         super(props)
-        this.SettingActions = new SettingActions()
+        this.SettingActions = null
         this.state = {}
         this.settingName = null
         this.AutoLoad = 'No'
@@ -24,6 +24,7 @@ class BaseSetting extends React.Component {
     componentDidMount(){
         let {model} = this.state
         if(this.settingName){
+            this.SettingActions = new SettingActions()
             let payload = {
                 url: `Setting/getGeneralSetting/${this.settingName}`
             }
@@ -57,6 +58,7 @@ class BaseSetting extends React.Component {
         eventEmitter.emit('handle-submit-form-data', { isLoading: true })
         if(!_.isNil(payload) && !_.isEmpty(payload)){
             this.setState(()=>({}), ()=>{
+                this.SettingActions = new SettingActions()
                 this.SettingActions.updateItem(payload, (err, result)=> {
                     if(err) return
 

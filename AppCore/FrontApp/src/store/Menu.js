@@ -9,7 +9,7 @@ const DETAIL_MENU_WITH_EDIT = 'DETAIL_MENU_WITH_EDIT'
 
 const initialState = {
     menuData: {
-        menuList: null,
+        menuList: [],
         detailData: null
     }
 }

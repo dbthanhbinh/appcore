@@ -9,7 +9,7 @@ const DETAIL_SEO = SEO_DEFINED.DETAIL_SEO
 
 const initialState = {
     seoData: {
-        seoList: null,
+        seoList: [],
         detailData: null
     }
 }

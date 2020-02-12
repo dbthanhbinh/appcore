@@ -25,7 +25,7 @@ class PostApp extends Component {
 
         this.state = {
             isLoading: false,
-            currentRoute: this.postType
+            currentRoute: 'articles'
         }
         this.isEditId = false
     }
@@ -55,7 +55,7 @@ class PostApp extends Component {
             if(err) return
             let {data, paging} = result ? Utils.getResTaskPagingApi(result) : null
             if(data){
-                this.props.fetchItem(data)
+                this.props.fetchPosts(data)
                 this.pagination = Utils.mapPaginationValue(paging)
                 this.setState({isLoading: false})
             }
@@ -91,7 +91,7 @@ class PostApp extends Component {
                     postList={ postList }
                     isLoading={isLoading}
                     currentRoute={currentRoute}
-                    onHandleDeleteItemState={this.props.deleteItem}
+                    onHandleDeleteItemState={this.props.deletePost}
                 />
             </Fragment>
         )

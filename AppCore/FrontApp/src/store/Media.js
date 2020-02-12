@@ -8,7 +8,7 @@ const DETAIL_MEDIA = 'DETAIL_MEDIA'
 
 const initialState = {
     mediaData: {
-        mediaList: null,
+        mediaList: [],
         detailData: null
     }
 }

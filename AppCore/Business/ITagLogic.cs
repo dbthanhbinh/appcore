@@ -11,6 +11,7 @@ namespace AppCore.Business
     public interface ITagLogic
     {
         List<Tag> GetAll();
+        PagingResponse FilterTagsWithPagingAsync(FilterTagReq filterTagReq);
         Task<Tag> CreateTagAsync(ReqCreateTag reqData);
         Task<Tag> DeleteTagAsync(ReqDeleteTag reqDelete);
         Task<TagWithEditVM> GetTagWithEditAsync(Guid id);

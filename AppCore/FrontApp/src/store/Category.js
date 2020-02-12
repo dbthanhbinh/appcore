@@ -9,7 +9,7 @@ const DETAIL_CATEGORY_WITH_EDIT = 'DETAIL_CATEGORY_WITH_EDIT'
 
 const initialState = {
     categoryData: {
-        categoryList: null,
+        categoryList: [],
         detailData: null
     }
 }

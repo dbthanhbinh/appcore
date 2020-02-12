@@ -21,8 +21,7 @@ const PostList = (props) => {
                     <tr>
                         <th>#</th>
                         <th className='admin-postlist-thumb'>Image</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>Name</th>
                         <th>Category</th>
                         <th>Action</th>
                     </tr>
@@ -37,7 +36,6 @@ const PostList = (props) => {
                                         <ImageView className='admin-postlist-thumb' src={ (item && item.media && item.media.path) ? item.media.path : null} />
                                     </td>
                                     <td>{ item.name }</td>
-                                    <td>Otto</td>
                                     <td>{item.category ? item.category.name : null}</td>
                                     <td>
                                     <ItemActions

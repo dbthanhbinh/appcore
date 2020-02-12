@@ -30,4 +30,10 @@ namespace AppCore.Controllers.commons
         public string Slug { get; set; }
         public Guid UserId { get; set; }
     }
+
+    public class FilterTagReq
+    {
+        public virtual int CurrentPage { get; set; } = 1;
+        public virtual int PageSize { get; set; } = 10;
+    }
 }

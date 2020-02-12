@@ -166,9 +166,14 @@ namespace AppCore.Business
                     postData.ModifiedBy = userId;
 
                     _uow.GetRepository<Post>().Update(postData);
-                    
+                    resUpdatePostBusiness.PostUpdated = postData;
+                    resUpdatePostBusiness.SeoUpdated = postData.Seo;
+                    resUpdatePostBusiness.ObjectTagUpdated = objectTags;
+
                     // Update Object Media (feature image)
-                    Task<UpdatedPostBusinessObjectMediaVM> objectMediaUpdated = _objectMediaLogic.ObjectMediaUpdatePostBusinessAsync(reqUpdatePostBusiness.File, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType, "thumbnail", userId);
+                    Task<Media> mediaUpdated = _objectMediaLogic.ObjectMediaUpdatePostBusinessAsync(reqUpdatePostBusiness.File, reqUpdatePostBusiness.Id, reqUpdatePostBusiness.PostType, "thumbnail", userId);
+                    Task.WaitAll(mediaUpdated);
+                    resUpdatePostBusiness.MediaUpdated = mediaUpdated.Result;
                     _uow.SaveChanges();
                 }
 

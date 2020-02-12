@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 import LoadingItem from '../commons/LoadingItem'
+import Pagination from '../../helpers/PaginationPost'
 
 /**
  * Input: items: [] => array of list item
@@ -30,7 +31,7 @@ class ItemList extends React.Component{
     }
 
     render(){
-        let { items, currentRoute, currentEditId, isEdit } = this.props
+        let { items, currentRoute, currentEditId, isEdit, pagination, paginationPath, onGotoPage } = this.props
         let { isLoading } = this.state
         return(
             isLoading ? <LoadingItem />
@@ -59,6 +60,15 @@ class ItemList extends React.Component{
                         }
                     </tbody>
                 </Table>
+                {
+                    pagination && pagination.totalRecords > pagination.pageSize
+                    ? <Pagination
+                        paginationPath={paginationPath}
+                        pagination={pagination}
+                        onGotoPage={onGotoPage}
+                    /> : null
+
+                }
             </Fragment>
         )
     }

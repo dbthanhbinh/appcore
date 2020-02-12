@@ -32,7 +32,7 @@ class Media extends Component {
             totalPages: 0,
             totalRecords: 0,
             currentPage: 0,
-            pageSize: 0,
+            pageSize: 20,
             isPaging: false
         }
     }
@@ -115,10 +115,10 @@ class Media extends Component {
             }
         }
         if(!_.isNil(payload) && !_.isEmpty(payload)){
-            // this.MediaActions.updateItem(payload, (err, result)=> {
-            //     if(err) return
-            //     if(result) this.props.updateMedia(Utils.getResApi(result))
-            // })
+            this.MediaActions.updateItem(payload, (err, result)=> {
+                if(err) return
+                if(result) this.props.updateMedia(Utils.getResApi(result))
+            })
         }
     }
 
@@ -133,7 +133,7 @@ class Media extends Component {
                             <input type='file' name='file' id='file' onChange={ this.handleOnChangeFile } />
                         </Form.Field>
                         <Form.Field>
-                            <Button variant="primary" type="button" onClick={this.handleSubmitForm}>Submit</Button>
+                            <Button variant="ui primary button" type="button" onClick={this.handleSubmitForm}>Submit</Button>
                         </Form.Field>
                     </Form>
                 </div>

@@ -24,7 +24,7 @@ namespace AppCore.Controllers
 
         [HttpGet("getAllTag", Name = "GetAllTag")]
         public ActionResult GetAllTag()
-        {   
+        {
             object a = _tagLogic.GetAll();
             return Ok(new BaseResponse(a));
         }
@@ -68,5 +68,21 @@ namespace AppCore.Controllers
             var result = _tagLogic.GetTagWithEditAsync(id);
             return Ok(new BaseResponse(result));
         }
+
+        /**
+         * Get FilterTagsWithPagingAsync list all category from data base
+         */
+        [HttpGet("filterTags/{pageSize}/{currentPage}", Name = "FilterTags")]
+        public ActionResult FilterTagsWithPagingAsync(Int32 pageSize, Int32 currentPage)
+        {
+            FilterTagReq filterTagReq = new FilterTagReq
+            {
+                PageSize = pageSize,
+                CurrentPage = currentPage
+            };
+            var result = _tagLogic.FilterTagsWithPagingAsync(filterTagReq);
+            return Ok(new BaseResponse(result.Data, result.Paging));
+        }
+
     }
 }

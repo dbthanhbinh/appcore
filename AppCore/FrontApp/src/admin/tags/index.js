@@ -36,11 +36,14 @@ class Tag extends Component{
             isFormValid: isFormValid,
             model: models
         }
+        this.pagination = Utils.resetPagination()
+        this.paginationPath = '/admin/tags/paging'
         this.isEdit = false
         this.handleOnCreateTag = this.handleOnCreateTag.bind(this)
         this.handleOnDeleteTag = this.handleOnDeleteTag.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
         this.handleOnUpdateTag = this.handleOnUpdateTag.bind(this)
+        this.filterTagsWithPaging = this.filterTagsWithPaging.bind(this)
     }
 
     componentDidMount(){
@@ -73,17 +76,28 @@ class Tag extends Component{
         
         // For get all case
         if(!this.isEdit) {
-            payload = {
-                url: 'Tag/getAllTag',
-                body: {}
-            }
-            this.TagActions.getListItems(payload, (err, result)=> {
-                if(err) return
-                let resultData = Utils.getResApi(result)
-                resultData = Utils.sortList(resultData, 'desc')  // To sort list
-                this.props.fetchTag(resultData)
-            })
+            let currentPage = this.pagination.currentPage
+            this.filterTagsWithPaging(currentPage)
         }
+    }
+
+    filterTagsWithPaging = (currentPage) => {
+        this.TagActions = new TagActions()
+        let pageSize = this.pagination.pageSize
+        let payload = {
+            url: `Tag/filterTags/${pageSize}/${currentPage}`,
+            body: {}
+        }
+        this.TagActions.getListItems(payload, (err, result)=> {
+            if(err) return
+            let resultData = Utils.getResApi(result)
+            resultData = Utils.sortList(resultData, 'desc')  // To sort list
+            this.props.fetchTag(resultData)
+        })
+    }
+
+    handleOnGotoPage = (page) => {
+        this.filterCategoryWithPaging(page)
     }
 
     handleOnInputChange = (e, data) => {
@@ -191,6 +205,9 @@ class Tag extends Component{
                                 currentEditId={catId}
                                 currentRoute={ currentRoute }
                                 items={ tagList }
+                                paginationPath={this.paginationPath}
+                                pagination={this.pagination}
+                                onGotoPage = {this.handleOnGotoPage}
                                 onDeleteTag = { this.handleOnDeleteTag }
                             />
                         </Grid.Column>

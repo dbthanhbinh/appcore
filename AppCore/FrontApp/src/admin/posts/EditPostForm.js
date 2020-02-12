@@ -57,11 +57,12 @@ class EditPostForm extends Component {
     }
 
     componentDidMount(){
+        //eventEmitter.emit('handle-loading-data', { isLoading: true })
         // For Edit case
         let payload = null
         let id = _.get(this.props, 'match.params.id')        
         if(id) {
-            eventEmitter.emit('handle-submit-form-data', { isLoading: true })
+            // eventEmitter.emit('handle-loading-data', { isLoading: true })
 
             this.isEditId = id
             this.isEditAble = true
@@ -85,7 +86,7 @@ class EditPostForm extends Component {
                     let result = _.merge(postData, seoData, {tagList: this.getCurrentPostTagList(objectTags)})
                     let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
 
-                    eventEmitter.emit('handle-submit-form-data', { isLoading: false })
+                    // eventEmitter.emit('handle-loading-data', { isLoading: false })
                     return { 
                         model: models,
                         isFormValid,
@@ -165,7 +166,7 @@ class EditPostForm extends Component {
             if(!_.isNil(payload) && !_.isEmpty(payload)){
                 this.PostActions.updateItemWithForm(payload, (err, result)=> {
                     if(err) return
-                    let mediaUpdatedInfo = _.get(result, 'data.objectMediaUpdated.mediaInfo')
+                    let mediaUpdatedInfo = _.get(result, 'data.mediaUpdated')
                     this.setState((prevState)=>{
                         return { 
                             mediaThumbnal: mediaUpdatedInfo,

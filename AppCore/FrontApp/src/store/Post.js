@@ -1,29 +1,29 @@
 import _ from 'lodash'
 import { StoreDefided } from './Utils'
 const POST_DEFINED = _.get(StoreDefided, 'POST_DEFINED')
-const ADD_ITEM = POST_DEFINED.ADD_ITEM
-const FETCH_ITEMS = POST_DEFINED.FETCH_ITEMS
-const DEL_ITEM = POST_DEFINED.DEL_ITEM
+const ADD_POST = POST_DEFINED.ADD_POST
+const FETCH_POSTS = POST_DEFINED.FETCH_POSTS
+const DEL_POST = POST_DEFINED.DEL_POST
 const DETAIL_POST_WITH_EDIT = POST_DEFINED.DETAIL_POST_WITH_EDIT
 
 const initialState = {
     postData: {
-        postList: null,
+        postList: [],
         detailData: null
     }
 }
 
 export const actionCreators = {
-    addItem: (post) => ({ type: ADD_ITEM, payload: { post } }),
-    deleteItem: (id) => ({ type: DEL_ITEM, payload: { id } }),
-    fetchItem: (postList) => ({ type: FETCH_ITEMS, payload: { postList } }),
+    addPost: (postData) => ({ type: ADD_POST, payload: { postData } }),
+    deletePost: (id) => ({ type: DEL_POST, payload: { id } }),
+    fetchPosts: (postList) => ({ type: FETCH_POSTS, payload: { postList } }),
     detailPostWithEdit: (detailData) => ({ type: DETAIL_POST_WITH_EDIT, payload: { detailData } }),
 }
 
 export const reducer = (state, action) => {
     state = state || initialState
     switch(action.type){
-        case FETCH_ITEMS:  // List of items
+        case FETCH_POSTS:  // List of items
             let { postList } = action.payload
             return {
                 ...state,
@@ -32,16 +32,16 @@ export const reducer = (state, action) => {
                   postList         
                 }
             }
-        case ADD_ITEM:
-            let tep = {
+        case ADD_POST:
+            return {
                 ...state,
                 postData: {
                     ...state.postData,
-                    postList: [...state.postData.postList, action.payload.post]
+                    postList: [...state.postData.postList, action.payload.postData],
+                    detailData: null
                 }
             }
-            return tep
-        case DEL_ITEM:   // Delete item
+        case DEL_POST:   // Delete item
             let deletePostList = _.get(state, 'postData.postList')
             let filterList = deletePostList.filter((f) => f.id !== action.payload.id)
             return {

@@ -8,8 +8,8 @@ const UPDATE_SETTING = SETTING_DEFINED.UPDATE_ITEM
 const DETAIL_SETTING = SETTING_DEFINED.DETAIL_SETTING
 
 const initialState = {
-    settingData: {
-        settingList: null,
+    settingDataConfig: {
+        settingList: [],
         detailData: null
     }
 }
@@ -27,17 +27,17 @@ export const reducer = (state, action) => {
         case FETCH_SETTINGS:
             return {
                 ...state,
-                settingData: {
-                    ...state.settingData,
-                    settingList: action.payload.settingList         
+                settingDataConfig: {
+                    ...state.settingDataConfig,
+                    settingList: action.payload.settingList
                 }
             }
         case ADD_SETTING:
             return {
                 ...state,
-                settingData: {
-                    ...state.settingData,
-                    settingList: [...state.settingData.settingList, action.payload.setting]
+                settingDataConfig: {
+                    ...state.settingDataConfig,
+                    settingList: [...state.settingDataConfig.settingList, action.payload.setting]
                 }
             }
         case UPDATE_SETTING:
@@ -49,8 +49,8 @@ export const reducer = (state, action) => {
                 })
                 return {
                     ...state,
-                    settingData: {
-                        ...state.settingData,
+                    settingDataConfig: {
+                        ...state.settingDataConfig,
                         settingList: updateList
                     }
                 }

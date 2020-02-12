@@ -23,6 +23,7 @@ class Loading extends Component {
 
     componentDidMount(){
         eventEmitter.on('handle-submit-form-data', this.handleSubmitFormDataEvent)
+        eventEmitter.on('handle-loading-data', this.handleSubmitFormDataEvent)
         //eventEmitter.on('handle-loading-list-simcart', this.handleSubmitFormDataEvent)
     }
     render(){

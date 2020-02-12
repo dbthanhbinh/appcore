@@ -11,7 +11,7 @@ const DETAIL_TAG = TAG_DEFINED.DETAIL_TAG
 
 const initialState = {
     tagData: {
-        tagList: null,
+        tagList: [],
         detailData: null
     }
 }

@@ -129,13 +129,13 @@ namespace AppCore.Business
             }
         }
 
-        public void CreateListObjectTagsBusinessAsync(List<Guid> listTags, Guid objectId, string objectType, Guid userId)
+        public List<ObjectTag> CreateListObjectTagsBusinessAsync(List<Guid> listTags, Guid objectId, string objectType, Guid userId)
         {
+            List<ObjectTag> objectTags = new List<ObjectTag>();
             try
             {
                 if (listTags.Count() > 0)
-                {
-                    List<ObjectTag> objectTags = new List<ObjectTag>();
+                {   
                     foreach (Guid guid in listTags)
                     {
                         ObjectTag objectTag = new ObjectTag
@@ -162,6 +162,7 @@ namespace AppCore.Business
                 _logger.LogError(ex.Message.ToString());
                 throw ex;
             }
+            return objectTags;
         }
 
         public Task<List<ObjectTagItem>> UpdateObjectTagsBusinessAsync(string listTags, string listHiddenTags, Guid objectId, string objectType, out List<ObjectTag> objectTags, Guid userId)
@@ -249,7 +250,7 @@ namespace AppCore.Business
                 // Create new ObjectTag
                 if (toAddNewIds.Count() > 0)
                 {
-                    this.CreateListObjectTagsBusinessAsync(toAddNewIds, objectId, objectType, userId);
+                    objectTags = this.CreateListObjectTagsBusinessAsync(toAddNewIds, objectId, objectType, userId);
                 }
                 return Task.FromResult(listAllTagsNew);
             }

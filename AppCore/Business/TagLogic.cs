@@ -132,5 +132,23 @@ namespace AppCore.Business
                 throw ex;
             }
         }
+
+        public PagingResponse FilterTagsWithPagingAsync(FilterTagReq filterTagReq)
+        {
+            try
+            {
+                int currentPage = filterTagReq.CurrentPage;
+                int pageSize = filterTagReq.PageSize;
+                List<Tag> result = null;
+                result = _uow.GetRepository<Tag>().GetAll();
+                PagingResponse resultPg = PagingHelper<Tag>.GetPagingList(result, currentPage, pageSize);
+                return resultPg;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

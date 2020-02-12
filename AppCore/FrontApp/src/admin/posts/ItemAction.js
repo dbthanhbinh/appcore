@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
 import PostActions from '../../store/PostActions'
+import {Icon} from 'semantic-ui-react'
 
 class ItemActions extends React.Component {
     constructor(props){
@@ -49,7 +50,7 @@ class ItemActions extends React.Component {
         }
 
         return <Fragment>
-            <button title={title} onClick={!disableItem ? ()=>this.onHandleDeleteItem(item.id) : null } className={`ui ${isLoading ? 'loading' : ''} button ${disableItem ? 'disabled' : ''}`} >Del</button>
+            <Icon title={title} onClick={!disableItem ? ()=>this.onHandleDeleteItem(item.id) : null } className={`remove circle big icon ${isLoading ? 'loading' : ''} ${disableItem ? 'disabled' : ''}`} name='delete' />
             <a className={ disableItem ? 'disabled' : '' } href={`admin/${currentRoute}/edit/${item.id}`}>Edit</a>
         </Fragment>
     }

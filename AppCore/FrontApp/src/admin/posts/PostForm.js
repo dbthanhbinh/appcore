@@ -68,6 +68,7 @@ class postForm extends Component {
     }
 
     handleSubmitForm(e, data){
+        this.PostActions = new PostActions()
         let {isFormValid} = this.props
         let { model } = this.state
         let payload = {}
@@ -87,13 +88,14 @@ class postForm extends Component {
             }
             // eventEmitter.emit('handle-submit-form-data', { isLoading: true })
             if(!_.isNil(payload) && !_.isEmpty(payload)){
-                this.setState(()=>({ isLoading: false, isShowModal: false }), ()=>{
-                    this.PostActions.addItemWithForm(payload, (err, result)=> {
-                        if(err) return
+                this.PostActions.addItemWithForm(payload, (err, result)=> {
+                    if(err) return
+                    if(result) {
                         let postData = _.get(Utils.getResApi(result), 'postData')
-                        if(result) this.props.addItem(postData)
-                    })
-                    // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
+                        this.props.addPost(postData)
+                        this.handleCloseModal()
+                        // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
+                    }
                 })
             }
         }

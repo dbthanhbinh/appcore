@@ -13,7 +13,7 @@ export default class LeftNav extends Component {
           <Menu.Item>
             <Menu.Header>Post</Menu.Header>
             <Menu.Menu>
-              <Menu.Item  as='a' href='/admin/posts'
+              <Menu.Item  as='a' href='/admin/articles?posttype=post'
                 name='Posts'
                 active={activeItem === 'admin-posts'}
                 onClick={this.handleItemClick}
@@ -34,28 +34,6 @@ export default class LeftNav extends Component {
                 active={activeItem === 'admin-media'}
                 onClick={this.handleItemClick}
               />
-            </Menu.Menu>
-          </Menu.Item>
-  
-          <Menu.Item>
-            <Menu.Header>Support</Menu.Header>
-  
-            <Menu.Menu>
-              <Menu.Item
-                name='email'
-                active={activeItem === 'email'}
-                onClick={this.handleItemClick}
-              >
-                E-mail Support
-              </Menu.Item>
-  
-              <Menu.Item
-                name='faq'
-                active={activeItem === 'faq'}
-                onClick={this.handleItemClick}
-              >
-                FAQs
-              </Menu.Item>
             </Menu.Menu>
           </Menu.Item>
         </Menu>

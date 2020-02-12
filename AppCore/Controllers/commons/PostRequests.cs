@@ -79,7 +79,7 @@ namespace AppCore.Controllers.commons
     {
         public Post PostUpdated { set; get; }
         public Seo SeoUpdated { get; set; }
-        public List<ObjectTagItem> ObjectTagUpdated { get; set; }
-        public ObjectMedia ObjectMediaUpdated { get; set; }
+        public List<ObjectTag> ObjectTagUpdated { get; set; }
+        public Media MediaUpdated { get; set; }
     }
 }
