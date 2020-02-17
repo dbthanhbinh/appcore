@@ -14,7 +14,7 @@ namespace AppCore.Business
         Task<Category> UpdateCategoryAsync(Guid userId, UpdateCategoryReq category);
         List<Category> GetAllCategoryAsync();
         Task<Category> GetCategoryAsync(Guid id);
-        Task<Category> DeleteCategoryAsync(ReqDeleteCategory reqDeleteCategory);
+        DeleteCategoryResponse DeleteCategoryAsync(ReqDeleteCategory reqDeleteCategory);
 
         CategoryWithEditVM GetCategoriesWithEditAsync(Guid id);
         Task<PagingResponse> FilterCategoryWithPagingAsync(ReqFilterCategory reqFilterCategory);

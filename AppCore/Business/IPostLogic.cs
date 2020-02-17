@@ -16,5 +16,6 @@ namespace AppCore.Business
         Task<bool> DeletePostAsync(ReqDeletePost reqDelete);
         Task<PagingResponse> FilterPostsWithPagingAsync(FilterPostReq filterPostReq);
         PostWithEditVM GetPostWithEditAsync(Guid id);
+        Post CheckPostInCategoryId(Guid categoryId);
     }
 }

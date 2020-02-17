@@ -19,18 +19,20 @@ namespace AppCore.Business
         private readonly IUnitOfWork _uow;
         public ILogger<CategoryLogic> Logger { get; }
         private readonly ISeoLogic _seoLogic;
+        private readonly IPostLogic _postLogic;
         private readonly IMapper _mapper;
 
         public CategoryLogic(
             IUnitOfWork uow,
             ISeoLogic seoLogic,
-            IMapper mapper,
+            IPostLogic postLogic,
             ILogger<CategoryLogic> logger
         )
         {
             _uow = uow;
             _seoLogic = seoLogic;
             _mapper = mapper;
+            _postLogic = postLogic;
             Logger = logger;
         }
 
@@ -185,7 +187,7 @@ namespace AppCore.Business
         }
 
         /*
-         * Get list all category
+         * Get GetCategoryAsync
          */
         public async Task<Category> GetCategoryAsync(Guid id)
         {
@@ -204,23 +206,35 @@ namespace AppCore.Business
         /*
         // * Delete category
         // */
-        public async Task<Category> DeleteCategoryAsync(ReqDeleteCategory reqDelete)
+        public DeleteCategoryResponse DeleteCategoryAsync(ReqDeleteCategory reqDelete)
         {
+            DeleteCategoryResponse deleteCategoryResponse = new DeleteCategoryResponse();
             try
             {
-                var category = new Category
+                var postData = _postLogic.CheckPostInCategoryId(reqDelete.Id);
+                Task<Category> categoryData = this.GetCategoryAsync(reqDelete.Id);
+
+                if (postData == null)
+                {   
+                    _uow.GetRepository<Category>().Delete(categoryData.Result.Id);
+                    _uow.SaveChanges();
+                    deleteCategoryResponse.Data = categoryData.Result;
+                }
+                else
                 {
-                    Id = reqDelete.Id
-                };
-                _uow.GetRepository<Category>().Delete(reqDelete.Id);
-                _uow.SaveChanges();
-                return await Task.FromResult(category);
+                    deleteCategoryResponse.ApiResult = "ApiError";
+                    deleteCategoryResponse.Message = "Can not delete this category! The category has post data";
+                    deleteCategoryResponse.Data = categoryData.Result;
+                }
+                
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
+
+            return deleteCategoryResponse;
         }
     }
 }

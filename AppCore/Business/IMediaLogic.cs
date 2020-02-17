@@ -13,5 +13,6 @@ namespace AppCore.Business
         UploadedFull UploadFile(IFormFile file);
         Task<Media> CreateMediaAsync(Guid userId, IFormFile file);
         Task<PagingResponse> GetAllMedia();
+        PagingResponse FilterMediasWithPagingAsync(FilterMediaReq filterMediaReq);
     }
 }

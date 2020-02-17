@@ -53,5 +53,18 @@ namespace AppCore.Controllers
             result = await _mediaLogic.GetAllMedia();
             return Ok(new BaseResponse(result.Data, result.Paging));
         }
+
+        [HttpGet("filterMedias/{pageSize}/{currentPage}", Name = "filterMedias")]
+        public ActionResult FilterMediasWithPagingAsync(Int32 pageSize, Int32 currentPage)
+        {
+            FilterMediaReq filterTagReq = new FilterMediaReq
+            {
+                PageSize = pageSize,
+                CurrentPage = currentPage
+            };
+            var result = _mediaLogic.FilterMediasWithPagingAsync(filterTagReq);
+            return Ok(new BaseResponse(result.Data, result.Paging));
+        }
+
     }
 }

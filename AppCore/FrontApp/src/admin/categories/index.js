@@ -198,7 +198,8 @@ class Category extends Component{
         if(!_.isNil(payload) && !_.isEmpty(payload)){
             this.CategoryActions.deleteItem(payload, (err, result)=> {
                 if(err) return
-                if(!err && result) this.props.deleteCategory(id)
+                if(result && result.apiResult !== 'ApiError' && result.message === null)
+                    this.props.deleteCategory(id)
             })
         }
     }

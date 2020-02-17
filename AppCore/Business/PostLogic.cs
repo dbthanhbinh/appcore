@@ -271,6 +271,31 @@ namespace AppCore.Business
             }
         }
 
+        /// <summary>
+        /// Check if have any post in current categoryId
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        public Post CheckPostInCategoryId(Guid categoryId)
+        {
+            Post postData = null;
+            try
+            {
+                if (categoryId == null)
+                {
+                    return postData;
+                }
+                postData = _uow.GetRepository<Post>().GetByFilter(a => a.CategoryId == categoryId).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+
+            return postData;
+        }
+
         public PostWithEditVM GetPostWithEditAsync(Guid id)
         {
             PostWithEditVM postWithEditVM = new PostWithEditVM();
