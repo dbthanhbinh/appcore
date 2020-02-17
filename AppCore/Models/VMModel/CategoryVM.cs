@@ -21,4 +21,9 @@ namespace AppCore.Models.VMModel
         public Category Category { get; set; }
         public object CategoryList { get; set; }
     }
+
+    public class DeleteCategoryVM
+    {
+
+    }
 }

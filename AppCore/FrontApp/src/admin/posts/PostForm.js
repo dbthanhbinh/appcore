@@ -126,7 +126,7 @@ class postForm extends Component {
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
-                <BtnWithModalEvent onBtnEvent={this.handleOpenModal} />
+                <BtnWithModalEvent onBtnEvent={this.handleOpenModal} customClass={'primary'} />
                 <Modal
                     open={isShowModal}
                     >

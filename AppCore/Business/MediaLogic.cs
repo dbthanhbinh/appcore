@@ -122,5 +122,23 @@ namespace AppCore.Business
             }
         }
 
+        public PagingResponse FilterMediasWithPagingAsync(FilterMediaReq filterMediaReq)
+        {
+            try
+            {
+                int currentPage = filterMediaReq.CurrentPage;
+                int pageSize = filterMediaReq.PageSize;
+
+                List<Media> result = null;
+                result = _uow.GetRepository<Media>().GetAll();
+                return PagingHelper<Media>.GetPagingList(result, currentPage, pageSize);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex.Message.ToString());
+                throw ex;
+            }
+        }
+
     }
 }

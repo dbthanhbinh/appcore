@@ -90,18 +90,22 @@ class RestConnection{
 
 
     _fetch(url, options, cb){
-        if(url){
-            fetch(url, options)
-            .then(response => {
-                return this.handleResponse(response, cb)                
-            }).then(myJson => {
-                return this.handleThenResponse(myJson, cb)
-            }).catch(error => {
-                return this.handleErrorCatched(error, cb)
-            })
-        } else {
-            return this.handleErrorApiResourcesIsNull(cb)
-        } 
+        try {
+            if(url){
+                fetch(url, options)
+                .then(response => {
+                    return this.handleResponse(response, cb)                
+                }).then(myJson => {
+                    return this.handleThenResponse(myJson, cb)
+                }).catch(error => {
+                    return this.handleErrorCatched(error, cb)
+                })
+            } else {
+                return this.handleErrorApiResourcesIsNull(cb)
+            } 
+        } catch (err) {
+
+        }
     }
 
     // ================================

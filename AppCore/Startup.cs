@@ -41,7 +41,8 @@ namespace AppCore
                         builder
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
-                        .AllowAnyHeader();
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                     });
             });
 
@@ -114,7 +115,7 @@ namespace AppCore
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "FrontApp/build";
+                configuration.RootPath = "AdminApp/build";
             });
         }
 
@@ -123,12 +124,6 @@ namespace AppCore
         {
             // global cors policy
             app.UseCors("AllowAllCors");
-            //app.UseCors(x => x
-            //    .AllowAnyOrigin()
-            //    .WithOrigins("http://localhost:3000", "http://localhost:3000/")
-            //    .AllowAnyMethod()
-            //    .AllowAnyHeader()
-            //    .AllowCredentials());
 
             if (env.IsDevelopment())
             {
@@ -153,7 +148,7 @@ namespace AppCore
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "FrontApp";
+                spa.Options.SourcePath = "AdminApp";
 
                 if (env.IsDevelopment())
                 {

@@ -26,8 +26,14 @@ export const reducer = (state, action) => {
     switch(action.type){
         case FETCH_MEDIA:
             let { mediaList } = action.payload
-            state.mediaData.mediaList = mediaList
-            return Object.assign({}, state)
+            let temp = {
+                ...state,
+                mediaData: {
+                  ...state.mediaData,
+                  mediaList         
+                }
+            }
+            return temp
         case ADD_MEDIA:
             return {
                 ...state,

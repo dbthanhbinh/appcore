@@ -85,10 +85,14 @@ namespace AppCore.Controllers
          * Delete Category
          */
         [HttpDelete("deleteCategory", Name = "DeleteCategoryAsync")]
-        public async Task<ActionResult> DeleteCategoryAsync(ReqDeleteCategory reqDelete)
+        public ActionResult DeleteCategoryAsync(ReqDeleteCategory reqDelete)
         {
-            var result = await _categoryLogic.DeleteCategoryAsync(reqDelete);
-            return Ok(new BaseResponse(result));
+            var result = _categoryLogic.DeleteCategoryAsync(reqDelete);
+            return Ok(new BaseResponse() {
+                ApiResult = result.ApiResult,
+                Message = result.Message.ToString(),
+                Data = result.Data
+            });
         }
 
         /**

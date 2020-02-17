@@ -7,6 +7,12 @@ export const BtnAddNew = (props) => {
 }
 
 export const BtnWithModalEvent = (props) => {
-    let {onBtnEvent, label, disabled} = props
-    return <Button disabled={disabled} onClick={onBtnEvent} variant="primary">{label || 'Add new'}</Button>
+    let {onBtnEvent, label, disabled, customClass} = props
+    return <Button
+        disabled={disabled}
+        onClick={onBtnEvent}
+        className={`ui button ${customClass}`}
+        variant="primary">
+            {label || 'Add new'}
+        </Button>
 }

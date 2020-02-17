@@ -7,10 +7,11 @@ import _ from 'lodash'
 import MediaActions from '../../store/MediaActions'
 import MediaItem from './mediaItem'
 import Utils from '../../apis/utils'
-import Pagination from '../../helpers/Pagination'
+import Pagination from '../../helpers/PaginationPost'
 import './media.scss'
 import { getInputData, setFieldValue }
 from '../../utils/FormUtils'
+import { withFormBehaviors } from '../components/form/form'
 
 class Media extends Component {
     constructor(props){
@@ -20,21 +21,13 @@ class Media extends Component {
         this.state = {
             file: null
         }
-        this.pagination = this.resetPagination()  // Current process pagination
+        this.pagination = Utils.resetPagination()
+        this.paginationPath = '/admin/categories/paging'
+
         this.handleSubmitForm = this.handleSubmitForm.bind(this)
         this.handleOnChangeFile = this.handleOnChangeFile.bind(this)
         this.handleUpdateMedia = this.handleUpdateMedia.bind(this)
         this.handleOnInputChange = this.handleOnInputChange.bind(this)
-    }
-
-    resetPagination(){
-        return {
-            totalPages: 0,
-            totalRecords: 0,
-            currentPage: 0,
-            pageSize: 20,
-            isPaging: false
-        }
     }
 
     mapPaginationValue(pagingData){
@@ -49,28 +42,32 @@ class Media extends Component {
         }
     }
 
-    onPageChanged = data => {
-        // const { currentPage, totalPages, pageLimit } = data;
-        // let initBody = SimCardUtil.getDefaultConfigRequestFilter()
-        // initBody.Supplier = this.currentSupplierActive
-        // initBody.CurrentPage = currentPage
-        // this.requestFilterListItems(initBody)
+    componentDidMount(){
+        let currentPage = this.pagination.currentPage
+        this.filterMediaWithPaging(currentPage)
     }
 
-    componentDidMount(){
+    filterMediaWithPaging = (currentPage) => {
+        let pageSize = 5 //this.pagination.pageSize
         let payload = {
-            url: 'Media/getAllMedia',
+            url: `Media/filterMedias/${pageSize}/${currentPage}`,
             body: {}
         }
         this.MediaActions.getListItems(payload, (err, result)=> {
             if(err) return
+
             let resultData = result ? Utils.getResApi(result) : null
             if(resultData){
+                let {paging} = result
                 this.props.fetchMedia(resultData)
-                this.mapPaginationValue(Utils.getResPagingApi(result))
+                this.pagination = Utils.mapPaginationValue(paging)
+                this.setState({isLoading: false})
             }
-            this.setState({isLoading: false})
         })
+    }
+
+    handleOnGotoPage = (page) => {
+        this.filterMediaWithPaging(page)
     }
 
     handleOnChangeFile(e){
@@ -123,7 +120,8 @@ class Media extends Component {
     }
 
     render(){
-        let mediaList = _.get(this.props, 'mediaData.mediaList')
+        let { mediaData } = this.props
+        let { mediaList } = mediaData
         return(
             <Fragment>
                 <h5>Media</h5>
@@ -151,12 +149,9 @@ class Media extends Component {
                     {
                         this.pagination && this.pagination.totalRecords > this.pagination.pageSize
                         ? <Pagination
-                            totalRecords={ this.pagination.totalRecords }
-                            pageLimit={ this.pagination.pageSize }
-                            currentPage={ this.pagination.currentPage }
-                            pageNeighbours={1}
-                            onPageChanged={this.onPageChanged}
-                            items = { mediaList || null }
+                            paginationPath={this.paginationPath}
+                            pagination={this.pagination}
+                            onGotoPage={this.handleOnGotoPage}
                         /> : null
 
                     }
@@ -173,4 +168,4 @@ function mapStateToProps(state){
 export default connect(
     mapStateToProps,
     dispatch => bindActionCreators(actionCreators, dispatch)
-)(Media)
+)(withFormBehaviors(Media, null))

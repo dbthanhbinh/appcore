@@ -80,4 +80,11 @@ namespace AppCore.Controllers.commons
             this.Data = data;
         }
     }
+
+    public class DeleteCategoryResponse
+    {
+        public string ApiResult { get; set; } = "";
+        public string Message { get; set; } = "";
+        public object Data { get; set; } = null;
+    }
 }
