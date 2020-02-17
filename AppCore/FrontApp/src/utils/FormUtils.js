@@ -152,3 +152,7 @@ export function adapterMapingDropdownOption(options){
     })
     return mapOptions
 }
+
+export function resetFormFieldByFormId(formId){
+    document.getElementById(formId).reset()
+}
