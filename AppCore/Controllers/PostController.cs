@@ -67,7 +67,7 @@ namespace AppCore.Controllers
 
 
         [HttpGet("getPostWithEdit/{id}", Name = "GetPostWithEdit")]
-        public ActionResult getPostWithEdit(Guid id)
+        public ActionResult GetPostWithEdit(Guid id)
         {
             var result = _postLogic.GetPostWithEditAsync(id);
             return Ok(result);

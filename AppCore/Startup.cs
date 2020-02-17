@@ -1,9 +1,11 @@
 using AppCore.Business;
 using AppCore.Helpers;
 using AppCore.Models;
+using AppCore.Models.Mappings;
 using AppCore.Models.Repository;
 using AppCore.Models.UnitOfWork;
 using AppCore.Provider;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -111,6 +113,15 @@ namespace AppCore
                 options => options.SerializerSettings.ReferenceLoopHandling =
                 Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingCategory());
+                mc.AddProfile(new MappingPost());
+            });
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

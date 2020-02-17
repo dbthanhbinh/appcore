@@ -3,6 +3,7 @@ using AppCore.Helpers;
 using AppCore.Models.DBModel;
 using AppCore.Models.UnitOfWork;
 using AppCore.Models.VMModel;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,6 +21,7 @@ namespace AppCore.Business
         private readonly ISeoLogic _seoLogic;
         private readonly IObjectMediaLogic _objectMediaLogic;
         private readonly IObjectTagLogic _objectTagLogic;
+        private readonly IMapper _mapper;
         public ILogger<PostLogic> _logger { get; }
 
         public PostLogic(
@@ -28,6 +30,7 @@ namespace AppCore.Business
             IObjectMediaLogic objectMediaLogic,
             IObjectTagLogic objectTagLogic,
             ISeoLogic seoLogic,
+            IMapper mapper,
             ILogger<PostLogic> logger
         )
         {
@@ -36,6 +39,7 @@ namespace AppCore.Business
             _mediaLogic = mediaLogic;
             _objectMediaLogic = objectMediaLogic;
             _objectTagLogic = objectTagLogic;
+            _mapper = mapper;
             _seoLogic = seoLogic;
         }
 
@@ -234,33 +238,18 @@ namespace AppCore.Business
                 int pageSize = filterPostReq.PageSize;
                 string postType = filterPostReq.PostType;
 
-                List<Post> result = null;
-                result = _uow.GetRepository<Post>().GetByFilter(a => a.PostType == postType);
-                //var reports = _uow.GetRepository<Post>().GetAll(x =>
-                //    x.Include(report => report.Category));
-
-                //List<ObjectMedia> objectMedias = _uow.GetRepository<ObjectMedia>().GetAll();
-                //List<Media> medias = _uow.GetRepository<Media>().GetAll();
-
-                //var Privs = (
-                //                from rpm in result
-                //                 join urm in objectMedias on rpm.Id equals urm.ObjectId
-                //                 join um in medias on urm.MediaId equals um.Id
-                //                 select rpm.Name
-                //             ).Distinct();
-
-
-                var resultPg = PagingHelper<Post>.GetPagingList(result, currentPage, pageSize);
+                List<PostGetListVM> result = null;
+                int countTotals = _uow.GetRepository<Post>().CountTotalByFilter(a => a.PostType == postType && a.IsActive == true);
+                result = _uow.GetRepository<Post>().GetByFilterPaging(a => a.PostType == postType && a.IsActive == true, currentPage, pageSize).Select(s => _mapper.Map<PostGetListVM>(s)).ToList();
+                
+                var resultPg = PagingHelper<PostGetListVM>.GetPagingList(result, currentPage, pageSize, countTotals);
                 await Task.FromResult(resultPg);
                 List<ListPostDataVM> listPostDataVMs = new List<ListPostDataVM>();
                 
                 if (resultPg.Data != null)
                 {   
                     foreach (Post post in (List<Post>)resultPg.Data)
-                    {   
-                        //Media media = _uow.GetRepository<ObjectMedia>().GetByFilter(o => o.ObjectId == post.Id)
-                        //    .Join(_uow.GetRepository<Media>().GetAll(), o=>o.MediaId, m=>m.Id, (o, p) => new Media { }).FirstOrDefault();
-
+                    { 
                         Media media = (
                                        from ob in _uow.GetRepository<ObjectMedia>().GetByFilter(o => o.ObjectId == post.Id)
                                        join m in _uow.GetRepository<Media>().GetAll() on ob.MediaId equals m.Id

@@ -11,6 +11,7 @@ import CategoryList from './ItemList'
 import CategoryForm from './CategoryForm'
 import Utils from '../../apis/utils'
 import {
+    resetFormFieldByFormId,
     resetModelDefaultData,
     initValidatorModel,
     getInputData,
