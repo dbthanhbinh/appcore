@@ -68,7 +68,7 @@ namespace AppCore.Controllers
                 CurrentPage = currentPage
             };
             var result = _categoryLogic.FilterCategoryWithPagingAsync(reqFilterCategory);
-            return Ok(new BaseResponse(result));
+            return Ok(new BaseResponse(result.Result.Data, result.Result.Paging));
         }
 
         /**

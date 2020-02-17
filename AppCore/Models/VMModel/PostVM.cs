@@ -34,4 +34,14 @@ namespace AppCore.Models.VMModel
         }
         public virtual Media Media { get; set; }
     }
+
+    public class PostGetListVM
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Slug { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+    }
 }

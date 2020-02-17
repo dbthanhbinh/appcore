@@ -4,6 +4,7 @@ using AppCore.Models.DBModel;
 using AppCore.Models.Repository;
 using AppCore.Models.UnitOfWork;
 using AppCore.Models.VMModel;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,15 +19,18 @@ namespace AppCore.Business
         private readonly IUnitOfWork _uow;
         public ILogger<CategoryLogic> Logger { get; }
         private readonly ISeoLogic _seoLogic;
+        private readonly IMapper _mapper;
 
         public CategoryLogic(
             IUnitOfWork uow,
             ISeoLogic seoLogic,
+            IMapper mapper,
             ILogger<CategoryLogic> logger
         )
         {
             _uow = uow;
             _seoLogic = seoLogic;
+            _mapper = mapper;
             Logger = logger;
         }
 
@@ -66,7 +70,7 @@ namespace AppCore.Business
                 Task<bool> categoryCreated = _uow.GetRepository<Category>().AddAsync(categoryData);
                 _uow.SaveChanges();
 
-                createdCategoryVM.categoryData = categoryData;
+                createdCategoryVM.CategoryData = categoryData;
                 return await Task.FromResult(createdCategoryVM);
 
             }
@@ -144,10 +148,10 @@ namespace AppCore.Business
                 int currentPage = reqFilterCategory.CurrentPage;
                 int pageSize = reqFilterCategory.PageSize;
 
-                List<Category> result = null;
-                result = _uow.GetRepository<Category>().GetAll();
-
-                var resultPg = PagingHelper<Category>.GetPagingList(result, currentPage, pageSize);
+                List<CategoryGetListVM> result = null;
+                Int32 countTotals = _uow.GetRepository<Category>().CountTotalByFilter(x => x.IsActive == true);
+                result = _uow.GetRepository<Category>().GetByFilterPaging(x => x.IsActive == true, currentPage, pageSize).Select(s => _mapper.Map<CategoryGetListVM>(s)).ToList();
+                var resultPg = PagingHelper<CategoryGetListVM>.GetPagingList(result, currentPage, pageSize, countTotals);
                 await Task.FromResult(resultPg);
                 return resultPg;
             }
@@ -166,7 +170,6 @@ namespace AppCore.Business
             CategoryWithEditVM categoryWithEditVM = new CategoryWithEditVM();
             try
             {
-                // categoryWithEditVM.CategoryList = _uow.GetRepository<Category>().GetAll();
                 Category categoryData = _uow.GetRepository<Category>().GetWithRelated(a => a.Id == id, null, "Seo").FirstOrDefault();
                 if(categoryData != null)
                 {

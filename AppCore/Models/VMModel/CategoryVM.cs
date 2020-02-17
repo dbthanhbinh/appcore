@@ -12,13 +12,23 @@ namespace AppCore.Models.VMModel
 
     public class CreatedCategoryVM
     {
-        public Category categoryData { get; set; }
-        public Seo seoData { get; set; }
+        public Category CategoryData { get; set; }
+        public Seo SeoData { get; set; }
     }
 
     public class CategoryWithEditVM
     {
         public Category Category { get; set; }
         public object CategoryList { get; set; }
+    }
+
+    public class CategoryGetListVM
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Slug { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
     }
 }

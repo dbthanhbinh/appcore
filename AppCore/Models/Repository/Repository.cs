@@ -32,11 +32,23 @@ namespace AppCore.Models.Repository
             return _dbSet.ToList().Count();
         }
 
+        public Int32 CountTotalByFilter(Expression<Func<T, bool>> predicate)
+        {
+            return _dbSet.Where(predicate).ToList().Count();
+        }
+
         // ==================For Get ===================================
         public List<T> GetByFilter(Expression<Func<T, bool>> predicate)
         {
             return _dbSet.Where(predicate).ToList();
         }
+
+        public List<T> GetByFilterPaging(Expression<Func<T, bool>> predicate, int page, int pageSize)
+        {
+            int skipRows = (page - 1) * pageSize;
+            return _dbSet.Where(predicate).Skip(skipRows).Take(pageSize).ToList();
+        }
+
         public T Get(object id)
         {
             return _dbSet.Find(id);
