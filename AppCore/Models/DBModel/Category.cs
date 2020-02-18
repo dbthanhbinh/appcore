@@ -12,6 +12,7 @@ namespace AppCore.Models.DBModel
         public string Name { get; set; }
         [Required]
         public string Slug { get; set; }
+        public string Content { get; set; }
         public Guid ?ParentId { get; set; } = Guid.Empty;
         public virtual Seo Seo { get; set; }
     }

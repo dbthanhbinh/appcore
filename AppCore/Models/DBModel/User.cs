@@ -24,7 +24,7 @@ namespace AppCore.Models.DBModel
         public virtual string Token { get; set; }
 
         public bool IsActive { get; set; } = PostActive.Active;
-        public DateTime Created { get; set; } = TimeNow.DateTime;
-        public DateTime Modified { get; set; } = TimeNow.DateTime;
+        public DateTime Created { get; set; } = DateTime.Now;
+        public DateTime Modified { get; set; } = DateTime.Now;
     }
 }

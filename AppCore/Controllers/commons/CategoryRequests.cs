@@ -15,6 +15,7 @@ namespace AppCore.Controllers.commons
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Slug { get; set; }
+        public string Content { get; set; }
         public Guid ?ParentId { get; set; } = Guid.Empty;
 
         // For Seo
@@ -29,6 +30,7 @@ namespace AppCore.Controllers.commons
     {
         public string Name { get; set; }
         public string Slug { get; set; }
+        public string Content { get; set; }
         public Guid ?ParentId { get; set; }
 
         // For Seo

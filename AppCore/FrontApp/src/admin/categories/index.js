@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { actionCreators } from '../../store/Category'
 import { withFormBehaviors } from '../components/form/form'
 
-import { Grid } from 'semantic-ui-react'
 import CategoryList from './ItemList'
 import CategoryForm from './CategoryForm'
 import Utils from '../../apis/utils'
@@ -21,10 +20,20 @@ import {
     mappingModelDefaultData
 } from '../../utils/FormUtils'
 
+import {
+    BuildTextField,
+    BuildTextAreaField,
+    BuildSelectField,
+    BuildButtonField
+} from '../components/form/BuildFormField'
+
 import CategoryActions from '../../store/CategoryActions'
 import SeoModel from '../models/seo.model'
 import CategoryModel from '../models/addCategory.model'
 import {CategoryDefined, SeoDefined} from "../commons/Defined"
+import DropdownWrapper from '../components/form/DropdownWrapper'
+import { getDefaultEmptyGuid } from '../../utils/commons'
+import SeoForm from '../seos/SeoForm'
 
 
 class Category extends Component{
@@ -104,10 +113,9 @@ class Category extends Component{
         }
         this.CategoryActions.getListItems(payload, (err, result)=> {
             if(err) return
-            let {data, paging} = result ? Utils.getResTaskApi(result) : null
+            let {data, paging} = result
             if(data){
-                let resultData = Utils.sortList(data, 'desc')  // To sort list
-                this.props.fetchCategory(resultData)
+                this.props.fetchCategory(data)
                 this.pagination = Utils.mapPaginationValue(paging)
                 this.setState({isLoading: false})
             }
@@ -137,6 +145,7 @@ class Category extends Component{
                 body: { 
                     Name: model[CategoryDefined.NAME].value,
                     Slug: model[CategoryDefined.SLUG].value,
+                    Content: model[CategoryDefined.CONTENT].value,
                     ParentId: model[CategoryDefined.PARENTID].value,
 
                     SeoTitle: model[SeoDefined.SEOTITLE].value,
@@ -169,6 +178,7 @@ class Category extends Component{
             body: {
                 Name: model.name.value,
                 Slug: model.slug.value,
+                Content: model.content.value,
                 ParentId: model.parentId.value,
                 Id: id,
                 
@@ -208,40 +218,79 @@ class Category extends Component{
         let { currentRoute, model, isFormValid, isLoading } = this.state
         let { categoryData } = this.props
         let { categoryList, detailData } = categoryData
+        let parentIdValue = _.get(model, `${CategoryDefined.PARENTID}.value`) || getDefaultEmptyGuid()
+        
         return (
             <Fragment>
-                <Grid>
-                    <Grid.Row columns={2}>
-                        <Grid.Column width={6}>
-                            <CategoryForm
-                                isLoading={isLoading}
-                                isFormValid={isFormValid}
-                                isEdit={ this.isEdit }
-                                currentEditId={this.currentEditId}
-                                model={ model }
-                                listItems={ categoryList }
-                                detailData={ detailData }
-                                onCreateCategory={this.handleOnCreateCategory}
-                                onUpdateCategory = { this.handleOnUpdateCategory }
-                                onInputChange={this.handleOnInputChange}
-                                currentRoute={currentRoute}
-                            />
-                        </Grid.Column>
-                        <Grid.Column width={10}>
-                            <CategoryList
-                                isEdit={this.isEdit}
-                                isFormValid={isFormValid}
-                                currentEditId={this.currentEditId}
-                                listItems={categoryList}
-                                onDeleteItem={this.handleOnDeleteCategory}
-                                currentRoute={currentRoute}
-                                paginationPath={this.paginationPath}
-                                pagination={this.pagination}
-                                onGotoPage = {this.handleOnGotoPage}
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <div className="row">
+                    <div className="col-lg-4">
+                        <div className="card card-primary">
+                            <div className="card-body">
+                                <BuildTextField
+                                    name={CategoryDefined.NAME}
+                                    label={model[CategoryDefined.NAME].label}
+                                    placeholder={model[CategoryDefined.NAME].placeholder}
+                                    modelField={model[CategoryDefined.SLUG]}
+                                    onChange={this.handleOnInputChange}
+                                />
+                                <BuildTextField
+                                    name={CategoryDefined.SLUG}
+                                    label={model[CategoryDefined.SLUG].label}
+                                    placeholder={model[CategoryDefined.SLUG].placeholder}
+                                    modelField={model[CategoryDefined.SLUG]}
+                                    onChange={this.handleOnInputChange}
+                                />
+                                <BuildSelectField 
+                                    name={CategoryDefined.PARENTID}
+                                    label={model[CategoryDefined.PARENTID].label}
+                                    listItems={categoryList}
+                                    isEdit={this.isEdit}
+                                    currentCatId={this.currentEditId}
+                                    parentId={parentIdValue}
+                                    onChange={this.handleOnInputChange}
+                                    placeholder='Select parent'
+                                    defaultValue=''
+                                />
+                                <BuildTextAreaField
+                                    name={CategoryDefined.CONTENT}
+                                    label={model[CategoryDefined.CONTENT].label}
+                                    placeholder={model[CategoryDefined.CONTENT].placeholder}
+                                    modelField={model[CategoryDefined.CONTENT]}
+                                    onChange={this.handleOnInputChange}
+                                    rows={3}
+                                />
+                                
+                            </div>
+                        </div>
+
+                        <SeoForm
+                            model={model}
+                            onInputChange = {this.handleOnInputChange} />
+
+                        <div className="row">
+                            <div className="col-12">
+                                <BuildButtonField
+                                    label={`${this.isEdit ? 'Save change' : 'Create new'}`}
+                                    className='btn-success float-right'
+                                    onClick={this.isEdit ? () => this.handleOnUpdateCategory(this.currentEditId) : this.handleOnCreateCategory}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-8">
+                        <CategoryList
+                            isEdit={this.isEdit}
+                            isFormValid={isFormValid}
+                            currentEditId={this.currentEditId}
+                            listItems={categoryList}
+                            onDeleteItem={this.handleOnDeleteCategory}
+                            currentRoute={currentRoute}
+                            paginationPath={this.paginationPath}
+                            pagination={this.pagination}
+                            onGotoPage = {this.handleOnGotoPage}
+                        />
+                    </div>
+                </div>
             </Fragment>
         )
     }
@@ -256,4 +305,3 @@ export default connect(
     mapStateToProps,
     dispatch => bindActionCreators(actionCreators, dispatch)
 )(withFormBehaviors(Category, null))
-

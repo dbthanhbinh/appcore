@@ -9,7 +9,7 @@ import WithAuthenticate from './routes/WithAuthenticate'
 import WithNoneAuthenticate from './routes/WithNoneAuthenticate'
 
 // For admin
-import ALayout from './admin/layouts/Layout'
+import ALayout from './admin/layouts'
 import UnLayout from './admin/layouts/UnLayout'
 
 import Setting from './admin/settings'

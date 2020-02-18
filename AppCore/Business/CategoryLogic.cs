@@ -26,6 +26,7 @@ namespace AppCore.Business
             IUnitOfWork uow,
             ISeoLogic seoLogic,
             IPostLogic postLogic,
+            IMapper mapper,
             ILogger<CategoryLogic> logger
         )
         {
@@ -55,6 +56,7 @@ namespace AppCore.Business
                 {
                     Id = newId,
                     Name = reqData.Name,
+                    Content = reqData.Content,
                     ParentId = reqData.ParentId,
                     Slug = reqData.Slug,
                     CreatedBy = userId,
@@ -97,6 +99,7 @@ namespace AppCore.Business
                     .FirstOrDefault();
 
                 category.Name = categoryData.Name;
+                category.Content = categoryData.Content;
                 category.ParentId = categoryData.ParentId ?? Guid.Empty;
 
                 string SlugName = StringHelper.GenerateSlug(categoryData.Name);

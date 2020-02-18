@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import _ from 'lodash'
-import { Form, Dropdown } from 'semantic-ui-react'
 
 const DropdownWrapper = (props) => {
     let {defaultValue} = props
@@ -8,15 +7,13 @@ const DropdownWrapper = (props) => {
     return(
         <Fragment>
             <h5>{ props.placeholder }</h5>
-            <Form.Field>
-                <Dropdown
-                    clearable
-                    fluid
-                    selection    
-                    {...otherProps}
-                    value={defaultValue}
-                />
-            </Form.Field>
+            <select
+                clearable
+                fluid
+                selection    
+                {...otherProps}
+                value={defaultValue}
+            />
         </Fragment>
     )
 }

@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 
 export function BuildTextField(props) {
-    let {name, onHandleInputChange, label, formGroupClass, className, type, placeholder} = props
+    let {name, onInputChange, label, formGroupClass, className, type, placeholder} = props
     formGroupClass = `form-group ${formGroupClass || ''}`
     className = `form-control ${className || ''}`
     return (
@@ -13,7 +13,7 @@ export function BuildTextField(props) {
                     type={type || 'text'}
                     id={name} name={name}
                     className={className}
-                    onChange={onHandleInputChange || null}
+                    onChange={onInputChange || null}
                 />
             </div>
         </Fragment>

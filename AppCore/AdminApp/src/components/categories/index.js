@@ -1,4 +1,10 @@
 import React, {Component, Fragment} from 'react'
+import _ from 'lodash'
+// Redux process
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { actionCreators } from '../../store/Category'
+
 import {
     BuildTextField,
     BuildTextAreaField,
@@ -6,8 +12,20 @@ import {
     BuildButtonField
 } from '../forms/BuildFormField'
 
+import {
+    resetFormFieldByFormId,
+    resetModelDefaultData,
+    initValidatorModel,
+    getInputData,
+    setFieldValue,
+    validatorModel,
+    pickKeysFromModel,
+    mappingModelDefaultData
+} from '../../utils/FormUtils'
+
 import Model from '../../models/category.model'
 import {CategoryDefined} from '../../models/defined.model'
+import { withFormBehaviors } from '../../components/forms/form'
 
 class Category extends Component {
     constructor(props){
@@ -15,6 +33,17 @@ class Category extends Component {
         this.state = {
             model: Model.model()
         }
+
+        this.handleOnInputChange = this.handleOnInputChange.bind(this)
+    }
+
+
+    handleOnInputChange = (e, data) => {
+        let { name, value } = getInputData(e, data)
+        this.setState((prevState)=>{
+            let { models, isFormValid } = setFieldValue(name, value, prevState)
+            return { model: models, isFormValid: isFormValid }
+        })
     }
 
     render() {
@@ -29,22 +58,30 @@ class Category extends Component {
                                     name={CategoryDefined.NAME}
                                     label={model[CategoryDefined.NAME].label}
                                     placeholder={model[CategoryDefined.NAME].placeholder}
+                                    modelField={model[CategoryDefined.NAME]}
+                                    onInputChange={}
                                 />
                                 <BuildTextField
                                     name={CategoryDefined.SLUG}
                                     label={model[CategoryDefined.SLUG].label}
                                     placeholder={model[CategoryDefined.SLUG].placeholder}
+                                    modelField={model[CategoryDefined.SLUG]}
+                                    onInputChange={}
                                 />
                                 <BuildSelectField 
                                     name={CategoryDefined.PARENTID}
                                     label={model[CategoryDefined.PARENTID].label}
+                                    modelField={model[CategoryDefined.PARENTID]}
                                     defaultValue=''
+                                    onChange={}
                                 />
                                 <BuildTextAreaField
                                     name={CategoryDefined.CONTENT}
                                     label={model[CategoryDefined.CONTENT].label}
                                     placeholder={model[CategoryDefined.CONTENT].placeholder}
+                                    modelField={model[CategoryDefined.CONTENT]}
                                     rows={5}
+                                    onChange={}
                                 />
                                 
                             </div>
@@ -78,6 +115,7 @@ class Category extends Component {
                                         <a href="#" className="btn btn-danger"><i className="fas fa-trash"></i></a>
                                     </div>
                                     </td>
+                                </tr>
                                 <tr>
                                     <td>UAT.pdf</td>
                                     <td>28.4883 kb</td>
@@ -87,6 +125,7 @@ class Category extends Component {
                                         <a href="#" className="btn btn-danger"><i className="fas fa-trash"></i></a>
                                     </div>
                                     </td>
+                                </tr>
                                 <tr>
                                     <td>Email-from-flatbal.mln</td>
                                     <td>57.9003 kb</td>
@@ -96,6 +135,7 @@ class Category extends Component {
                                         <a href="#" className="btn btn-danger"><i className="fas fa-trash"></i></a>
                                     </div>
                                     </td>
+                                </tr>
                                 <tr>
                                     <td>Logo.png</td>
                                     <td>50.5190 kb</td>
@@ -105,6 +145,7 @@ class Category extends Component {
                                         <a href="#" className="btn btn-danger"><i className="fas fa-trash"></i></a>
                                     </div>
                                     </td>
+                                </tr>
                                 <tr>
                                     <td>Contract-10_12_2014.docx</td>
                                     <td>44.9715 kb</td>
@@ -114,9 +155,10 @@ class Category extends Component {
                                         <a href="#" className="btn btn-danger"><i className="fas fa-trash"></i></a>
                                     </div>
                                     </td>
+                                </tr>
                                 </tbody>
                             </table>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </Fragment>
@@ -124,4 +166,12 @@ class Category extends Component {
     }
 }
 
-export default Category
+function mapStateToProps(state){
+    let { categoryData } = state.categoryData
+    return { categoryData }
+}
+
+export default connect(
+    mapStateToProps,
+    dispatch => bindActionCreators(actionCreators, dispatch)
+)(withFormBehaviors(Category, null))

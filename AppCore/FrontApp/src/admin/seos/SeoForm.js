@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import { Form } from 'semantic-ui-react'
 import { SeoDefined } from '../commons/Defined'
-import BuildTextField from '../components/form/BuildTextField'
-import BuildTextAreaField from '../components/form/BuildTextAreaField'
+import {
+    BuildTextField,
+    BuildTextAreaField,
+    BuildSelectField,
+    BuildButtonField
+} from '../components/form/BuildFormField'
 
 class SeoForm extends Component {
     constructor(props){
@@ -17,30 +21,33 @@ class SeoForm extends Component {
     render(){
         let { model } = this.props
         return(
-            <React.Fragment>
-                <h5>Config SEO</h5>
-                <Form.Field>
+            <div className="card card-primary collapsed-card">
+                <div className="card-header">
+                    <h3 className="card-title">Config SEO</h3>
+
+                    <div className="card-tools">
+                        <button type="button" className="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i className="fas fas fa-plus"></i></button>
+                    </div>
+                </div>
+                <div className="card-body">
                     <BuildTextField
                         name={SeoDefined.SEOTITLE}
                         onChange={this.handleOnInputChange}
                         modelField={model ? model[SeoDefined.SEOTITLE] : null}
                     />
-                </Form.Field>
-                <Form.Field>
                     <BuildTextField
                         name={SeoDefined.SEOKEYS}
                         onChange={this.handleOnInputChange}
                         modelField={model ? model[SeoDefined.SEOKEYS] : null}
                     />
-                </Form.Field>
-                <Form.Field>
                     <BuildTextAreaField
                         name={SeoDefined.SEODESCRIPTION}
                         onChange={this.handleOnInputChange}
                         modelField={model ? model[SeoDefined.SEODESCRIPTION] : null}
                     />
-                </Form.Field>
-            </React.Fragment>
+                </div>
+            </div>
         )
     }
 }

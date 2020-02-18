@@ -9,6 +9,7 @@ export const PostDefined = {
 export const CategoryDefined = {
     NAME: 'name',
     SLUG: 'slug',
+    CONTENT: 'content',
     PARENTID: 'parentId'
 }
 

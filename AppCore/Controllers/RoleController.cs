@@ -37,20 +37,5 @@ namespace AppCore.Controllers
             }
             
         }
-
-        [HttpPost("createRole", Name = "CreateRole")]
-        public async Task<ActionResult> CreateRoleAsync([FromBody] CreateRoleReq createRoleReq)
-        {
-            try
-            {
-                //var result = await _roleLogic.CreateRoleAsync(category);
-                //return Ok(new BaseResponse(result));
-                return null;
-            }
-            catch (Exception ex)
-            {
-                return Ok(this.BaseResponseApiErrorResult(ex));
-            }
-        }
     }
 }

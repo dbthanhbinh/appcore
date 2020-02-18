@@ -13,6 +13,11 @@ var ItemAppModel = {
         value: '',
         validators: []
       },
+      content: {
+        label: 'Content',
+        value: '',
+        validators: []
+      },
       parentId: {
         value: '',
         validators: []

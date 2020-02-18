@@ -66,7 +66,15 @@ const RenderListItem = (props) => {
 }
 
 const RenderItemActions = (props) => {
-    let { currentRoute, item, currentEditId, isEdit, isDelete, onDeleteItem } = props
+    let {
+        currentRoute,
+        item,
+        currentEditId,
+        isEdit,
+        isDelete,
+        onDeleteItem
+    } = props
+
     let disableItem = false
     let title = '';
     if(item.id === currentEditId){
@@ -74,10 +82,11 @@ const RenderItemActions = (props) => {
         disableItem = true
         title = 'Can not Del'
     }
-    return <Fragment>
-        <span as='a' title={title} className={ disableItem ? 'disabled' : '' } onClick={!disableItem ? ()=>onDeleteItem(item.id) : null }>Del</span> |
-        <a className={ disableItem ? 'disabled' : '' } href={`admin/${currentRoute}/edit/${item.id}`}>Edit</a>
-    </Fragment>
+    return  <div className="btn-group btn-group-sm">
+        <a title={title} className={`btn btn-info ${disableItem ? 'disabled' : ''}`} href={`admin/${currentRoute}/edit/${item.id}`}><i className="fas fa-edit"></i></a>
+        <a title={title} className={`btn btn-danger`} onClick={!disableItem ? ()=>onDeleteItem(item.id) : null }><i className="fas fa-trash"></i></a>
+        
+    </div>
 }
 
 class ItemList extends React.Component{
