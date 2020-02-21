@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react'
 import _ from 'lodash'
+import { getDefaultEmptyGuid } from '../../../utils/commons'
 
 export function BuildTextField(props) {
     let {
@@ -69,14 +70,14 @@ export function BuildTextAreaField(props) {
 export function BuildSelectField(props) {
     let {
         name,
-        onHandleSelectedChange,
         label,
         formGroupClass,
         className,
         defaultValue,
         placeholder,
         listItems,
-        currentCatId
+        currentCatId,
+        onChange
     } = props
     formGroupClass = `form-group ${formGroupClass || ''}`
     className = `form-control ${className || ''}`
@@ -86,20 +87,18 @@ export function BuildSelectField(props) {
             <select
                 name={name}
                 className="form-control custom-select"
-                defaultValue={defaultValue || '-1'}
-                onChange={onHandleSelectedChange}
+                value={defaultValue || getDefaultEmptyGuid()}
+                onChange={onChange}
                 >
-                <option value='-1' disabled>{placeholder}</option>
+                <option value={getDefaultEmptyGuid()} disabled>{placeholder}</option>
                 {
                     listItems && !_.isEmpty(listItems)
                     && listItems.map((s, i) => {
-                        let isDisabled = ''
                         let isSelectedClass = ''
                         if(s.id === currentCatId) {
                             isSelectedClass = 'isSelected'
-                            isDisabled = 'disabled'
                         }
-                        return <option key={i} {...isDisabled} className={`${isSelectedClass}`} value={s.id}>{s.name}</option>
+                        return <option key={i} className={`${isSelectedClass}`} value={s.id}>{s.name}</option>
                     })
                 }
             </select>

@@ -4,6 +4,7 @@ import SideBarRight from './SideBarRight'
 import Header from './Header'
 import ContentHeader from './ContentHeader'
 import Footer from './Footer'
+import Loading from '../commons/Loading'
 
 class Layout extends Component {
     render() {
@@ -23,6 +24,7 @@ class Layout extends Component {
                     <SideBarRight />
                     <Footer />
                 </div>
+                <Loading />
             </Fragment>
         )
     }

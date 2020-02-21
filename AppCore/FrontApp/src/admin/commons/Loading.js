@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Loader } from 'semantic-ui-react'
 import eventEmitter from '../../utils/eventEmitter'
 import './loading.scss'
 
@@ -30,7 +29,7 @@ class Loading extends Component {
         let { isShow } = this.state
         return(
             isShow && <div className='page-loading-overlay'>
-                <Loader active inline='centered' />
+                <i className="fas fa-circle-notch"></i>
             </div>
         )
     }

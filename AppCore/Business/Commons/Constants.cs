@@ -33,6 +33,18 @@ namespace AppCore.Business.Commons
         public static string[] AllowPostTypes = { "page", "post", "news" };
     }
 
+    public static class PagingInfo
+    {
+        public static int PageSize { get { return 20; } }
+        public static int CurrentPage { get { return 1; } }
+    }
+
+    public static class CategoryTypes
+    {
+        public static string Default { get { return "category"; } }
+        public static string[] AllowCategoryTypes = { "category", "news" };
+    }
+
     public static class GeneralSetting
     {
         public static string[] SettingNames = { "GeneralSeoSetting", "GeneralSetting", "ContactSetting", "LayoutSetting" };

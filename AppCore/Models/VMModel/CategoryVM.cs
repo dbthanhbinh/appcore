@@ -22,11 +22,21 @@ namespace AppCore.Models.VMModel
         public object CategoryList { get; set; }
     }
 
+    public class CategoryAllVM
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Slug { get; set; }
+        public string CategoryType { get; set; }
+        public bool IsActive { get; set; }
+    }
+
     public class CategoryGetListVM
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Slug { get; set; }
+        public string CategoryType { get; set; }
         public bool IsActive { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }

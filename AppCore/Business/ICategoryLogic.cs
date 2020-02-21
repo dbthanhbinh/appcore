@@ -12,7 +12,7 @@ namespace AppCore.Business
     {
         Task<CreatedCategoryVM> CreateCategoryAsync(Guid userId, ReqCreateCategory category);
         Task<Category> UpdateCategoryAsync(Guid userId, UpdateCategoryReq category);
-        List<Category> GetAllCategoryAsync();
+        List<CategoryAllVM> GetAllCategoryAsync();
         Task<Category> GetCategoryAsync(Guid id);
         DeleteCategoryResponse DeleteCategoryAsync(ReqDeleteCategory reqDeleteCategory);
 

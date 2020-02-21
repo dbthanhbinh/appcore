@@ -13,6 +13,7 @@ namespace AppCore.Models.Mappings
         public MappingCategory()
         {
             CreateMap<Category, CategoryGetListVM>();
+            CreateMap<Category, CategoryAllVM>();
         }
     }
 }

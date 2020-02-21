@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppCore.Business;
+using AppCore.Business.Commons;
 using AppCore.Controllers.commons;
 using AppCore.Models.DBModel;
 using AppCore.Models.VMModel;
@@ -104,8 +105,8 @@ namespace AppCore.Controllers
             CategoryWithEditVM result = _categoryLogic.GetCategoriesWithEditAsync(id);
             ReqFilterCategory reqFilterCategory = new ReqFilterCategory
             {
-                PageSize = 5,
-                CurrentPage = 1
+                PageSize = PagingInfo.PageSize,
+                CurrentPage = PagingInfo.CurrentPage
             };
             var result2 = _categoryLogic.FilterCategoryWithPagingAsync(reqFilterCategory);
             result.CategoryList = result2.Result;

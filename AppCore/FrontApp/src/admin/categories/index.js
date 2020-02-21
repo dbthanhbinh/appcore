@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import _ from 'lodash'
+import eventEmitter from '../../utils/eventEmitter'
 // Redux process
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -65,6 +66,7 @@ class Category extends Component{
         let { model } = this.state
         let id = _.get(this.props, 'match.params.id')
         if(id) {
+            eventEmitter.emit('handle-loading-data', { isLoading: true })
             this.isEdit = true
             this.currentEditId = id
             payload = {
@@ -82,17 +84,24 @@ class Category extends Component{
                     let seoData = _.pick(_.get(resultData, 'category.seo'), keysFromSeoModel)
                     let result = _.merge(categoryData, seoData)
                     let { models, isFormValid } = validatorModel(mappingModelDefaultData(model, result))
-
                     let categoryList = _.get(resultData, 'categoryList')
-                    if(categoryList){
-                        let {data, paging} = categoryList
+                    let {data, paging} = categoryList
+
+                    // get all Category
+                    this.CategoryActions.getListItems({url: `Category/getAllCategory`, body: {}},
+                    (err, res)=> {
+                        if(err) return
+                        let categoryAlls = _.get(res, 'data')
                         this.props.detailCategoryWithEdit({
                             category: categoryData,
                             seo: seoData,
-                            categoryList: data
+                            categoryList: categoryAlls,
+                            categoryFilter: data
                         })
                         this.pagination = Utils.mapPaginationValue(paging)
-                    }
+                        eventEmitter.emit('handle-loading-data', { isLoading: false })
+                        this.setState({isLoading: false})
+                    })
                     return { model: models, isFormValid }
                 })
             })
@@ -105,7 +114,6 @@ class Category extends Component{
     }
 
     filterCategoryWithPaging = (currentPage) => {
-        this.CategoryActions = new CategoryActions()
         let pageSize = this.pagination.pageSize
         let payload = {
             url: `Category/filterCategoryWithPaging/${pageSize}/${currentPage}`,
@@ -114,11 +122,17 @@ class Category extends Component{
         this.CategoryActions.getListItems(payload, (err, result)=> {
             if(err) return
             let {data, paging} = result
-            if(data){
-                this.props.fetchCategory(data)
+
+            // get all Category
+            this.CategoryActions.getListItems({url: `Category/getAllCategory`, body: {}},
+            (err, res)=> {
+                if(err) return
+                let categoryAlls = _.get(res, 'data')
+                this.props.fetchCategoryAll({categoryList: categoryAlls, categoryFilter: data})
                 this.pagination = Utils.mapPaginationValue(paging)
+
                 this.setState({isLoading: false})
-            }
+            })
         })
     }
 
@@ -217,7 +231,7 @@ class Category extends Component{
     render(){
         let { currentRoute, model, isFormValid, isLoading } = this.state
         let { categoryData } = this.props
-        let { categoryList, detailData } = categoryData
+        let { categoryList, categoryFilter } = categoryData
         let parentIdValue = _.get(model, `${CategoryDefined.PARENTID}.value`) || getDefaultEmptyGuid()
         
         return (
@@ -249,7 +263,7 @@ class Category extends Component{
                                     parentId={parentIdValue}
                                     onChange={this.handleOnInputChange}
                                     placeholder='Select parent'
-                                    defaultValue=''
+                                    defaultValue={parentIdValue}
                                 />
                                 <BuildTextAreaField
                                     name={CategoryDefined.CONTENT}
@@ -282,7 +296,7 @@ class Category extends Component{
                             isEdit={this.isEdit}
                             isFormValid={isFormValid}
                             currentEditId={this.currentEditId}
-                            listItems={categoryList}
+                            listItems={categoryFilter}
                             onDeleteItem={this.handleOnDeleteCategory}
                             currentRoute={currentRoute}
                             paginationPath={this.paginationPath}

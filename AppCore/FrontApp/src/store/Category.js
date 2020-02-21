@@ -3,6 +3,7 @@ import _ from 'lodash'
 const ADD_CATEGORY = 'ADD_CATEGORY'
 const UPDATE_CATEGORY = 'UPDATE_CATEGORY'
 const FETCH_CATEGORY = 'FETCH_CATEGORY'
+const FETCH_CATEGORY_ALL = 'FETCH_CATEGORY_ALL'
 const DEL_CATEGORY = 'DEL_CATEGORY'
 const DETAIL_CATEGORY = 'DETAIL_CATEGORY'
 const DETAIL_CATEGORY_WITH_EDIT = 'DETAIL_CATEGORY_WITH_EDIT'
@@ -10,11 +11,13 @@ const DETAIL_CATEGORY_WITH_EDIT = 'DETAIL_CATEGORY_WITH_EDIT'
 const initialState = {
     categoryData: {
         categoryList: [],
+        categoryFilter: [],
         detailData: null
     }
 }
 
 export const actionCreators = {
+    fetchCategoryAll: (object) => ({ type: FETCH_CATEGORY_ALL, payload: { object } }),
     fetchCategory: (categoryList) => ({ type: FETCH_CATEGORY, payload: { categoryList } }),
     addCategory: (category) => ({ type: ADD_CATEGORY, payload: { category } }),
     updateCategory: (category) => ({ type: UPDATE_CATEGORY, payload: { category } }),
@@ -26,6 +29,11 @@ export const actionCreators = {
 export const reducer = (state, action) => {
     state = state || initialState
     switch(action.type){
+        case FETCH_CATEGORY_ALL:
+            return {
+                ...state,
+                categoryData: action.payload.object
+            }
         case FETCH_CATEGORY:
             let { categoryList } = action.payload
             let temp = {
@@ -79,6 +87,7 @@ export const reducer = (state, action) => {
                 categoryData: {
                     ...state.categoryData,
                     categoryList: _.get(action.payload, 'detailData.categoryList'),
+                    categoryFilter: _.get(action.payload, 'detailData.categoryFilter'),
                     detailData: {
                         category: _.get(action.payload, 'detailData.category'),
                         seoData: _.get(action.payload, 'detailData.seo')

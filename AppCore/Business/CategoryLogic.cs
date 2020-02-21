@@ -130,17 +130,19 @@ namespace AppCore.Business
         /*
          * Get list all category
          */
-        public List<Category> GetAllCategoryAsync()
+        public List<CategoryAllVM> GetAllCategoryAsync()
         {
+            List<CategoryAllVM> categoryGetListVMs = new List<CategoryAllVM>();
             try
-            {
-                return _uow.GetRepository<Category>().GetAll();
+            {   
+                categoryGetListVMs = _uow.GetRepository<Category>().GetByFilter(f => f.IsActive == true).Select(s => _mapper.Map<CategoryAllVM>(s)).ToList();
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex.Message.ToString());
                 throw ex;
             }
+            return categoryGetListVMs;
         }
 
         /*
@@ -214,22 +216,25 @@ namespace AppCore.Business
             DeleteCategoryResponse deleteCategoryResponse = new DeleteCategoryResponse();
             try
             {
-                var postData = _postLogic.CheckPostInCategoryId(reqDelete.Id);
-                Task<Category> categoryData = this.GetCategoryAsync(reqDelete.Id);
+                _uow.GetRepository<Category>().Delete(reqDelete.Id);
+                _uow.SaveChanges();
 
-                if (postData == null)
-                {   
-                    _uow.GetRepository<Category>().Delete(categoryData.Result.Id);
-                    _uow.SaveChanges();
-                    deleteCategoryResponse.Data = categoryData.Result;
-                }
-                else
-                {
-                    deleteCategoryResponse.ApiResult = "ApiError";
-                    deleteCategoryResponse.Message = "Can not delete this category! The category has post data";
-                    deleteCategoryResponse.Data = categoryData.Result;
-                }
-                
+                //Task<Category> categoryData = this.GetCategoryAsync(reqDelete.Id);
+                //Task.WaitAll(categoryData);
+                //var postData = _postLogic.CheckPostInCategoryId(reqDelete.Id);
+
+                //if (postData == null)
+                //{   
+                //    _uow.GetRepository<Category>().Delete(reqDelete.Id);
+                //    _uow.SaveChanges();
+                //}
+                //else
+                //{
+                //    deleteCategoryResponse.ApiResult = "ApiError";
+                //    deleteCategoryResponse.Message = "Can not delete this category! The category has post data";
+                //    deleteCategoryResponse.Data = categoryData.Result;
+                //}
+
             }
             catch (Exception ex)
             {
