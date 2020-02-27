@@ -121,3 +121,36 @@ export function BuildButtonField(props) {
     />
     )
 }
+
+export function BuildFileField(props) {
+    let {
+        name,
+        onChange,
+        className
+    } = props
+    className = `form-control ${className || ''}`
+    return (
+        name && <input
+            type={'file'}
+            id={name} name={name}
+            className={className}
+            onChange={onChange || null}
+        />
+    )
+}
+
+export function BuildLabelField(props) {
+    let {
+        placeholder,
+        value,
+        formGroupClass,
+        className
+    } = props
+    formGroupClass = `form-group ${formGroupClass || ''}`
+    className = `form-control ${className || ''}`
+    return (
+        placeholder && <div className={formGroupClass}>
+            {placeholder && <label>{placeholder}: {value}</label>}
+        </div>
+    )
+}

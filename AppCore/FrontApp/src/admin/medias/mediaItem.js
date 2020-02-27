@@ -22,13 +22,15 @@ class MediaItem extends React.Component {
     render(){
         let { item, onHandleUpdateMedia } = this.props
         let { isOpenModal } = this.state
+        let modalId = `modal-${btoa(item.id)}`
         return(
             <Fragment>
-                <div className='' onClick={this.handleOpenDetailMedia}>
+                <div className='' data-toggle="modal" data-target={`#${modalId}`}>
                     <img src={`Uploads/${item.path}`} alt='' />
                     <span>{ item.name }</span>
                 </div>
                 <DetailMediaModal
+                    modalName={modalId}
                     imageDetail={item}
                     isOpenModal={isOpenModal}
                     onHandleCloseModal={this.handleCloseDetailMedia}
