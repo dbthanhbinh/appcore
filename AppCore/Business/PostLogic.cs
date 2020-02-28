@@ -238,30 +238,35 @@ namespace AppCore.Business
                 int pageSize = filterPostReq.PageSize;
                 string postType = filterPostReq.PostType;
 
-                List<PostGetListVM> result = null;
+                List<PostDataWithSortInfoVM> result = null;
                 int countTotals = _uow.GetRepository<Post>().CountTotalByFilter(a => a.PostType == postType && a.IsActive == true);
-                result = _uow.GetRepository<Post>().GetByFilterPaging(a => a.PostType == postType && a.IsActive == true, currentPage, pageSize).Select(s => _mapper.Map<PostGetListVM>(s)).ToList();
-                
-                var resultPg = PagingHelper<PostGetListVM>.GetPagingList(result, currentPage, pageSize, countTotals);
-                await Task.FromResult(resultPg);
-                List<ListPostDataVM> listPostDataVMs = new List<ListPostDataVM>();
-                
-                if (resultPg.Data != null)
-                {   
-                    foreach (Post post in (List<Post>)resultPg.Data)
-                    { 
+                result = _uow.GetRepository<Post>()
+                    .GetByFilterPaging(a => a.PostType == postType && a.IsActive == true, currentPage, pageSize)
+                    .Select(s => _mapper.Map<PostDataWithSortInfoVM>(s)).ToList();
+
+                List<PostDataWithSortInfoVM> postDataInListVMs = new List<PostDataWithSortInfoVM>();
+                if (result != null && result.Count() > 0)
+                {
+                    foreach (PostDataWithSortInfoVM post in result)
+                    {
                         Media media = (
                                        from ob in _uow.GetRepository<ObjectMedia>().GetByFilter(o => o.ObjectId == post.Id)
                                        join m in _uow.GetRepository<Media>().GetAll() on ob.MediaId equals m.Id
                                        select new Media { Name = m.Name, Path = m.Path }
                                       ).Distinct().FirstOrDefault();
-                        ListPostDataVM listPostDataVM = new ListPostDataVM(post);
-                        listPostDataVM.Media = media;
-                        listPostDataVMs.Add(listPostDataVM);
+                        PostDataWithSortInfoVM postDataInListVM = new PostDataWithSortInfoVM(post);
+                        postDataInListVM.Media = media;
+                        postDataInListVMs.Add(postDataInListVM);
                     }
 
                 }
-                resultPg.Data = listPostDataVMs;
+
+                var resultPg = PagingHelper<PostDataWithSortInfoVM>.GetPagingList(postDataInListVMs, currentPage, pageSize, countTotals);
+                await Task.FromResult(resultPg);
+                
+                
+                
+                resultPg.Data = postDataInListVMs;
                 return resultPg;
             }
             catch (Exception ex)

@@ -1,20 +1,18 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Form, Grid } from 'semantic-ui-react'
 import AlertCP from '../commons/AlertCP'
 import {withFormBehaviors} from '../components/form/form'
 import FieldFile from '../components/form/FieldFile'
 import PostActions from '../../store/PostActions'
 import CategoryActions from '../../store/CategoryActions'
 import { PostDefined, SeoDefined } from "../commons/Defined"
-import DropdownWrapper from '../components/form/DropdownWrapper'
 import SeoForm from '../seos/SeoForm'
 import PostModel from '../models/addPost.model'
 import TagListModel from '../models/objectTag.model'
 import SeoModel from '../models/seo.model'
 import eventEmitter from '../../utils/eventEmitter'
+import { Multiselect } from 'multiselect-react-dropdown'
 import {
-    adapterMapingDropdownOption,
     getInputData,
     setFieldValue,
     validatorModel,
@@ -24,15 +22,20 @@ import {
 } from '../../utils/FormUtils'
 
 import CKEditor from 'ckeditor4-react'
-import BuildTextField from '../components/form/BuildTextField'
-import {BtnWithModalEvent} from '../components/form/BtnDefined'
-
+import {
+    BuildTextField,
+    BuildTextFieldHidden,
+    BuildSelectField,
+    BuildSelectMultipleField,
+    BuildButtonField
+} from '../components/form/BuildFormField'
 class EditPostForm extends Component {
     constructor(props){
         super(props)
         this.PostActions = new PostActions()
         this.CategoryActions = new CategoryActions()
         let { models, isFormValid } = validatorModel(_.merge(PostModel.model(), SeoModel.model(), TagListModel.model()))
+        this.isEdit = true
         this.isEditId = null
         this.isEditAble = false
         this.state = {
@@ -137,7 +140,10 @@ class EditPostForm extends Component {
         if(_.isEmpty(postTagList)) return []
         let _postTagList = []
         postTagList.forEach(element => {
-            _postTagList.push(element.tagId)
+            _postTagList.push({
+                name: element.name,
+                id: element.tagId
+            })
         });
         return _postTagList
     }
@@ -193,9 +199,7 @@ class EditPostForm extends Component {
 
         let contentValue = _.get(model, `${PostDefined.CONTENT}.value`)
         let categoryList = _.get(postEditData, 'categoryList')
-        categoryList = adapterMapingDropdownOption(categoryList)
         let tagList = _.get(postEditData, 'tagList')
-        tagList = adapterMapingDropdownOption(tagList)
         let {postTagDefaultValues} = this.state
         let isShowPreview = false
         if(isUploadedThumbnail || !isRemovedThumbnail){
@@ -204,78 +208,83 @@ class EditPostForm extends Component {
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
-                <Grid>
-                    <Grid.Row columns={2} className="show-grid">
-                        <Grid.Column width={10}>
-                            <Form>
-                                <Form.Field>
-                                    <BuildTextField
-                                        name={PostDefined.NAME}
-                                        onChange={this.handleOnInputChange}
-                                        modelField={model[PostDefined.NAME]}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <CKEditor
-                                        onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
-                                        onChange={this.handleOnEditorChange}
-                                        data={contentValue || null}
-                                    />
-                                </Form.Field>
-                            </Form>
-                        </Grid.Column>
-                        <Grid.Column width={6}>
-                            <Form>
-                                <Form.Field>
-                                    <FieldFile mediaThumbnail={mediaThumbnal}
-                                        isUploadedThumbnail={isUploadedThumbnail}
-                                        onInputChange = {this.handleOnInputChange}
-                                        isRemovedThumbnail = {isRemovedThumbnail}
-                                        isShowPreview = {isShowPreview}
-                                        onHandleRemoveThumbnail = {this.handleRemoveThumbnail}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <DropdownWrapper
-                                        search
-                                        options={categoryList}
-                                        name={PostDefined.CATEGORYID}
-                                        onChange={this.handleOnInputChange}
-                                        placeholder={'Select category '}
-                                        defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <DropdownWrapper
-                                        search
-                                        multiple
-                                        options={tagList}
-                                        name={PostDefined.TAGLIST}
-                                        onChange={this.handleOnMultipleDropChange}
-                                        placeholder={'Select tags'}
-                                        defaultValue={postTagDefaultValues}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <input type='hidden'
-                                        className='tag-list-hidden'
-                                        name='tagListHidden'
-                                        defaultValue={this.getCurrentPostTagList(postTagList) || null}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <SeoForm
-                                        model={model}
-                                        seoData={ _.get(postEditData, 'seo') }
-                                        onInputChange = {this.handleOnInputChange} />
-                                </Form.Field>
-                                <Form.Field>
-                                    <BtnWithModalEvent onBtnEvent={()=>this.handleSubmitUpdateForm(this.isEditId)} label={'Update'} />
-                                </Form.Field>
-                            </Form>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <div className="row show-grid">
+                    <div className="col-lg-8">
+                        <div className="card card-primary">
+                            <div className="card-body">
+                                <BuildTextField
+                                    name={PostDefined.NAME}
+                                    label={model[PostDefined.NAME].label}
+                                    placeholder={model[PostDefined.NAME].placeholder}
+                                    modelField={model[PostDefined.NAME]}
+                                    onChange={this.handleOnInputChange}
+                                />
+                                <CKEditor
+                                    onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
+                                    onChange={this.handleOnEditorChange}
+                                    data={contentValue || null}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-4">
+                        <div className="card card-primary">
+                            <div className="card-body">
+                                <FieldFile mediaThumbnail={mediaThumbnal}
+                                    isUploadedThumbnail={isUploadedThumbnail}
+                                    onInputChange = {this.handleOnInputChange}
+                                    isRemovedThumbnail = {isRemovedThumbnail}
+                                    isShowPreview = {isShowPreview}
+                                    onHandleRemoveThumbnail = {this.handleRemoveThumbnail}
+                                />
+                                <BuildSelectField
+                                    name={PostDefined.CATEGORYID}
+                                    label={model[PostDefined.CATEGORYID].label}
+                                    listItems={categoryList}
+                                    isEdit={this.isEdit}
+                                    currentCatId={this.isEditId}
+                                    onChange={this.handleOnInputChange}
+                                    placeholder={'Select category '}
+                                    defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
+                                />
+                                {/* <BuildSelectMultipleField
+                                    name={PostDefined.TAGLIST}
+                                    label={model[PostDefined.TAGLIST].label}
+                                    listItems={tagList}
+                                    isEdit={this.isEdit}
+                                    onChange={this.handleOnMultipleDropChange}
+                                    placeholder={'Select tags'}
+                                    defaultValue={postTagDefaultValues}
+                                /> */}
+
+                                <Multiselect
+                                    options={tagList} // Options to display in the dropdown
+                                    selectedValues={postTagDefaultValues} // Preselected value to persist in dropdown
+                                    onSelect={this.handleOnMultipleDropChange} // Function will trigger on select event
+                                    onRemove={null} // Function will trigger on remove event
+                                    displayValue="name" // Property name to display in the dropdown options
+                                />
+
+                                <BuildTextFieldHidden
+                                    name='tagListHidden'
+                                    type='hidden'
+                                    className='tag-list-hidden'
+                                    defaultValue={this.getCurrentPostTagList(postTagList) || null}
+                                />
+                                <SeoForm
+                                    model={model}
+                                    seoData={ _.get(postEditData, 'seo') }
+                                    onInputChange = {this.handleOnInputChange} />
+
+                                <BuildButtonField
+                                    label={'Update'}
+                                    className='btn-success float-right'
+                                    onClick={()=>this.handleSubmitUpdateForm(this.isEditId)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </React.Fragment>
         )
     }

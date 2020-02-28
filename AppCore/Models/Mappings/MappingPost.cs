@@ -13,6 +13,7 @@ namespace AppCore.Models.Mappings
         public MappingPost()
         {
             CreateMap<Post, PostGetListVM>();
+            CreateMap<Post, PostDataWithSortInfoVM>();
         }
     }
 }
