@@ -49,10 +49,10 @@ class ItemActions extends React.Component {
             title = 'Can not Del'
         }
 
-        return <Fragment>
-            <Icon title={title} onClick={!disableItem ? ()=>this.onHandleDeleteItem(item.id) : null } className={`remove circle big icon ${isLoading ? 'loading' : ''} ${disableItem ? 'disabled' : ''}`} name='delete' />
-            <a className={ disableItem ? 'disabled' : '' } href={`admin/${currentRoute}/edit/${item.id}`}>Edit</a>
-        </Fragment>
+        return  <div className="btn-group btn-group-sm">
+            <a title={title} className={`btn btn-info ${disableItem ? 'disabled' : ''}`} href={`admin/${currentRoute}/edit/${item.id}`}><i className="fas fa-edit"></i></a>
+            <a title={title} className={`btn btn-danger`} onClick={!disableItem ? ()=>this.onHandleDeleteItem(item.id) : null }><i className="fas fa-trash"></i></a>
+        </div>
     }
 }
 

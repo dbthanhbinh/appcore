@@ -6,11 +6,11 @@ import { actionCreators } from '../../store/Post'
 import { actionCreators as catActionCreators } from '../../store/Category'
 import { actionCreators as tagActionCreators } from '../../store/Tag'
 import Utils from '../../apis/utils'
-import PostList from './PostList'
-import HeaderSection from '../commons/HeaderSection'
+import PostList from './commons/PostList'
 import PostActions from '../../store/PostActions'
 import CategoryActions from '../../store/CategoryActions'
 import TagActions from '../../store/TagActions'
+import PostForm from '../posts/PostForm'
 
 class PostApp extends Component {
     constructor(props){
@@ -62,20 +62,20 @@ class PostApp extends Component {
         })
 
         // Get all category
-        this.CategoryActions.getListItems({url: 'Category/getAllCategory', body: {}}, (err, result)=> {
-            if(err) return
-            let resultData = Utils.getResApi(result)
-            resultData = Utils.sortList(resultData, 'desc')  // To sort list
-            this.props.fetchCategory(resultData)
-        })
+        // this.CategoryActions.getListItems({url: 'Category/getAllCategory', body: {}}, (err, result)=> {
+        //     if(err) return
+        //     let resultData = Utils.getResApi(result)
+        //     resultData = Utils.sortList(resultData, 'desc')  // To sort list
+        //     this.props.fetchCategory(resultData)
+        // })
 
         // Get all tags
-        this.TagActions.getListItems({url: 'Tag/getAllTag', body: {}}, (err, result)=> {
-            if(err) return
-            let resultData = Utils.getResApi(result)
-            resultData = Utils.sortList(resultData, 'desc')  // To sort list
-            this.props.fetchTag(resultData)
-        })
+        // this.TagActions.getListItems({url: 'Tag/getAllTag', body: {}}, (err, result)=> {
+        //     if(err) return
+        //     let resultData = Utils.getResApi(result)
+        //     resultData = Utils.sortList(resultData, 'desc')  // To sort list
+        //     this.props.fetchTag(resultData)
+        // })
     }
 
     render() {
@@ -84,7 +84,7 @@ class PostApp extends Component {
         let postList = _.get(postData, 'postList')
         return(
             <Fragment>
-                <HeaderSection {...this.props} />
+                <PostForm {...this.props}/>
                 <PostList
                     paginationPath={this.paginationPath}
                     pagination={this.pagination}

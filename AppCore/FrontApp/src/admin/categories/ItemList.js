@@ -126,6 +126,8 @@ class ItemList extends React.Component{
                         }
                     </Table.Body>
                 </Table>
+
+                
                 {
                     pagination && pagination.totalRecords > pagination.pageSize
                     ? <Pagination

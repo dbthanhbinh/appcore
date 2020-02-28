@@ -33,6 +33,22 @@ export function BuildTextField(props) {
     )
 }
 
+export function BuildTextFieldHidden(props) {
+    let {
+        name,
+        defaultValue
+    } = props
+    return (
+        name && <Fragment>
+           <input
+                type='hidden'
+                id={name} name={name}
+                defaultValue={defaultValue}
+            />
+        </Fragment>
+    )
+}
+
 export function BuildTextAreaField(props) {
     let {
         name,
@@ -91,6 +107,47 @@ export function BuildSelectField(props) {
                 onChange={onChange}
                 >
                 <option value={getDefaultEmptyGuid()} disabled>{placeholder}</option>
+                {
+                    listItems && !_.isEmpty(listItems)
+                    && listItems.map((s, i) => {
+                        let isSelectedClass = ''
+                        if(s.id === currentCatId) {
+                            isSelectedClass = 'isSelected'
+                        }
+                        return <option key={i} className={`${isSelectedClass}`} value={s.id}>{s.name}</option>
+                    })
+                }
+            </select>
+        </div>
+    )
+}
+
+export function BuildSelectMultipleField(props) {
+    let {
+        name,
+        label,
+        formGroupClass,
+        className,
+        defaultValue,
+        placeholder,
+        listItems,
+        currentCatId,
+        onChange
+    } = props
+    formGroupClass = `form-group ${formGroupClass || ''}`
+    className = `form-control ${className || ''}`
+    return (
+        name && <div className={formGroupClass}>
+            {label && <label htmlFor={name}>{label}</label>}
+            <select
+                name={name}
+                className="select22"
+                defaultValue={defaultValue || getDefaultEmptyGuid()}
+                onChange={onChange}
+                multiple="multiple"
+                data-placeholder={placeholder}
+                style={{width: '100%'}}
+                >
                 {
                     listItems && !_.isEmpty(listItems)
                     && listItems.map((s, i) => {
