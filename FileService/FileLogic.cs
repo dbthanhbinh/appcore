@@ -123,7 +123,7 @@ namespace FileService
                             var ImgLarge = ImageResize.Scale(uploadedImage, Configs.RESIZE_LARGE_WIDTH, Configs.RESIZE_LARGE_HEIGHT);
                             string filePathLarge = Path.GetFullPath(Path.Combine(common.GetCurrentDirectoryForUpload(ResizeLargeFolder)));
                             ImgLarge.SaveAs($"{filePathLarge}\\{FileName}");
-                            string SubFilePathLarge = SubPathFileUrl + "/" + ResizeLargeFolder + "/"+ FileName;
+                            string SubFilePathLarge = SubPathFileUrl + Configs.RESIZE_LAGRE_LABEL + "/"+ FileName;
                             Uploaded uploadedLarge = new Uploaded(file.ContentType, FileName, SubName, file.Length, SubFilePathLarge, "large");
                             uploadeds.Add(uploadedLarge);
 
@@ -131,7 +131,7 @@ namespace FileService
                             var ImgMedium = ImageResize.Scale(uploadedImage, Configs.RESIZE_MEDIUM_WIDTH, Configs.RESIZE_MEDIUM_HEIGHT);
                             string filePathMedium = Path.GetFullPath(Path.Combine(common.GetCurrentDirectoryForUpload(ResizeMediumFolder)));
                             ImgMedium.SaveAs($"{filePathMedium}\\{FileName}");
-                            string SubFilePathMedium = SubPathFileUrl + "/" + ResizeMediumFolder + "/" + FileName;
+                            string SubFilePathMedium = SubPathFileUrl + Configs.RESIZE_MEDIUM_LABEL + "/" + FileName;
                             Uploaded uploadedMedium = new Uploaded(file.ContentType, FileName, SubName, file.Length, SubFilePathMedium, "medium");
                             uploadeds.Add(uploadedMedium);
 
@@ -139,7 +139,7 @@ namespace FileService
                             var ImgSmall = ImageResize.Scale(uploadedImage, Configs.RESIZE_SMALL_WIDTH, Configs.RESIZE_SMALL_HEIGHT);
                             string filePathSmall = Path.GetFullPath(Path.Combine(common.GetCurrentDirectoryForUpload(ResizeSmallFolder)));
                             ImgSmall.SaveAs($"{filePathSmall}\\{FileName}");
-                            string SubFilePathSmall = SubPathFileUrl + "/" + ResizeSmallFolder + "/" + FileName;
+                            string SubFilePathSmall = SubPathFileUrl + Configs.RESIZE_SMALL_LABEL + "/" + FileName;
                             Uploaded uploadedSmall = new Uploaded(file.ContentType, FileName, SubName, file.Length, SubFilePathSmall, "small");
                             uploadeds.Add(uploadedSmall);
 

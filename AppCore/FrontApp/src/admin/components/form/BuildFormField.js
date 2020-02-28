@@ -13,7 +13,7 @@ export function BuildTextField(props) {
         placeholder,
         modelField
     } = props
-    let { value, isValid, message } = modelField
+    let {value} = modelField
     formGroupClass = `form-group ${formGroupClass || ''}`
     className = `form-control ${className || ''}`
     return (
@@ -61,7 +61,7 @@ export function BuildTextAreaField(props) {
         modelField
     } = props
 
-    let { value, isValid, message } = modelField
+    let {value} = modelField
     formGroupClass = `form-group ${formGroupClass || ''}`
     className = `form-control ${className || ''}`
     return (
@@ -88,7 +88,6 @@ export function BuildSelectField(props) {
         name,
         label,
         formGroupClass,
-        className,
         defaultValue,
         placeholder,
         listItems,
@@ -96,7 +95,6 @@ export function BuildSelectField(props) {
         onChange
     } = props
     formGroupClass = `form-group ${formGroupClass || ''}`
-    className = `form-control ${className || ''}`
     return (
         name && <div className={formGroupClass}>
             {label && <label htmlFor={name}>{label}</label>}
@@ -176,5 +174,36 @@ export function BuildButtonField(props) {
         onClick={onClick || null}
         value={label}
     />
+    )
+}
+
+export function BuildFileField(props) {
+    let {
+        name,
+        onChange,
+        className
+    } = props
+    className = `form-control ${className || ''}`
+    return (
+        name && <input
+            type={'file'}
+            id={name} name={name}
+            className={className}
+            onChange={onChange || null}
+        />
+    )
+}
+
+export function BuildLabelField(props) {
+    let {
+        placeholder,
+        value,
+        formGroupClass
+    } = props
+    formGroupClass = `form-group ${formGroupClass || ''}`
+    return (
+        placeholder && <div className={formGroupClass}>
+            {placeholder && <label>{placeholder}: {value}</label>}
+        </div>
     )
 }

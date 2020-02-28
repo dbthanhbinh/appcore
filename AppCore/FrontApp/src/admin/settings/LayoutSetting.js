@@ -1,14 +1,12 @@
 import React from 'react'
 import _ from 'lodash'
-
-import BuildTextField from '../components/form/BuildTextField'
 import Model from '../models/layoutSetting.model'
 import { LayoutDefined } from "../commons/Defined"
 import DropdownWrapper from '../components/form/DropdownWrapper'
 
 import { Form } from 'semantic-ui-react'
 import {BtnWithModalEvent} from '../components/form/BtnDefined'
-import { withFormBehaviors } from '../components/form/form'
+import {withFormBehaviors} from '../components/form/form'
 import BaseSetting from './BaseSetting'
 import {
     getInputData,

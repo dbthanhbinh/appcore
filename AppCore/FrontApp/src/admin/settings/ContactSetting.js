@@ -6,7 +6,7 @@ import { ContactDefined } from "../commons/Defined"
 
 import { Form } from 'semantic-ui-react'
 import {BtnWithModalEvent} from '../components/form/BtnDefined'
-import { withFormBehaviors } from '../components/form/form'
+import {withFormBehaviors} from '../components/form/form'
 import _ from 'lodash'
 import {
     validatorModel

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import AlertCP from '../commons/AlertCP'
-import { withFormBehaviors } from '../components/form/form'
+import {withFormBehaviors} from '../components/form/form'
 import FieldFile from '../components/form/FieldFile'
 import PostActions from '../../store/PostActions'
 import CategoryActions from '../../store/CategoryActions'

@@ -130,7 +130,7 @@ namespace AppCore.Business
                 int pageSize = filterMediaReq.PageSize;
 
                 List<Media> result = null;
-                result = _uow.GetRepository<Media>().GetAll();
+                result = _uow.GetRepository<Media>().GetByFilterPaging(f=> f.ResizeType == filterMediaReq.ResizeType, currentPage, pageSize);
                 return PagingHelper<Media>.GetPagingList(result, currentPage, pageSize);
             }
             catch (Exception ex)

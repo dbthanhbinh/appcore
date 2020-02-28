@@ -4,14 +4,12 @@ import eventEmitter from '../../utils/eventEmitter'
 // Redux process
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../store/Category'
-import { withFormBehaviors } from '../components/form/form'
+import {actionCreators} from '../../store/Category'
+import {withFormBehaviors} from '../components/form/form'
 
 import CategoryList from './ItemList'
-import CategoryForm from './CategoryForm'
 import Utils from '../../apis/utils'
 import {
-    resetFormFieldByFormId,
     resetModelDefaultData,
     initValidatorModel,
     getInputData,
@@ -28,11 +26,11 @@ import {
     BuildButtonField
 } from '../components/form/BuildFormField'
 
+import ContentHeader from '../commons/ContentHeader'
 import CategoryActions from '../../store/CategoryActions'
 import SeoModel from '../models/seo.model'
 import CategoryModel from '../models/addCategory.model'
 import {CategoryDefined, SeoDefined} from "../commons/Defined"
-import DropdownWrapper from '../components/form/DropdownWrapper'
 import { getDefaultEmptyGuid } from '../../utils/commons'
 import SeoForm from '../seos/SeoForm'
 
@@ -229,80 +227,85 @@ class Category extends Component{
     }
 
     render(){
-        let { currentRoute, model, isFormValid, isLoading } = this.state
+        let { currentRoute, model, isFormValid } = this.state
         let { categoryData } = this.props
         let { categoryList, categoryFilter } = categoryData
         let parentIdValue = _.get(model, `${CategoryDefined.PARENTID}.value`) || getDefaultEmptyGuid()
         
         return (
             <Fragment>
-                <div className="row">
-                    <div className="col-lg-4">
-                        <div className="card card-primary">
-                            <div className="card-body">
-                                <BuildTextField
-                                    name={CategoryDefined.NAME}
-                                    label={model[CategoryDefined.NAME].label}
-                                    placeholder={model[CategoryDefined.NAME].placeholder}
-                                    modelField={model[CategoryDefined.SLUG]}
-                                    onChange={this.handleOnInputChange}
-                                />
-                                <BuildTextField
-                                    name={CategoryDefined.SLUG}
-                                    label={model[CategoryDefined.SLUG].label}
-                                    placeholder={model[CategoryDefined.SLUG].placeholder}
-                                    modelField={model[CategoryDefined.SLUG]}
-                                    onChange={this.handleOnInputChange}
-                                />
-                                <BuildSelectField 
-                                    name={CategoryDefined.PARENTID}
-                                    label={model[CategoryDefined.PARENTID].label}
-                                    listItems={categoryList}
-                                    isEdit={this.isEdit}
-                                    currentCatId={this.currentEditId}
-                                    parentId={parentIdValue}
-                                    onChange={this.handleOnInputChange}
-                                    placeholder='Select parent'
-                                    defaultValue={parentIdValue}
-                                />
-                                <BuildTextAreaField
-                                    name={CategoryDefined.CONTENT}
-                                    label={model[CategoryDefined.CONTENT].label}
-                                    placeholder={model[CategoryDefined.CONTENT].placeholder}
-                                    modelField={model[CategoryDefined.CONTENT]}
-                                    onChange={this.handleOnInputChange}
-                                    rows={3}
-                                />
-                                
-                            </div>
-                        </div>
-
-                        <SeoForm
-                            model={model}
-                            onInputChange = {this.handleOnInputChange} />
-
+                <ContentHeader />
+                <div className="content">
+                    <div className="container-fluid">
                         <div className="row">
-                            <div className="col-12">
-                                <BuildButtonField
-                                    label={`${this.isEdit ? 'Save change' : 'Create new'}`}
-                                    className='btn-success float-right'
-                                    onClick={this.isEdit ? () => this.handleOnUpdateCategory(this.currentEditId) : this.handleOnCreateCategory}
-                                />
+                            <div className="col-lg-4">
+                                <div className="card card-primary">
+                                    <div className="card-body">
+                                        <BuildTextField
+                                            name={CategoryDefined.NAME}
+                                            label={model[CategoryDefined.NAME].label}
+                                            placeholder={model[CategoryDefined.NAME].placeholder}
+                                            modelField={model[CategoryDefined.SLUG]}
+                                            onChange={this.handleOnInputChange}
+                                        />
+                                        <BuildTextField
+                                            name={CategoryDefined.SLUG}
+                                            label={model[CategoryDefined.SLUG].label}
+                                            placeholder={model[CategoryDefined.SLUG].placeholder}
+                                            modelField={model[CategoryDefined.SLUG]}
+                                            onChange={this.handleOnInputChange}
+                                        />
+                                        <BuildSelectField 
+                                            name={CategoryDefined.PARENTID}
+                                            label={model[CategoryDefined.PARENTID].label}
+                                            listItems={categoryList}
+                                            isEdit={this.isEdit}
+                                            currentCatId={this.currentEditId}
+                                            parentId={parentIdValue}
+                                            onChange={this.handleOnInputChange}
+                                            placeholder='Select parent'
+                                            defaultValue={parentIdValue}
+                                        />
+                                        <BuildTextAreaField
+                                            name={CategoryDefined.CONTENT}
+                                            label={model[CategoryDefined.CONTENT].label}
+                                            placeholder={model[CategoryDefined.CONTENT].placeholder}
+                                            modelField={model[CategoryDefined.CONTENT]}
+                                            onChange={this.handleOnInputChange}
+                                            rows={3}
+                                        />
+                                        
+                                    </div>
+                                </div>
+
+                                <SeoForm
+                                    model={model}
+                                    onInputChange = {this.handleOnInputChange} />
+
+                                <div className="row">
+                                    <div className="col-12">
+                                        <BuildButtonField
+                                            label={`${this.isEdit ? 'Save change' : 'Create new'}`}
+                                            className='btn-success float-right'
+                                            onClick={this.isEdit ? () => this.handleOnUpdateCategory(this.currentEditId) : this.handleOnCreateCategory}
+                                        />
+                                    </div>
+                                </div>
                             </div>
+                            <div className="col-lg-8">
+                            <CategoryList
+                                isEdit={this.isEdit}
+                                isFormValid={isFormValid}
+                                currentEditId={this.currentEditId}
+                                listItems={categoryFilter}
+                                onDeleteItem={this.handleOnDeleteCategory}
+                                currentRoute={currentRoute}
+                                paginationPath={this.paginationPath}
+                                pagination={this.pagination}
+                                onGotoPage = {this.handleOnGotoPage}
+                            />
                         </div>
-                    </div>
-                    <div className="col-lg-8">
-                        <CategoryList
-                            isEdit={this.isEdit}
-                            isFormValid={isFormValid}
-                            currentEditId={this.currentEditId}
-                            listItems={categoryFilter}
-                            onDeleteItem={this.handleOnDeleteCategory}
-                            currentRoute={currentRoute}
-                            paginationPath={this.paginationPath}
-                            pagination={this.pagination}
-                            onGotoPage = {this.handleOnGotoPage}
-                        />
+                        </div>
                     </div>
                 </div>
             </Fragment>
