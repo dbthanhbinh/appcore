@@ -7,6 +7,7 @@ import { actionCreators as catActionCreators } from '../../store/Category'
 import { actionCreators as tagActionCreators } from '../../store/Tag'
 import Utils from '../../apis/utils'
 import PostList from './PostList'
+import ContentHeader from '../commons/ContentHeader'
 import HeaderSection from '../commons/HeaderSection'
 import PostActions from '../../store/PostActions'
 import CategoryActions from '../../store/CategoryActions'
@@ -84,15 +85,22 @@ class PostApp extends Component {
         let postList = _.get(postData, 'postList')
         return(
             <Fragment>
-                <HeaderSection {...this.props} />
-                <PostList
-                    paginationPath={this.paginationPath}
-                    pagination={this.pagination}
-                    postList={ postList }
-                    isLoading={isLoading}
-                    currentRoute={currentRoute}
-                    onHandleDeleteItemState={this.props.deletePost}
-                />
+                <ContentHeader />
+                <div className="content">
+                    <div className="container-fluid">
+                        <div className="row">
+                            <HeaderSection {...this.props} />
+                            <PostList
+                                paginationPath={this.paginationPath}
+                                pagination={this.pagination}
+                                postList={ postList }
+                                isLoading={isLoading}
+                                currentRoute={currentRoute}
+                                onHandleDeleteItemState={this.props.deletePost}
+                            />
+                        </div>
+                    </div>
+                </div>
             </Fragment>
         )
     }

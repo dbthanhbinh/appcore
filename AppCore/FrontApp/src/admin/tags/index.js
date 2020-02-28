@@ -3,12 +3,11 @@ import _ from 'lodash'
 // Redux process
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../store/Tag'
-
-import {  Grid } from 'semantic-ui-react'
-import TagList from './ItemList'
+import {actionCreators} from '../../store/Tag'
+import TagList from '../commons/itemList'
 import TagForm from './TagForm'
 import Utils from '../../apis/utils'
+import ContentHeader from '../commons/ContentHeader'
 import {
     initValidatorModel,
     getInputData,
@@ -22,7 +21,7 @@ import {
 from '../../utils/FormUtils'
 import TagModel from '../models/addTag.model'
 import { TagDefined } from '../commons/Defined'
-import { withFormBehaviors } from '../components/form/form'
+import {withFormBehaviors} from '../components/form/form'
 import TagActions from '../../store/TagActions'
 
 class Tag extends Component{
@@ -184,37 +183,47 @@ class Tag extends Component{
         let tagList = _.get(tagData, 'tagList')
         let detailData = _.get(tagData, 'detailData')
         let catId = _.get(detailData, 'tag.id')
+        let headerListDefined = [
+            {key: 'no', label: 'No', isActive: true},
+            {key: 'name', label: 'Name', isActive: true},
+            {key: 'alias', label: 'Alias', isActive: true},
+            {key: 'actions', label: 'Actions', isActive: true}
+        ]
         return (
             <Fragment>
-                <Grid>
-                    <Grid.Row columns={2}>
-                        <Grid.Column width={6}>
-                            <TagForm
-                                isLoading={isLoading}
-                                isEdit={ this.isEdit }
-                                currentEditId={catId}
-                                model={ model }
-                                items={ tagList }
-                                detailData={ detailData }
-                                onInputChange = { this.handleOnInputChange }
-                                onCreateTag={ this.handleOnCreateTag }                                
-                                onUpdateTag = { this.handleOnUpdateTag }
-                            />
-                        </Grid.Column>
-                        <Grid.Column width={10}>
-                            <TagList
-                                isEdit={ this.isEdit }
-                                currentEditId={catId}
-                                currentRoute={ currentRoute }
-                                items={ tagList }
-                                paginationPath={this.paginationPath}
-                                pagination={this.pagination}
-                                onGotoPage = {this.handleOnGotoPage}
-                                onDeleteTag = { this.handleOnDeleteTag }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <ContentHeader />
+                <div className="content">
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-lg-4">
+                                <TagForm
+                                    isLoading={isLoading}
+                                    isEdit={ this.isEdit }
+                                    currentEditId={catId}
+                                    model={ model }
+                                    items={ tagList }
+                                    detailData={ detailData }
+                                    onInputChange = { this.handleOnInputChange }
+                                    onCreateTag={ this.handleOnCreateTag }                                
+                                    onUpdateTag = { this.handleOnUpdateTag }
+                                />
+                            </div>
+                            <div className="col-lg-8">
+                                <TagList
+                                    headerListDefined={headerListDefined}
+                                    isEdit={ this.isEdit }
+                                    currentEditId={catId}
+                                    currentRoute={ currentRoute }
+                                    items={ tagList }
+                                    paginationPath={this.paginationPath}
+                                    pagination={this.pagination}
+                                    onGotoPage = {this.handleOnGotoPage}
+                                    onDeleteTag = { this.handleOnDeleteTag }
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </Fragment>
         )
     }

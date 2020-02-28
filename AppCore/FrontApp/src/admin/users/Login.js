@@ -1,16 +1,19 @@
-import React, { Component, Fragment } from 'react'
-import { Form, Button, Grid } from 'semantic-ui-react'
-import { Redirect } from "react-router-dom"
-
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { actionCreators } from '../../store/User'
-
-import { withFormBehaviors } from '../components/form/form'
-import { Defined } from './Defined'
-import { loginUser } from '../../store/UserActions'
-import Model from './Login.model'
+import React, {Component} from 'react'
+import {Redirect} from "react-router-dom"
 import _ from 'lodash'
+
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import {actionCreators} from '../../store/User'
+
+import {withFormBehaviors} from '../components/form/form'
+import {Defined} from './Defined'
+import {loginUser} from '../../store/UserActions'
+import Model from './Login.model'
+import {
+    BuildTextField,
+    BuildButtonField
+} from '../components/form/BuildFormField'
 import { withCookies } from 'react-cookie'
 
 class login extends Component{
@@ -58,24 +61,31 @@ class login extends Component{
         let password = _.get(formData, `${ Defined.PASSWORD }.label`)
         return redirectToReferrer
         ? <Redirect to={afterLogin}/>
-        : <Fragment>
-            <Grid textAlign='center' verticalAlign='middle' columns={1}>
-                <Grid.Column width={5}>
-                    <h1>Login</h1>
-                    <Form>
-                        <Form.Field>
-                                <input name={ Defined.PHONE } placeholder={ phone } onChange={this.handleOnInputChange} />
-                            </Form.Field>
-                        <Form.Field>
-                            <input type='password' name={ Defined.PASSWORD } placeholder={ password } onChange={this.handleOnInputChange} />
-                        </Form.Field>
-                        <Form.Field>
-                            <Button variant="primary" type="button" onClick={this.handleSubmitForm} > Đăng Nhập </Button>
-                        </Form.Field>
-                    </Form>
-                </Grid.Column>
-            </Grid>  
-        </Fragment>
+        : <div className="card">
+            <div className="card-header">
+                <h1>Login</h1>
+            </div>
+            <div className="card-body">
+                <BuildTextField
+                    name={Defined.PHONE}
+                    placeholder={phone}
+                    modelField={formData}
+                    onChange={this.handleOnInputChange}
+                />
+                <BuildTextField
+                    type='password'
+                    name={Defined.PASSWORD}
+                    placeholder={password}
+                    modelField={formData}
+                    onChange={this.handleOnInputChange}
+                />
+                <BuildButtonField
+                    name='btn-login'
+                    onClick={this.handleSubmitForm}
+                    label='Đăng Nhập'
+                />
+            </div>
+        </div>
     }
 }
 const Login = withFormBehaviors(login, Model.model())

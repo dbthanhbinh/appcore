@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import { Form } from 'semantic-ui-react'
 import { SeoDefined } from '../commons/Defined'
 import {
     BuildTextField,
-    BuildTextAreaField,
-    BuildSelectField,
-    BuildButtonField
+    BuildTextAreaField
 } from '../components/form/BuildFormField'
 
 class SeoForm extends Component {

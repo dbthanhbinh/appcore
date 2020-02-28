@@ -1,7 +1,10 @@
 import React, { Fragment } from 'react'
-import { Form, Button } from 'semantic-ui-react'
 import { TagDefined } from "../commons/Defined"
-import BuildTextField from '../components/form/BuildTextField'
+import {
+    BuildButtonField,
+    BuildFileField,
+    BuildTextField
+} from '../components/form/BuildFormField'
 
 class TagForm extends React.Component{
     constructor(props){
@@ -22,30 +25,26 @@ class TagForm extends React.Component{
         return(
             <Fragment>
                 <a href='admin/tags'>Add new</a>
-                <Form>
-                    <Form.Field>
-                        <BuildTextField
-                            name={TagDefined.NAME}
-                            onChange={onInputChange}
-                            modelField={model[TagDefined.NAME]}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <BuildTextField
-                            name={TagDefined.SLUG}
-                            onChange={onInputChange}
-                            modelField={model[TagDefined.SLUG]}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <Button variant="primary"
-                            loading={isLoading}
-                            disabled={isLoading}
-                            onClick={ isEdit ? () => onUpdateTag(currentEditId) : onCreateTag }>
-                            Save Changes
-                        </Button>
-                    </Form.Field>
-                </Form>
+                <form>
+                    <BuildTextField
+                        name={TagDefined.NAME}
+                        placeholder={TagDefined.NAME}
+                        onChange={onInputChange}
+                        modelField={model[TagDefined.NAME]}
+                    />
+                    <BuildTextField
+                        name={TagDefined.SLUG}
+                        placeholder={TagDefined.SLUG}
+                        onChange={onInputChange}
+                        modelField={model[TagDefined.SLUG]}
+                    />
+                    <BuildButtonField
+                        disabled={isLoading}
+                        onClick={ isEdit ? () => onUpdateTag(currentEditId) : onCreateTag }
+                        name='btn-add-newtag'
+                        label='Save Changes'
+                    />
+                </form>
             </Fragment>
         )
     }

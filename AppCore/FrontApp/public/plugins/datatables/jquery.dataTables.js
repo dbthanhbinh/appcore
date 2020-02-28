@@ -1322,7 +1322,7 @@
 	 */
 	
 	
-	// Defined else where
+	//Definedelse where
 	//  _selector_run
 	//  _selector_opts
 	//  _selector_first

@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../store/Category'
+import {actionCreators} from '../../store/Category'
 
 import Utils from '../../apis/utils'
 import CategoryActions from '../../store/CategoryActions'

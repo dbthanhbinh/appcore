@@ -5,7 +5,7 @@ import {
 } from '../components/form/BuildFormField'
 
 const DetailMediaModal = (props) => {
-    let { imageDetail, isOpenModal, onHandleCloseModal, onHandleUpdateMedia, modalName } = props
+    let { imageDetail, onHandleUpdateMedia, modalName } = props
 
     return <div className="modal fade" id={modalName}>
         <div className="modal-dialog">

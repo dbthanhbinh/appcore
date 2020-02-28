@@ -3,8 +3,8 @@ import _ from 'lodash'
 // Redux process
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../store/Menu'
-import { withFormBehaviors } from '../components/form/form'
+import {actionCreators} from '../../store/Menu'
+import {withFormBehaviors} from '../components/form/form'
 
 import { Grid } from 'semantic-ui-react'
 import MenuList from './ItemList'

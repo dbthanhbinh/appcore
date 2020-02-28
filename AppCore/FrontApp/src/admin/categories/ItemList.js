@@ -84,7 +84,7 @@ const RenderItemActions = (props) => {
     }
     return  <div className="btn-group btn-group-sm">
         <a title={title} className={`btn btn-info ${disableItem ? 'disabled' : ''}`} href={`admin/${currentRoute}/edit/${item.id}`}><i className="fas fa-edit"></i></a>
-        <a title={title} className={`btn btn-danger`} onClick={!disableItem ? ()=>onDeleteItem(item.id) : null }><i className="fas fa-trash"></i></a>
+        <span title={title} className={`btn btn-danger`} onClick={!disableItem ? ()=>onDeleteItem(item.id) : null }><i className="fas fa-trash"></i></span>
         
     </div>
 }

@@ -3,7 +3,7 @@ import eventEmitter from '../../../../utils/eventEmitter'
 // Redux process
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { actionCreators } from '../../../../store/SimCard'
+import {actionCreators} from '../../../../store/SimCard'
 import ItemList from './ItemList'
 import Utils from '../../../commons/utils'
 import SimCardUtil from '../commons/utils'

@@ -13,7 +13,7 @@ export function BuildTextField(props) {
         placeholder,
         modelField
     } = props
-    let { value, isValid, message } = modelField
+    let {value} = modelField
     formGroupClass = `form-group ${formGroupClass || ''}`
     className = `form-control ${className || ''}`
     return (
@@ -45,7 +45,7 @@ export function BuildTextAreaField(props) {
         modelField
     } = props
 
-    let { value, isValid, message } = modelField
+    let {value} = modelField
     formGroupClass = `form-group ${formGroupClass || ''}`
     className = `form-control ${className || ''}`
     return (
@@ -72,7 +72,6 @@ export function BuildSelectField(props) {
         name,
         label,
         formGroupClass,
-        className,
         defaultValue,
         placeholder,
         listItems,
@@ -80,7 +79,6 @@ export function BuildSelectField(props) {
         onChange
     } = props
     formGroupClass = `form-group ${formGroupClass || ''}`
-    className = `form-control ${className || ''}`
     return (
         name && <div className={formGroupClass}>
             {label && <label htmlFor={name}>{label}</label>}
@@ -143,11 +141,9 @@ export function BuildLabelField(props) {
     let {
         placeholder,
         value,
-        formGroupClass,
-        className
+        formGroupClass
     } = props
     formGroupClass = `form-group ${formGroupClass || ''}`
-    className = `form-control ${className || ''}`
     return (
         placeholder && <div className={formGroupClass}>
             {placeholder && <label>{placeholder}: {value}</label>}

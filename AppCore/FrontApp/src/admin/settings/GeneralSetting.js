@@ -3,7 +3,7 @@ import BuildTextField from '../components/form/BuildTextField'
 import Model from '../models/generalSetting.model'
 import { Form } from 'semantic-ui-react'
 import {BtnWithModalEvent} from '../components/form/BtnDefined'
-import { withFormBehaviors } from '../components/form/form'
+import {withFormBehaviors} from '../components/form/form'
 import { GeneralSettingDefined } from "../commons/Defined"
 import _ from 'lodash'
 import {

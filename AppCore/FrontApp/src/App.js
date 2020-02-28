@@ -50,13 +50,7 @@ function App() {
   let cookies = new Cookies().get('MAP_cookies')
   let myCookies = (cookies && cookies.token) ? cookies.token : ''
   if(myCookies) { fakeAuth.isAuthenticated = true }
-
-
-  let appLayout = UnLayout
-  if(fakeAuth.isAuthenticated){
-    appLayout = FLayout
-  }
-
+  
   return (
     <Provider store={store}>
       <BrowserRouter>
