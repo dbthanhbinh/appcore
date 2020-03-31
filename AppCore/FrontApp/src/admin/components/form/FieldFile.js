@@ -1,6 +1,4 @@
 import React, { Fragment } from 'react'
-import { Image } from 'semantic-ui-react'
-
 const uploadedFolder = 'Uploads'
 
 const FieldFile = (props) => {
@@ -8,11 +6,12 @@ const FieldFile = (props) => {
     let _src = (mediaThumbnail && mediaThumbnail.path) ? `${uploadedFolder}/${mediaThumbnail.path}` : null
     return(
         <Fragment>
+            <div className={`form-group`}>
             {
                 isShowPreview
                 ? <div className='preview-article-thumbnail'>
                     <div className='preview-thumb'>
-                        <Image src={_src} />
+                        <img src={_src} alt=''/>
                     </div>
                     <div className='preview-thumb-remove-btn'>
                         <label onClick={onHandleRemoveThumbnail}>Remove thumbnail</label>
@@ -20,6 +19,7 @@ const FieldFile = (props) => {
                 </div>
                 : <input type={ type || 'file' } name={ name || 'file' } id={ id || 'file' } onChange={onInputChange} />
             }
+            </div>
         </Fragment>
     )
 }

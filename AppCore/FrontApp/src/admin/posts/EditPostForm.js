@@ -29,6 +29,8 @@ import {
     BuildSelectMultipleField,
     BuildButtonField
 } from '../components/form/BuildFormField'
+import ContentHeader from '../commons/ContentHeader'
+
 class EditPostForm extends Component {
     constructor(props){
         super(props)
@@ -207,80 +209,87 @@ class EditPostForm extends Component {
         }
         return(
             <React.Fragment>
-                { isShowAlert && <AlertCP content={`Success`} variant='success' />}
-                <div className="row show-grid">
-                    <div className="col-lg-8">
-                        <div className="card card-primary">
-                            <div className="card-body">
-                                <BuildTextField
-                                    name={PostDefined.NAME}
-                                    label={model[PostDefined.NAME].label}
-                                    placeholder={model[PostDefined.NAME].placeholder}
-                                    modelField={model[PostDefined.NAME]}
-                                    onChange={this.handleOnInputChange}
-                                />
-                                <CKEditor
-                                    onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
-                                    onChange={this.handleOnEditorChange}
-                                    data={contentValue || null}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-4">
-                        <div className="card card-primary">
-                            <div className="card-body">
-                                <FieldFile mediaThumbnail={mediaThumbnal}
-                                    isUploadedThumbnail={isUploadedThumbnail}
-                                    onInputChange = {this.handleOnInputChange}
-                                    isRemovedThumbnail = {isRemovedThumbnail}
-                                    isShowPreview = {isShowPreview}
-                                    onHandleRemoveThumbnail = {this.handleRemoveThumbnail}
-                                />
-                                <BuildSelectField
-                                    name={PostDefined.CATEGORYID}
-                                    label={model[PostDefined.CATEGORYID].label}
-                                    listItems={categoryList}
-                                    isEdit={this.isEdit}
-                                    currentCatId={this.isEditId}
-                                    onChange={this.handleOnInputChange}
-                                    placeholder={'Select category '}
-                                    defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
-                                />
-                                {/* <BuildSelectMultipleField
-                                    name={PostDefined.TAGLIST}
-                                    label={model[PostDefined.TAGLIST].label}
-                                    listItems={tagList}
-                                    isEdit={this.isEdit}
-                                    onChange={this.handleOnMultipleDropChange}
-                                    placeholder={'Select tags'}
-                                    defaultValue={postTagDefaultValues}
-                                /> */}
+                <ContentHeader />
+                <div className="content">
+                    <div className="container-fluid">
+                        <div className="row">
+                            { isShowAlert && <AlertCP content={`Success`} variant='success' />}
+                            <div className="row show-grid">
+                                <div className="col-lg-8">
+                                    <div className="card card-primary">
+                                        <div className="card-body">
+                                            <BuildTextField
+                                                name={PostDefined.NAME}
+                                                label={model[PostDefined.NAME].label}
+                                                placeholder={model[PostDefined.NAME].placeholder}
+                                                modelField={model[PostDefined.NAME]}
+                                                onChange={this.handleOnInputChange}
+                                            />
+                                            <CKEditor
+                                                onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
+                                                onChange={this.handleOnEditorChange}
+                                                data={contentValue || null}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-lg-4">
+                                    <div className="card card-primary">
+                                        <div className="card-body">
+                                            <FieldFile mediaThumbnail={mediaThumbnal}
+                                                isUploadedThumbnail={isUploadedThumbnail}
+                                                onInputChange = {this.handleOnInputChange}
+                                                isRemovedThumbnail = {isRemovedThumbnail}
+                                                isShowPreview = {isShowPreview}
+                                                onHandleRemoveThumbnail = {this.handleRemoveThumbnail}
+                                            />
+                                            <BuildSelectField
+                                                name={PostDefined.CATEGORYID}
+                                                label={model[PostDefined.CATEGORYID].label}
+                                                listItems={categoryList}
+                                                isEdit={this.isEdit}
+                                                currentCatId={this.isEditId}
+                                                onChange={this.handleOnInputChange}
+                                                placeholder={'Select category '}
+                                                defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
+                                            />
+                                            {/* <BuildSelectMultipleField
+                                                name={PostDefined.TAGLIST}
+                                                label={model[PostDefined.TAGLIST].label}
+                                                listItems={tagList}
+                                                isEdit={this.isEdit}
+                                                onChange={this.handleOnMultipleDropChange}
+                                                placeholder={'Select tags'}
+                                                defaultValue={postTagDefaultValues}
+                                            /> */}
 
-                                <Multiselect
-                                    options={tagList} // Options to display in the dropdown
-                                    selectedValues={postTagDefaultValues} // Preselected value to persist in dropdown
-                                    onSelect={this.handleOnMultipleDropChange} // Function will trigger on select event
-                                    onRemove={null} // Function will trigger on remove event
-                                    displayValue="name" // Property name to display in the dropdown options
-                                />
+                                            <Multiselect
+                                                options={tagList} // Options to display in the dropdown
+                                                selectedValues={postTagDefaultValues} // Preselected value to persist in dropdown
+                                                onSelect={this.handleOnMultipleDropChange} // Function will trigger on select event
+                                                onRemove={null} // Function will trigger on remove event
+                                                displayValue="name" // Property name to display in the dropdown options
+                                            />
 
-                                <BuildTextFieldHidden
-                                    name='tagListHidden'
-                                    type='hidden'
-                                    className='tag-list-hidden'
-                                    defaultValue={this.getCurrentPostTagList(postTagList) || null}
-                                />
-                                <SeoForm
-                                    model={model}
-                                    seoData={ _.get(postEditData, 'seo') }
-                                    onInputChange = {this.handleOnInputChange} />
+                                            <BuildTextFieldHidden
+                                                name='tagListHidden'
+                                                type='hidden'
+                                                className='tag-list-hidden'
+                                                defaultValue={this.getCurrentPostTagList(postTagList) || null}
+                                            />
+                                            <SeoForm
+                                                model={model}
+                                                seoData={ _.get(postEditData, 'seo') }
+                                                onInputChange = {this.handleOnInputChange} />
 
-                                <BuildButtonField
-                                    label={'Update'}
-                                    className='btn-success float-right'
-                                    onClick={()=>this.handleSubmitUpdateForm(this.isEditId)}
-                                />
+                                            <BuildButtonField
+                                                label={'Update'}
+                                                className='btn-success float-right'
+                                                onClick={()=>this.handleSubmitUpdateForm(this.isEditId)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

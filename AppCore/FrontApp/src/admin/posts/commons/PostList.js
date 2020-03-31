@@ -3,7 +3,6 @@ import _ from 'lodash'
 import Pagination from '../../../helpers/PaginationGet'
 import ImageView from '../../components/commons/ImagePreView/ImageView'
 import ItemActions from '../../components/commons/actions/ItemActions'
-import './PostList.scss'
 
 const RenderTableNotFoundRecord = () => {
     return <tr><td>Not found record!</td></tr>

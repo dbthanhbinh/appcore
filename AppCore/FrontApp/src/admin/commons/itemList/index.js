@@ -3,12 +3,7 @@ import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 import LoadingItem from '../LoadingItem'
 import Pagination from '../../../helpers/PaginationPost'
-
-/**
- * Input: items: [] => array of list item
- * @param {*} props 
- * Output: render list of Item as listgroup item
- */
+import './ItemList.scss'
 class ItemList extends React.Component{
     constructor(props){
         super(props)
@@ -46,24 +41,27 @@ class ItemList extends React.Component{
         </div>
     }
 
-    renderRow = (headerListDefined, item) => {
+    renderRow = (headerListDefined, item, currentRoute, currentEditId, isEdit) => {
         let children = []
         let i = 0
         headerListDefined && headerListDefined.forEach(element => {
             if(element.isActive){
                 switch(element.key) {
                     case 'no':
-                        children.push(<td key={`${item.id}--${i+1}`}>{i}</td>)
+                        children.push(<td className='view-no' key={`${item.id}--${i+1}`}>{i+1}</td>)
+                    break
+                    case 'alias':
+                        children.push(<td key={`${item.id}--${i+1}`}>{item.slug}</td>)
                     break
                     case 'actions':
-                        children.push(<td key={`${item.id}--${i+1}`}>aaa</td>)
+                        children.push(<td className='view-actions' key={`${item.id}--${i+1}`}>{this.renderItemActions(currentRoute, item, currentEditId, isEdit)}</td>)
                     break
                     default:
                         children.push(<td key={`${item.id}--${i+1}`}>{item.name}</td>)
                 }
                 
             }
-            i++
+            i=i+1
         })
         return children
     }
@@ -73,7 +71,6 @@ class ItemList extends React.Component{
             headerListDefined
          } = this.props
         let { isLoading } = this.state
-        let tables = []
         let children = []
         return(
             isLoading ? <LoadingItem />
@@ -85,17 +82,8 @@ class ItemList extends React.Component{
                     <tbody>
                         {
                             (items && !_.isEmpty(items)) && items.map((item, i) => {
-                                children = this.renderRow(headerListDefined, item)
+                                children = this.renderRow(headerListDefined, item, currentRoute, currentEditId, isEdit)
                                 return <tr key={i+1}>{children}</tr>
-
-                                // return (
-                                //     <tr key={ item.id }>
-                                //         <td>{i + 1}</td>
-                                //         <td>{ item.name }</td>
-                                //         <td>{ item.slug }</td>
-                                //         <td>{this.renderItemActions(currentRoute, item, currentEditId, isEdit)}</td>
-                                //     </tr>
-                                // )
                             })
                         }
                     </tbody>

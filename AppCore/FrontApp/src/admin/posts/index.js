@@ -6,9 +6,8 @@ import { actionCreators } from '../../store/Post'
 import { actionCreators as catActionCreators } from '../../store/Category'
 import { actionCreators as tagActionCreators } from '../../store/Tag'
 import Utils from '../../apis/utils'
-import PostList from './PostList'
+import PostList from './commons/PostList'
 import ContentHeader from '../commons/ContentHeader'
-import HeaderSection from '../commons/HeaderSection'
 import PostActions from '../../store/PostActions'
 import CategoryActions from '../../store/CategoryActions'
 import TagActions from '../../store/TagActions'
@@ -90,7 +89,9 @@ class PostApp extends Component {
                 <div className="content">
                     <div className="container-fluid">
                         <div className="row">
-                            <HeaderSection {...this.props} />
+                            <button type="button" className="btn btn-default" data-toggle="modal" data-target="#modal-default">
+                                Add new
+                            </button>
                             <PostList
                                 paginationPath={this.paginationPath}
                                 pagination={this.pagination}
@@ -99,6 +100,23 @@ class PostApp extends Component {
                                 currentRoute={currentRoute}
                                 onHandleDeleteItemState={this.props.deletePost}
                             />
+
+                            <div className="modal fade" id="modal-default">
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h4 className="modal-title">Add new</h4>
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <PostForm {...this.props}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

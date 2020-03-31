@@ -24,7 +24,7 @@ class TagForm extends React.Component{
         } = this.props
         return(
             <Fragment>
-                <a href='admin/tags'>Add new</a>
+                {isEdit && <a href='admin/tags'>Add new</a>}
                 <form>
                     <BuildTextField
                         name={TagDefined.NAME}
@@ -42,6 +42,7 @@ class TagForm extends React.Component{
                         disabled={isLoading}
                         onClick={ isEdit ? () => onUpdateTag(currentEditId) : onCreateTag }
                         name='btn-add-newtag'
+                        className='btn btn-success float-right'
                         label='Save Changes'
                     />
                 </form>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Form, Modal, Container,  Grid, ModalHeader, ModalContent } from 'semantic-ui-react'
 import AlertCP from '../commons/AlertCP'
 import {withFormBehaviors} from '../components/form/form'
 import FieldFile from '../components/form/FieldFile'
@@ -19,8 +18,15 @@ import {
     validatorModel
 } from '../../utils/FormUtils'
 import CKEditor from 'ckeditor4-react'
-import BuildTextField from '../components/form/BuildTextField'
-import {BtnWithModalEvent} from '../components/form/BtnDefined'
+
+import {
+    BuildTextField,
+    BuildTextFieldHidden,
+    BuildSelectField,
+    BuildSelectMultipleField,
+    BuildButtonCloseModal,
+    BuildButtonField
+} from '../components/form/BuildFormField'
 
 class postForm extends Component {
     constructor(props){
@@ -92,8 +98,10 @@ class postForm extends Component {
                     if(err) return
                     if(result) {
                         let postData = _.get(Utils.getResApi(result), 'postData')
+                        console.log('====++', this.props)
                         this.props.addPost(postData)
-                        this.handleCloseModal()
+                        var button = document.getElementById("my-button-close-modal")
+                        button.click()
                         // eventEmitter.emit('handle-submit-form-data', { isLoading: false })
                     }
                 })
@@ -126,80 +134,58 @@ class postForm extends Component {
         return(
             <React.Fragment>
                 { isShowAlert && <AlertCP content={`Success`} variant='success' />}
-                <BtnWithModalEvent onBtnEvent={this.handleOpenModal} customClass={'primary'} />
-                <Modal
-                    open={isShowModal}
-                    >
-                    <ModalHeader>
-                        <h4>Add new</h4>
-                    </ModalHeader>
-                    <ModalContent>
-                        <Container>
-                            <Grid>
-                                <Grid.Row columns={2} className="show-grid">
-                                    <Grid.Column width={10}>
-                                        <Form>
-                                            <Form.Field>
-                                                <BuildTextField
-                                                    name={PostDefined.NAME}
-                                                    onChange={this.handleOnInputChange}
-                                                    modelField={model[PostDefined.NAME]}
-                                                />
-                                            </Form.Field>
-                                            <Form.Field>
-                                                <CKEditor
-                                                    onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
-                                                    onChange={this.handleOnEditorChange}
-                                                    data={contentValue || null}
-                                                />
-                                            </Form.Field>
-                                        </Form>
-                                    </Grid.Column>
-                                    <Grid.Column width={6}>
-                                        <Form>
-                                            <Form.Field>
-                                                <FieldFile defaultValue='' onInputChange = {this.handleOnInputChange} />
-                                            </Form.Field>
-                                            <Form.Field>
-                                                <DropdownWrapper
-                                                    search
-                                                    options={categoryList}
-                                                    name={PostDefined.CATEGORYID}
-                                                    onChange={this.handleOnInputChange}
-                                                    placeholder={'Select category '}
-                                                    defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
-                                                />
+                <div className="row show-grid">
+                    <div className="col-lg-8">
+                        <BuildTextField
+                            placeholder={`Name`}
+                            name={PostDefined.NAME}
+                            onChange={this.handleOnInputChange}
+                            modelField={model[PostDefined.NAME]}
+                        />
+                        <CKEditor
+                            onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true ) }
+                            onChange={this.handleOnEditorChange}
+                            data={contentValue || null}
+                        />
+                    </div>
+                    <div className="col-lg-4">
+                        <FieldFile defaultValue='' onInputChange = {this.handleOnInputChange} />
+                        {/* <DropdownWrapper
+                            search
+                            options={categoryList}
+                            name={PostDefined.CATEGORYID}
+                            onChange={this.handleOnInputChange}
+                            placeholder={'Select category '}
+                            defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
+                        /> */}
+                        {/* <DropdownWrapper
+                            search
+                            multiple
+                            options={tagList}
+                            name={PostDefined.TAGLIST}
+                            onChange={this.handleOnMultipleDropChange}
+                            placeholder={'Select tags'}
+                            defaultValue={postTagDefaultValues}
+                        /> */}
+                        <SeoForm
+                            model={model}
+                            seoData={ _.get(detailData, 'seo') }
+                            onInputChange = {this.handleOnInputChange}
+                        />
+                        <button
+                            id={`my-button-close-modal`}
+                            type="button"
+                            data-dismiss="modal"
+                            className='btn-success float-right'
+                        >Close</button>
 
-                                            </Form.Field>
-                                            <Form.Field>
-                                                <DropdownWrapper
-                                                    search
-                                                    multiple
-                                                    options={tagList}
-                                                    name={PostDefined.TAGLIST}
-                                                    onChange={this.handleOnMultipleDropChange}
-                                                    placeholder={'Select tags'}
-                                                    defaultValue={postTagDefaultValues}
-                                                />
-                                            </Form.Field>
-                                            <Form.Field>
-                                                <SeoForm
-                                                    model={model}
-                                                    seoData={ _.get(detailData, 'seo') }
-                                                    onInputChange = {this.handleOnInputChange}
-                                                />
-                                            </Form.Field>
-                                            <Form.Field>
-                                                <BtnWithModalEvent onBtnEvent={this.handleSubmitForm} label={'Add new'} />
-                                                <BtnWithModalEvent onBtnEvent={this.handleCloseModal} label={'Close'} />
-                                            </Form.Field>
-                                        </Form>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Container>
-                    </ModalContent>
-                </Modal>
+                        <BuildButtonField
+                            onClick={this.handleSubmitForm}
+                            className='btn-success float-right'
+                            label={'Add new'}
+                        />
+                    </div>
+                </div>
             </React.Fragment>
         )
     }

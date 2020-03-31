@@ -161,7 +161,6 @@ export function BuildSelectMultipleField(props) {
     )
 }
 
-
 // BTN
 export function BuildButtonField(props) {
     let {name, onClick, label, className} = props
@@ -174,6 +173,12 @@ export function BuildButtonField(props) {
         onClick={onClick || null}
         value={label}
     />
+    )
+}
+
+export function BuildButtonCloseModal(props) {
+    return (
+        <button>Close</button>
     )
 }
 
