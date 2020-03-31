@@ -16,11 +16,35 @@ class SideBar extends Component {
                                 <li className="nav-item has-treeview menu-open">
                                     <a href="/" className="nav-link active">
                                         <i className="nav-icon fas fa-tachometer-alt"></i>
-                                        <p>
-                                            Dashboard
-                                        </p>
+                                        <p> Dashboard </p>
                                     </a>
                                 </li>
+
+                                <li className="nav-item has-treeview">
+                                    <a href="/" className="nav-link">
+                                        <i className="nav-icon fas fa-copy"></i>
+                                        <p>
+                                        Posts
+                                        <i className="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul className="nav nav-treeview">
+                                        <li className="nav-item">
+                                            <a href="pages/layout/top-nav.html" className="nav-link">
+                                                <i className="far fa-circle nav-icon"></i>
+                                                <p>List posts</p>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a href="pages/layout/top-nav.html" className="nav-link">
+                                                <i className="far fa-circle nav-icon"></i>
+                                                <p>Category</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+
                                 {/* <li className="nav-item">
                                 <a href="pages/widgets.html" className="nav-link">
                                     <i className="nav-icon fas fa-th"></i>

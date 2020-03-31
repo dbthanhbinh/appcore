@@ -234,7 +234,7 @@ class Category extends Component{
         
         return (
             <Fragment>
-                <ContentHeader />
+                {/* <ContentHeader /> */}
                 <div className="content">
                     <div className="container-fluid">
                         <div className="row">

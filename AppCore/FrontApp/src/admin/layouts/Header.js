@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react'
-
+import ContentHeader from '../commons/ContentHeader'
 class Header extends Component {
     render() {
         return(
@@ -8,27 +8,9 @@ class Header extends Component {
 
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                        <a className="nav-link" data-widget="pushmenu" href="/"><i className="fas fa-bars"></i></a>
-                        </li>
-                        <li className="nav-item d-none d-sm-inline-block">
-                        <a href="index3.html" className="nav-link">Home</a>
-                        </li>
-                        <li className="nav-item d-none d-sm-inline-block">
-                        <a href="/" className="nav-link">Contact</a>
+                            <a className="nav-link" data-widget="pushmenu" href="/"><i className="fas fa-bars"></i></a>
                         </li>
                     </ul>
-
-                    <form className="form-inline ml-3">
-                        <div className="input-group input-group-sm">
-                        <input className="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" />
-                        <div className="input-group-append">
-                            <button className="btn btn-navbar" type="submit">
-                            <i className="fas fa-search"></i>
-                            </button>
-                        </div>
-                        </div>
-                    </form>
-
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item dropdown">
                         <a className="nav-link" data-toggle="dropdown" href="/">
