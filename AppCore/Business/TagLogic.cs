@@ -47,6 +47,7 @@ namespace AppCore.Business
                 {   
                     Name = reqData.Name,
                     Slug = reqData.Slug,
+                    Type = reqData.Type,
                     CreatedBy = reqData.UserId,
                     ModifiedBy = reqData.UserId
                 };

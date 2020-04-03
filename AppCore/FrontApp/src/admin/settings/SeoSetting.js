@@ -1,8 +1,6 @@
 import React from 'react'
 import SeoForm from '../seos/SeoForm'
 import SeoModel from '../models/seo.model'
-import { Form } from 'semantic-ui-react'
-import {BtnWithModalEvent} from '../components/form/BtnDefined'
 import {withFormBehaviors} from '../components/form/form'
 import { SeoDefined } from "../commons/Defined"
 import _ from 'lodash'
@@ -10,6 +8,13 @@ import {
     validatorModel
 } from '../../utils/FormUtils'
 import BaseSetting from './BaseSetting'
+
+import {
+    BuildTextField,
+    BuildTextAreaField,
+    BuildSelectField,
+    BuildButtonField
+} from '../components/form/BuildFormField'
 
 class SeoSetting extends BaseSetting {
     constructor(props){
@@ -52,18 +57,28 @@ class SeoSetting extends BaseSetting {
     render(){
         let {model, generalSeoSetting} = this.state
         return(
-            <Form>
-                <Form.Field>
-                    <SeoForm
-                        model={model}
-                        seoData={generalSeoSetting}  
-                        onInputChange={this.handleOnInputChange}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <BtnWithModalEvent onBtnEvent={this.handleSubmitForm} label={'Update'} />
-                </Form.Field>
-            </Form>
+            <React.Fragment>
+                <BuildTextField
+                    name={SeoDefined.SEOTITLE}
+                    onChange={this.handleOnInputChange}
+                    modelField={model ? model[SeoDefined.SEOTITLE] : null}
+                />
+                <BuildTextField
+                    name={SeoDefined.SEOKEYS}
+                    onChange={this.handleOnInputChange}
+                    modelField={model ? model[SeoDefined.SEOKEYS] : null}
+                />
+                <BuildTextAreaField
+                    name={SeoDefined.SEODESCRIPTION}
+                    onChange={this.handleOnInputChange}
+                    modelField={model ? model[SeoDefined.SEODESCRIPTION] : null}
+                />
+                <BuildButtonField
+                    label={`Save change`}
+                    className='btn-success float-right'
+                    onClick={this.handleSubmitForm}
+                />
+            </React.Fragment>
         )
     }
 }

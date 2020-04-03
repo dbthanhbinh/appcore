@@ -18,7 +18,7 @@ class SeoForm extends Component {
     render(){
         let { model } = this.props
         return(
-            <div className="card card-primary collapsed-card">
+            <div className="card collapsed-card">
                 <div className="card-header">
                     <h3 className="card-title">Config SEO</h3>
 

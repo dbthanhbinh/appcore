@@ -35,6 +35,8 @@ class Tag extends Component{
             isFormValid: isFormValid,
             model: models
         }
+        this.type = 'general'
+        this.headerName = 'Tags'
         this.pagination = Utils.resetPagination()
         this.paginationPath = '/admin/tags/paging'
         this.isEdit = false
@@ -49,6 +51,11 @@ class Tag extends Component{
         // For Edit case
         let payload = {}
         let id = _.get(this.props, 'match.params.id')
+        const query = new URLSearchParams(this.props.location.search)
+        let type = query.get('type')
+        if (type) {
+            this.type = type
+        }
         if(id) {
             this.isEdit = true
             let { model } = this.state
@@ -135,7 +142,8 @@ class Tag extends Component{
                 url: 'Tag/createTag',
                 body: { 
                     Name: model[TagDefined.NAME].value,
-                    Slug: model[TagDefined.SLUG].value
+                    Slug: model[TagDefined.SLUG].value,
+                    Type: this.type
                 }
             }
             if(!_.isNil(payload) && !_.isEmpty(payload)){
@@ -189,9 +197,10 @@ class Tag extends Component{
             {key: 'alias', label: 'Alias', isActive: true},
             {key: 'actions', label: 'Actions', isActive: true}
         ]
+        console.log('======', this.type)
         return (
             <Fragment>
-                <ContentHeader />
+                <ContentHeader headerName={this.headerName}/>
                 <div className="content">
                     <div className="container-fluid">
                         <div className="row">

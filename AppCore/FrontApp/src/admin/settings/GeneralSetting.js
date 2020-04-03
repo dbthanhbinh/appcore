@@ -1,5 +1,8 @@
 import React from 'react'
-import BuildTextField from '../components/form/BuildTextField'
+import {
+    BuildTextField,
+    BuildButtonField
+} from '../components/form/BuildFormField'
 import Model from '../models/generalSetting.model'
 import { Form } from 'semantic-ui-react'
 import {BtnWithModalEvent} from '../components/form/BtnDefined'
@@ -106,32 +109,26 @@ class SeoSetting extends BaseSetting {
         let {model} = this.state
         return(
             <Form>
-                <Form.Field>
-                    {/* <input type='file' name='file' id='file' onChange={this.handleOnChangeUpload} /> */}
-                    <BuildTextField
-                        name={GeneralSettingDefined.WEB_SLOGAN}
-                        onChange={this.handleOnInputChange}
-                        modelField={model ? model[GeneralSettingDefined.WEB_SLOGAN] : null}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    {/* <input type='file' name='file' id='file' onChange={this.handleOnChangeUpload} /> */}
-                    <BuildTextField
-                        name={GeneralSettingDefined.GOOGLEANALYTICCODE}
-                        onChange={this.handleOnInputChange}
-                        modelField={model ? model[GeneralSettingDefined.GOOGLEANALYTICCODE] : null}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <BuildTextField
-                        name={GeneralSettingDefined.COPYRIGHTTEXT}
-                        onChange={this.handleOnInputChange}
-                        modelField={model ? model[GeneralSettingDefined.COPYRIGHTTEXT] : null}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <BtnWithModalEvent onBtnEvent={this.handleSubmitForm} label={'Update'} />
-                </Form.Field>
+                <BuildTextField
+                    name={GeneralSettingDefined.WEB_SLOGAN}
+                    onChange={this.handleOnInputChange}
+                    modelField={model ? model[GeneralSettingDefined.WEB_SLOGAN] : null}
+                />
+                <BuildTextField
+                    name={GeneralSettingDefined.GOOGLEANALYTICCODE}
+                    onChange={this.handleOnInputChange}
+                    modelField={model ? model[GeneralSettingDefined.GOOGLEANALYTICCODE] : null}
+                />
+                <BuildTextField
+                    name={GeneralSettingDefined.COPYRIGHTTEXT}
+                    onChange={this.handleOnInputChange}
+                    modelField={model ? model[GeneralSettingDefined.COPYRIGHTTEXT] : null}
+                />
+                <BuildButtonField
+                    label={`Save change`}
+                    className='btn-success float-right'
+                    onClick={this.handleSubmitForm}
+                />
             </Form>
         )
     }

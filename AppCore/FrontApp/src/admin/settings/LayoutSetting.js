@@ -2,7 +2,13 @@ import React from 'react'
 import _ from 'lodash'
 import Model from '../models/layoutSetting.model'
 import { LayoutDefined } from "../commons/Defined"
-import DropdownWrapper from '../components/form/DropdownWrapper'
+
+import {
+    BuildTextField,
+    BuildTextAreaField,
+    BuildSelectField,
+    BuildButtonField
+} from '../components/form/BuildFormField'
 
 import { Form } from 'semantic-ui-react'
 import {BtnWithModalEvent} from '../components/form/BtnDefined'
@@ -15,10 +21,10 @@ import {
 } from '../../utils/FormUtils'
 
 const layoutOptions = [
-    { key: 1, text: 'Full width', value: 'full' },
-    { key: 2, text: 'Left sidebar', value: 'left-sidebar' },
-    { key: 3, text: 'Right sidebar', value: 'right-sidebar' },
-    { key: 4, text: 'Left content Right', value: 'left-content-right' }
+    { key: 1, name: 'Full width', id: 'full' },
+    { key: 2, name: 'Left sidebar', id: 'left-sidebar' },
+    { key: 3, name: 'Right sidebar', id: 'right-sidebar' },
+    { key: 4, name: 'Left content Right', id: 'left-content-right' }
 ]
 
 class LayoutSetting extends BaseSetting {
@@ -73,37 +79,38 @@ class LayoutSetting extends BaseSetting {
         let {model} = this.state
         return(
             <Form>
-                <Form.Field>
-                    <DropdownWrapper
-                        options={layoutOptions}
-                        name={LayoutDefined.PAGE_LAYOUT}
-                        onChange={this.handleOnInputChange}
-                        placeholder={'Select page layout '}
-                        defaultValue={_.get(model, `${LayoutDefined.PAGE_LAYOUT}.value`)}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <DropdownWrapper
-                        options={layoutOptions}
-                        name={LayoutDefined.POST_LAYOUT}
-                        onChange={this.handleOnInputChange}
-                        placeholder={'Select post layout '}
-                        defaultValue={_.get(model, `${LayoutDefined.POST_LAYOUT}.value`)}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <DropdownWrapper
-                        options={layoutOptions}
-                        name={LayoutDefined.ARCHIVE_LAYOUT}
-                        onChange={this.handleOnInputChange}
-                        placeholder={'Select archive layout '}
-                        defaultValue={_.get(model, `${LayoutDefined.ARCHIVE_LAYOUT}.value`)}
-                    />
-                </Form.Field>
+                <BuildSelectField 
+                    name={LayoutDefined.PAGE_LAYOUT}
+                    label={model[LayoutDefined.PAGE_LAYOUT].label}
+                    listItems={layoutOptions}
+                    onChange={this.handleOnInputChange}
+                    placeholder='Select page layout'
+                    defaultValue={_.get(model, `${LayoutDefined.PAGE_LAYOUT}.value`)}
+                />
+                
+                <BuildSelectField 
+                    name={LayoutDefined.POST_LAYOUT}
+                    label={model[LayoutDefined.POST_LAYOUT].label}
+                    listItems={layoutOptions}
+                    onChange={this.handleOnInputChange}
+                    placeholder='Select post layout'
+                    defaultValue={_.get(model, `${LayoutDefined.POST_LAYOUT}.value`)}
+                />
 
-                <Form.Field>
-                    <BtnWithModalEvent onBtnEvent={this.handleSubmitForm} label={'Update'} />
-                </Form.Field>
+                <BuildSelectField 
+                    name={LayoutDefined.ARCHIVE_LAYOUT}
+                    label={model[LayoutDefined.ARCHIVE_LAYOUT].label}
+                    listItems={layoutOptions}
+                    onChange={this.handleOnInputChange}
+                    placeholder='Select archive layout'
+                    defaultValue={_.get(model, `${LayoutDefined.ARCHIVE_LAYOUT}.value`)}
+                />
+                
+                <BuildButtonField
+                    label={`Save change`}
+                    className='btn-success float-right'
+                    onClick={this.handleSubmitForm}
+                />
             </Form>
         )
     }

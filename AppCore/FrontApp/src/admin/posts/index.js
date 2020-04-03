@@ -63,20 +63,20 @@ class PostApp extends Component {
         })
 
         // Get all category
-        // this.CategoryActions.getListItems({url: 'Category/getAllCategory', body: {}}, (err, result)=> {
-        //     if(err) return
-        //     let resultData = Utils.getResApi(result)
-        //     resultData = Utils.sortList(resultData, 'desc')  // To sort list
-        //     this.props.fetchCategory(resultData)
-        // })
+        this.CategoryActions.getListItems({url: 'Category/getAllCategory', body: {}}, (err, result)=> {
+            if(err) return
+            let resultData = Utils.getResApi(result)
+            resultData = Utils.sortList(resultData, 'desc')  // To sort list
+            this.props.fetchCategory(resultData)
+        })
 
         // Get all tags
-        // this.TagActions.getListItems({url: 'Tag/getAllTag', body: {}}, (err, result)=> {
-        //     if(err) return
-        //     let resultData = Utils.getResApi(result)
-        //     resultData = Utils.sortList(resultData, 'desc')  // To sort list
-        //     this.props.fetchTag(resultData)
-        // })
+        this.TagActions.getListItems({url: 'Tag/getAllTag', body: {}}, (err, result)=> {
+            if(err) return
+            let resultData = Utils.getResApi(result)
+            resultData = Utils.sortList(resultData, 'desc')  // To sort list
+            this.props.fetchTag(resultData)
+        })
     }
 
     render() {

@@ -150,35 +150,26 @@ class postForm extends Component {
                     </div>
                     <div className="col-lg-4">
                         <FieldFile defaultValue='' onInputChange = {this.handleOnInputChange} />
-                        {/* <DropdownWrapper
-                            search
-                            options={categoryList}
+                        <BuildSelectField 
                             name={PostDefined.CATEGORYID}
+                            listItems={categoryList}
                             onChange={this.handleOnInputChange}
-                            placeholder={'Select category '}
+                            placeholder='Select category'
                             defaultValue={_.get(model, `${PostDefined.CATEGORYID}.value`)}
-                        /> */}
-                        {/* <DropdownWrapper
-                            search
-                            multiple
-                            options={tagList}
+                        />
+
+                        <BuildSelectMultipleField 
                             name={PostDefined.TAGLIST}
+                            listItems={tagList}
                             onChange={this.handleOnMultipleDropChange}
-                            placeholder={'Select tags'}
+                            placeholder='Select tags'
                             defaultValue={postTagDefaultValues}
-                        /> */}
+                        />
                         <SeoForm
                             model={model}
                             seoData={ _.get(detailData, 'seo') }
                             onInputChange = {this.handleOnInputChange}
                         />
-                        <button
-                            id={`my-button-close-modal`}
-                            type="button"
-                            data-dismiss="modal"
-                            className='btn-success float-right'
-                        >Close</button>
-
                         <BuildButtonField
                             onClick={this.handleSubmitForm}
                             className='btn-success float-right'

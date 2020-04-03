@@ -147,7 +147,7 @@ export function adapterMapingDropdownOption(options){
     let mapOptions = []
     options && options.forEach(item => {
         mapOptions.push({
-            key: item.id, text: `${item.name}`, value: item.id
+            key: item.id, name: `${item.name}`, id: item.id
         })
     })
     return mapOptions
